@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Noto Sans", sans-serif, Roboto, "Helvetica Neue", Arial,
+		"Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+		"Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+	padding: 0;
+}
+.heroContainer {
+	background-image: url("./images/bg.png");
+	background-repeat: no-repeat;
+	background-position: left;
+	background-size: contain;
+	object-fit: cover;
+}
+.footer {
+	background-image: url("./images/footerBg.svg");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
