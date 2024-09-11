@@ -15,8 +15,6 @@ const ProductComponent = () => {
                 <ProductListComponent/>
             </div>
         </div>
-
-
     );
 };
 
