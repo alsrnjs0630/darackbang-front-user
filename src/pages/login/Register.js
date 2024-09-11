@@ -28,7 +28,7 @@ const Register = () => {
 			</div>
 			<Typography className='font-poppins'>
 				Already have an account?{" "}
-				<Link to='/login' className='hover:text-purple-400'>
+				<Link to='/login/Login' className='hover:text-purple-400'>
 					Sign in
 				</Link>
 			</Typography>
