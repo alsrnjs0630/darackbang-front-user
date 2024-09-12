@@ -8,10 +8,6 @@
 
 <br />
 
-![React Material-Tailwind - Open-Source Sample proivded by AppSeed.](https://user-images.githubusercontent.com/51070104/204786262-1dfa1810-3e4e-474c-84df-213faaa3a87b.jpg)
-
-<br />
-
 ## How to use it 
 
 - Install `NodejS` - version 14.x or higher 
@@ -22,14 +18,7 @@
 <br />
 
 ## Components
-
-- ✅ `Header` 
-- ✅ `Hero`
-- ✅ `Info Section`
-- ✅ `AboutUs`
-- ✅ `Testimonial`
-- ✅ `ContactUs`
-- ✅ `Footer`   
+>>여기에 컴포넌트 리스트 추가 
 
 <br />
 
@@ -50,6 +39,3 @@ Material Tailwind is an easy to use components library for Tailwind CSS and Mate
 ![Material Tailwind - Open-source UI library inspired by Material Design.](https://user-images.githubusercontent.com/51070104/204787709-560342fd-7dfd-4bc3-8b86-14da44030a85.png) 
 
 <br />
-
---- 
-[React Material-Tailwind Sample](https://blog.appseed.us/react-material-tailwind-guide-and-sample/) - provided by `AppSeed`
