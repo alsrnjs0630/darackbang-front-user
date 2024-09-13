@@ -5,66 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9798c3e8-cb69-4732-8215-da0112360081" name="변경" comment="사용자 화면용 업로드">
-      <change afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/menus/BasicMenu.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/layouts/BasicLayout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/layouts/ProductLayout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/HomePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router/memberRouter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router/productsRouter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router/root.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router/todoRouter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/setupTests.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/darackbang-front-user.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Faq.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/FirstSection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Hero.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SecondSection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Testimonial.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/brand/BrandInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/Footer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/Nav.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/Pagination.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/SlideShow.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/news/NewsComponent.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/product/PopularProduct.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/product/ProductComponent.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/product/ProductListComponent.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/product/ProductReadComponent.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/product/SideMenu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/subscribe/SubscribeInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/connect.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/footerBg.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/meetup.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/musa.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/sharon.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/star.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Brand.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Subscribe.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/Home.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/Login.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/Register.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/news/News.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product/Product.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product/ProductRead.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reportWebVitals.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reportWebVitals.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Star.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/BasicLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/BasicLayout.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,23 +50,36 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/workspace/darackbang/darackbang-front-user/src",
+    "last_opened_file_path": "D:/workspace/darackbang/darackbang-front-user/src/pages",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.start.executor": "Run",
-    "ts.external.directory.path": "C:\\Users\\kosmos\\AppData\\Local\\Programs\\IntelliJ IDEA Ultimate\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "C:\\Users\\kosmos\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
 }]]></component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages" />
+      <recent name="D:\workspace\darackbang\darackbang-front-user\src\components\menus" />
+      <recent name="D:\workspace\darackbang\darackbang-front-user\src\layouts" />
       <recent name="D:\workspace\darackbang\darackbang-front-user\src" />
       <recent name="D:\workspace\darackbang\darackbang-front-user" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\components" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages\login" />
@@ -135,11 +90,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="NimRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="nim.task.build.to.cache" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="start" />
@@ -171,6 +121,10 @@
       <workItem from="1726098562735" duration="22000" />
       <workItem from="1726098601277" duration="1503000" />
       <workItem from="1726184798463" duration="324000" />
+      <workItem from="1726185944224" duration="50000" />
+      <workItem from="1726186034075" duration="73000" />
+      <workItem from="1726186180885" duration="338000" />
+      <workItem from="1726186652009" duration="8000" />
     </task>
     <task id="LOCAL-00001" summary="사용자 화면용 업로드">
       <option name="closed" value="true" />
