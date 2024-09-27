@@ -1,43 +1,90 @@
 import {Link} from "react-router-dom";
+import React from "react";
+import {
+    Navbar,
+    Collapse,
+    Typography
+} from "@material-tailwind/react";
+
+function NavList() {
+    return (
+        <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+                    브랜드
+                </a>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+                    마이페이지
+                </a>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+                    로그인
+                </a>
+            </Typography>
+        </ul>
+    );
+}
+
+export function NavbarSimple() {
+    const [openNav, setOpenNav] = React.useState(false);
+
+    const handleWindowResize = () =>
+        window.innerWidth >= 960 && setOpenNav(false);
+
+    React.useEffect(() => {
+        window.addEventListener("resize", handleWindowResize);
+
+        return () => {
+            window.removeEventListener("resize", handleWindowResize);
+        };
+    }, []);
+
+    return (
+        <Navbar className="w-100% mx-auto px-6 py-3">
+            <div className="flex items-center justify-between text-blue-gray-900">
+                <Typography
+                    as="a"
+                    href="#"
+                    variant="h6"
+                    className="mr-4 cursor-pointer py-1.5"
+                >
+                    다락방
+                </Typography>
+                <div className="hidden lg:block">
+                    <NavList />
+                </div>
+            </div>
+            <Collapse open={openNav}>
+                <NavList />
+            </Collapse>
+        </Navbar>
+    );
+}
+
+
 
 const BasicMenu = () => {
 
     return (
-        <nav id='navbar' className={'flex bg-blue-300'}>
-            <div className={'w-4/5 bg-gary-500'}>
-                <ul className={'flex p-4 text-white font-bold justify-between'}>
-                    <li className={'text-2xl'}>
-                        <Link to={'/'}>다락방로고</Link>
-                    </li>
-                    <li className={'text-2xl'}>
-                        <Link to={'/'}>브랜드</Link>
-                    </li>
-                    <li className={'text-2xl'}>
-                        <Link to={'/'}>매뉴1</Link>
-                    </li>
-                    <li className={'text-2xl'}>
-                        <Link to={'/'}>매뉴2</Link>
-                    </li>
-                    <li className={'text-2xl'}>
-                        <Link to={'/'}>매뉴3</Link>
-                    </li>
-                    <li className={'text-2xl'}>
-                        <Link to={'/'}>매뉴4</Link>
-                    </li>
-                </ul>
-            </div>
-            <div className={'w-1/5 flex justify-around bg-orange-300 p-4 font-medium'}>
-                <div className={'text-white text-2xl m-1 rounded cursor-pointer'}>
-                    <Link to={'/'}>로그인</Link>
-                </div>
-                <div className={'text-white text-2xl m-1 rounded cursor-pointer'}>
-                    <Link to={'/'}>매뉴1</Link>
-                </div>
-                <div className={'text-white text-2xl m-1 rounded cursor-pointer'}>
-                    <Link to={'/'}>매뉴2</Link>
-                </div>
-            </div>
-        </nav>
+        <NavbarSimple />
     );
 }
 
