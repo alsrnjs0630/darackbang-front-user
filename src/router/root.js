@@ -19,6 +19,7 @@ const Loading = <div className="text-center">
 
 const Home = lazy(() => import("../pages/HomePage"))
 const Product = lazy(() => import("../components/products/ProductComponent"))
+const Login = lazy(() => import("../pages/LoginPage"))
 
 const root = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const root = createBrowserRouter([
                 element: <Suspense fallback={Loading}><Product/></Suspense>
             }
         ]
+    },
+    {
+        path:"/login",
+        element: <Suspense fallback={Loading}><Login/></Suspense>
     }
 ])
 
