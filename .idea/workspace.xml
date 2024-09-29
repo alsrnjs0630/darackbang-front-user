@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9798c3e8-cb69-4732-8215-da0112360081" name="변경" comment="사용자 화면용 업로드">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/menus/BasicMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menus/BasicMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/menus/SideBarMenu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/BasicLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/BasicLayout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/root.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/root.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,12 +33,12 @@
     &quot;assignee&quot;: &quot;norinus&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/norinus/darackbang-front-user.git&quot;,
-    &quot;accountId&quot;: &quot;fdbdbd49-8181-4de2-b385-5dbab5cdf55a&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/norinus/darackbang-front-user.git",
+    "accountId": "d4461112-28ef-4f75-b9d2-d51e4311e2f9"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -53,15 +55,18 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/workspace/darackbang/darackbang-front-admin",
+    "last_opened_file_path": "D:/workspace/darackbang-front-user",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.start.executor": "Run",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.editor",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -86,11 +91,11 @@
       <recent name="D:\workspace\darackbang\darackbang-front-user" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace\darackbang-front-user\public\images\products" />
+      <recent name="D:\workspace\darackbang-front-user\public\images" />
+      <recent name="D:\workspace\darackbang-front-user\public" />
+      <recent name="D:\workspace\darackbang-front-user\src\images" />
       <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages\login" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages\home" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\components\brand" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\components\home" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\components\common" />
     </key>
   </component>
   <component name="RunManager">
@@ -105,7 +110,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
       </set>
     </attachedChunks>
   </component>
@@ -132,6 +138,7 @@
       <workItem from="1727421813437" duration="166000" />
       <workItem from="1727422271063" duration="2338000" />
       <workItem from="1727425473354" duration="3845000" />
+      <workItem from="1727603982678" duration="14668000" />
     </task>
     <task id="LOCAL-00001" summary="사용자 화면용 업로드">
       <option name="closed" value="true" />

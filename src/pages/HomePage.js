@@ -1,11 +1,12 @@
 import BasicLayout from '../layouts/BasicLayout';
+import {Outlet} from "react-router-dom";
 
 const HomePage = () => {
 
 	return (
 		<BasicLayout>
-			<div className={'text-3xl'}>
-				<div>홈 컴포넌트 추가</div>
+			<div className={'w-full flex justify-center text-3xl'}>
+				<Outlet/>
 			</div>
 		</BasicLayout>
 	);

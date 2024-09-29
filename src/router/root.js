@@ -18,11 +18,18 @@ const Loading = <div className="text-center">
 </div>
 
 const Home = lazy(() => import("../pages/HomePage"))
+const Product = lazy(() => import("../components/products/ProductComponent"))
 
 const root = createBrowserRouter([
     {
         path: "",
-        element: <Suspense fallback={Loading}><Home/></Suspense>
+        element: <Suspense fallback={Loading}><Home/></Suspense>,
+        children: [
+            {
+                path: "",
+                element: <Suspense fallback={Loading}><Product/></Suspense>
+            }
+        ]
     }
 ])
 

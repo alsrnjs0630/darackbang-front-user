@@ -1,11 +1,16 @@
 import {Typography} from "@material-tailwind/react";
+import React from "react";
 
 const FooterMenu = () => {
     return (
-        <footer className='w-full footer py-12 pt-24  px-8'>
+        <footer className='w-full footer py-12 pt-24 px-8'>
             <div className='w-full flex items-center flex-col justify-center'>
                 <Typography className='font-poppins text-lg font-semibold text-purple-100'>
-                    다락방로고
+                    <img
+                        src='/images/darackbang_logo.png'
+                        alt="다락방"
+                        className="h-48 w-48"
+                    />
                 </Typography>
 
                 <ul className='flex justify-center mt-5 space-x-5'>
