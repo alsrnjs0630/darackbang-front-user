@@ -48,7 +48,9 @@ export function StickyNavbar() {
                 className="p-1 font-normal text-base"
             >
                 <Link to={"#"} className="flex items-center">
+                    <Typography className={"font-semibold"}>
                     브랜드
+                    </Typography>
                 </Link>
             </Typography>
             <form className="max-w-7xl mx-auto">

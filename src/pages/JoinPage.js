@@ -7,13 +7,13 @@ import {
 } from "@material-tailwind/react";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {joinPost, loginPost} from "../apis/MemberApi";
+import {emailCk, joinPost, loginPost} from "../apis/MemberApi";
 
 const initState = {
     userEmail: '',
     password: '',
     name: '',
-    gender: '',
+    gender: 'M',
     birthDay: '',
     ageGroup: '',
     mobileNo: '',
@@ -22,12 +22,17 @@ const initState = {
     address: ''
 }
 
+const emailCheckInitState = {
+    userEmail: ''
+}
+
 export function SimpleRegistrationForm() {
     const [joinParam, setJoinParam] = useState({...initState})
+    const [emailCkParam, setEmailCkParam] = useState({...emailCheckInitState})
     const navigator = useNavigate()
 
     const moveToPath = (path) => {
-        navigator({pathname: path}, {replace:true})
+        navigator({pathname: path}, {replace: true})
     }
 
     const handleChange = (e) => {
@@ -49,6 +54,34 @@ export function SimpleRegistrationForm() {
             })
     }
 
+    const handleEmailCheck = () => {
+        const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+        if (!joinParam.userEmail) {
+            // 이메일이 null이거나 빈 문자열일 경우 경고
+            alert("사용하실 이메일을 입력해주세요");
+        } else {
+            if (!regEmail.test(joinParam.userEmail)) {
+                // 이메일 형식이 맞지 않을 경우 경고
+                alert("이메일 형식에 맞게 정확히 입력해주세요. (예)darackbang@test.com");
+            } else {
+                // 이메일 형식이 맞으면 바로 이메일 체크 요청
+                emailCk({ userEmail: joinParam.userEmail })
+                    .then(data => {
+                        console.log(data);
+                        console.log(joinParam.userEmail);
+
+                        if (data.RESULT === "EXIST") {
+                            alert("이미 존재하는 이메일입니다.");
+                        } else {
+                            alert("사용가능한 이메일입니다.");
+                        }
+                    });
+            }
+        }
+    };
+
+
     return (
         <Card className="mx-auto w-full max-w-lg p-8 border-2 border-gray-400 shadow-lg">
             <div className="mx-auto">
@@ -69,7 +102,7 @@ export function SimpleRegistrationForm() {
                             className="w-3/4 !border-gray-300 focus:!border-gray-900"
                             onChange={handleChange} required
                         />
-                        <Button className="ml-2 w-24 h-9 text-xs">중복확인</Button>
+                        <Button className="ml-2 w-24 h-9 text-xs" onClick={handleEmailCheck}>중복확인</Button>
                     </div>
 
                     {/* 비밀번호 */}
@@ -94,9 +127,9 @@ export function SimpleRegistrationForm() {
                             variant="small"
                             color="blue-gray"
                             className="w-1/4 text-right pr-4"
-                            style={{ lineHeight: '1.2' }}
+                            style={{lineHeight: '1.2'}}
                         >
-                            비밀번호 <br /> 확인
+                            비밀번호 <br/> 확인
                         </Typography>
                         <Input
                             type="password"
@@ -125,7 +158,8 @@ export function SimpleRegistrationForm() {
                         <Typography variant="small" color="blue-gray" className="w-1/4 text-right pr-4">
                             성별
                         </Typography>
-                        <select name={"gender"} onChange={handleChange} value={joinParam.gender} className="w-3/4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 text-sm">
+                        <select name={"gender"} onChange={handleChange} value={joinParam.gender}
+                                className="w-3/4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 text-sm">
                             <option value="M">M</option>
                             <option value="F">F</option>
                         </select>
@@ -243,7 +277,7 @@ export function SimpleRegistrationForm() {
                                     이용약관에 동의합니다.
                                 </Typography>
                             }
-                            containerProps={{ className: "-ml-2.5" }}
+                            containerProps={{className: "-ml-2.5"}}
                         />
                     </div>
 

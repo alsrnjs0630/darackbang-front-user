@@ -1,15 +1,58 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import {loginPost} from "../apis/MemberApi";
+import {useDispatch} from 'react-redux';
+import {loginPost, resetPw, search} from "../apis/MemberApi";
+import {
+    Button,
+    Dialog,
+    Card,
+    CardBody,
+    CardFooter,
+    Typography,
+    Input,
+} from "@material-tailwind/react";
 
-const initState = {
+const loginInitState = {
     userEmail: '',
     password: ''
 }
 
-const LoginPage = ({loginState,setLoginState}) => {
-    const [loginParam, setLoginParam] = useState({...initState})
+const searchInitState = {
+    userEmail: '',
+    birthday: ''
+}
+
+const resetPwInitState = {
+    userEmail: '',
+    password: '',
+    passwordCheck: ''
+}
+
+const LoginPage = ({loginState, setLoginState}) => {
+    const [loginParam, setLoginParam] = useState({...loginInitState})
+    const [searchParam, setSearchParam] = useState({...searchInitState})
+    const [resetPwParam, setResetPwParam] = useState({...resetPwInitState})
+    const [open, setOpen] = React.useState(false);
+    const [resetOpen, setResetOpen] = React.useState(false);
+
+    // 비밀번호 찾기 모달창
+    const handlesearchOpen = () => {
+        setOpen((cur) => !cur);
+        // 모달창 닫히면 입력값 초기화
+        if (open) {
+            setSearchParam({ userEmail: '', birthday: '' });
+        }
+    }
+
+    // 비밀번호 재설정 모달창
+    const handlePasswordResetOpen = () => {
+        setResetOpen((cur) => !cur);
+        // 모달창 닫히면 입력값 초기화
+        if (resetOpen) {
+            setResetPwParam({ password: '', passwordCheck: '' });
+        }
+    }
+
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
@@ -18,24 +61,74 @@ const LoginPage = ({loginState,setLoginState}) => {
         setLoginParam({...loginParam})
     }
 
+    const handleSearchChange = (e) => {
+        searchParam[e.target.name] = e.target.value
+        setSearchParam({...searchParam})
+    }
+
+    const handleResetPwChange = (e) => {
+        resetPwParam[e.target.name] = e.target.value
+        setResetPwParam({...resetPwParam})
+    }
+
     const handleClickLogin = () => {
         loginPost(loginParam)
             .then(data => {
                 console.log(data)
 
-                if(data.error) {
+                if (data.error) {
                     alert("이메일과 패스워드를 다시 확인하세요")
-                } else{
+                } else {
                     alert("로그인 성공!")
                     localStorage.setItem('loginState', "회원"); // 로그인 상태를 localStorage에 저장
-                    dispatch({ type: 'SET_LOGIN_STATE', payload: '회원' });
+                    dispatch({type: 'SET_LOGIN_STATE', payload: '회원'});
                     moveToPath("/")
                 }
             })
     }
 
+    // 비밀번호 찾기 1. 아이디 검색
+    const handleClickSearchPw = () => {
+        search(searchParam)
+            .then(data => {
+                console.log(data)
+
+                if (data.RESULT === "SUCCESS") {
+                    // resetPwParam의 userEmail을 searchParam.userEmail로 설정
+                    setResetPwParam({
+                        ...resetPwParam,
+                        userEmail: searchParam.userEmail
+                    });
+
+                    handlesearchOpen()
+                    handlePasswordResetOpen()
+                } else if (data.RESULT === "FAIL-BIRTHDAY-UNCORRECTED") {
+                    alert("생년월일을 정확하게 입력해주세요.")
+                } else {
+                    alert("일치하는 회원이 없습니다.")
+                }
+            })
+    }
+
+    // 비밀번호 찾기 2. 비밀번호 재설정
+    const handleClickResetPw = () => {
+        resetPw(resetPwParam)
+            .then(data => {
+                console.log(data)
+
+                if(data.RESULT === "SUCCESS") {
+                    alert("비밀번호 변경이 완료되었습니다!")
+                    handlePasswordResetOpen() // 모달창 닫기
+                } else if (data.RESULT === "FAIL") {
+                    alert("비밀번호 확인과 비밀번호가 일치하지 않습니다.")
+                } else {
+                    alert("서버오류로 실패했습니다. 다시 시도해주세요.")
+                }
+            })
+    }
+
     const moveToPath = (path) => {
-        navigate({pathname: path}, {replace:true})
+        navigate({pathname: path}, {replace: true})
     }
 
     return (
@@ -70,8 +163,91 @@ const LoginPage = ({loginState,setLoginState}) => {
                         <label htmlFor="password"
                                className="block text-sm font-medium leading-6 text-gray-900">비밀번호</label>
                         <div className="text-sm">
-                            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">비밀번호를 잊으셨나요?</a>
+                            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500"
+                               onClick={handlesearchOpen}>비밀번호를 잊으셨나요?</a>
                         </div>
+                        {/* 비밀번호 찾기 모달창 1. 아이디 검색 */}
+                        <Dialog
+                            size="xs"
+                            open={open}
+                            handler={handlesearchOpen}
+                            className="bg-transparent shadow-none"
+                        >
+                            <Card className="mx-auto w-full max-w-[24rem]">
+                                <CardBody className="flex flex-col gap-4">
+                                    <Typography variant="h4" color="blue-gray">
+                                        비밀번호 재설정
+                                    </Typography>
+                                    <Typography
+                                        className="mb-3 font-normal"
+                                        variant="paragraph"
+                                        color="gray"
+                                    >
+                                        회원님의 이메일과 생년월일을 입력하세요.
+                                    </Typography>
+                                    <Typography className="-mb-2" variant="h6">
+                                        이메일
+                                    </Typography>
+                                    <Input label="Email" name={"userEmail"} value={searchParam.userEmail} onChange={handleSearchChange} size="lg"/>
+                                    <Typography className="-mb-2" variant="h6">
+                                        생년월일
+                                    </Typography>
+                                    <Input label="EX) 20240101" name={"birthday"} value={searchParam.birthday} onChange={handleSearchChange} size="lg"/>
+                                </CardBody>
+                                <CardFooter className="pt-0">
+                                    <Button variant="gradient" onClick={handleClickSearchPw} fullWidth>
+                                        아이디 검색
+                                    </Button>
+                                    <Typography variant="small" className="mt-4 flex justify-center">
+                                        아직 회원이 아니신가요?
+                                        <Link to={"/member/join"}>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="ml-1 font-bold"
+                                            >
+                                                회원가입
+                                            </Typography>
+                                        </Link>
+                                    </Typography>
+                                </CardFooter>
+                            </Card>
+                        </Dialog>
+                        {/* 비밀번호 찾기 모달창 2.비밀번호 재설정 */}
+                        <Dialog
+                            size="xs"
+                            open={resetOpen}
+                            handler={handlePasswordResetOpen}
+                            className="bg-transparent shadow-none"
+                        >
+                            <Card className="mx-auto w-full max-w-[24rem]">
+                                <CardBody className="flex flex-col gap-4">
+                                    <Typography variant="h4" color="blue-gray">
+                                        비밀번호 재설정
+                                    </Typography>
+                                    <Typography
+                                        className="mb-3 font-normal"
+                                        variant="paragraph"
+                                        color="gray"
+                                    >
+                                        바꾸실 비밀번호를 입력하세요.
+                                    </Typography>
+                                    <Typography className="-mb-2" variant="h6">
+                                        새 비밀번호
+                                    </Typography>
+                                    <Input label="password" name={"password"} value={resetPwParam.password} onChange={handleResetPwChange} size="lg"/>
+                                    <Typography className="-mb-2" variant="h6">
+                                        비밀번호 확인
+                                    </Typography>
+                                    <Input label="password" name={"passwordCheck"} value={resetPwParam.passwordCheck} onChange={handleResetPwChange} size="lg"/>
+                                </CardBody>
+                                <CardFooter className="pt-0">
+                                    <Button variant="gradient" onClick={handleClickResetPw} fullWidth>
+                                        비밀번호 재설정
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        </Dialog>
                     </div>
                     <div className="mt-2">
                         <input id="password" name="password" type="password" value={loginParam.password}
@@ -92,7 +268,8 @@ const LoginPage = ({loginState,setLoginState}) => {
 
                 <p className="mt-10 text-center text-sm text-gray-500 pb-5">
                     아직 회원이 아니신가요?
-                    <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">회원가입 하러가기</a>
+                    <Link to={"/member/join"} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">회원가입
+                        하러가기</Link>
                 </p>
             </div>
 

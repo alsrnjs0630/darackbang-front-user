@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9798c3e8-cb69-4732-8215-da0112360081" name="변경" comment="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입 페이지 작성&#10;- 회원가입 기능 구현&#10;- 로그인 상태 확인 후 로그인/회원가입, 로그아웃 버튼 출력&#10;- 로그아웃 기능 구현&#10;3.작성일: 2024-10-02">
-      <change afterPath="$PROJECT_DIR$/src/apis/MemberApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/JoinPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/store.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/menus/BasicMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menus/BasicMenu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/root.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/root.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +31,12 @@
     &quot;assignee&quot;: &quot;norinus&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/norinus/darackbang-front-user.git&quot;,
-    &quot;accountId&quot;: &quot;d4461112-28ef-4f75-b9d2-d51e4311e2f9&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/norinus/darackbang-front-user.git",
+    "accountId": "fdbdbd49-8181-4de2-b385-5dbab5cdf55a"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -52,31 +46,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/workspace/darackbang-front-user&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/workspace/darackbang/darackbang-front-user/public",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;stardust.markdown.MarkdownSplitEditorSuppressor:keyList&quot;: []
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -88,18 +82,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\darackbang\darackbang-front-user\public" />
       <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages" />
       <recent name="D:\workspace\darackbang\darackbang-front-user\src\components\menus" />
       <recent name="D:\workspace\darackbang\darackbang-front-user\src\layouts" />
       <recent name="D:\workspace\darackbang\darackbang-front-user\src" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace\darackbang\darackbang-front-user\public" />
       <recent name="D:\workspace\darackbang-front-user\public\images\products" />
       <recent name="D:\workspace\darackbang-front-user\public\images" />
       <recent name="D:\workspace\darackbang-front-user\public" />
       <recent name="D:\workspace\darackbang-front-user\src\images" />
-      <recent name="D:\workspace\darackbang\darackbang-front-user\src\pages\login" />
     </key>
   </component>
   <component name="RunManager">
@@ -114,8 +108,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.419" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.419" />
       </set>
     </attachedChunks>
   </component>
@@ -145,6 +139,7 @@
       <workItem from="1727603982678" duration="28023000" />
       <workItem from="1727667205783" duration="13167000" />
       <workItem from="1727740223608" duration="22715000" />
+      <workItem from="1727829026812" duration="4484000" />
     </task>
     <task id="LOCAL-00001" summary="사용자 화면용 업로드">
       <option name="closed" value="true" />
@@ -208,6 +203,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="사용자 화면용 업로드" />
     <MESSAGE value="1.작성자: 방민권&#10;2.작업내용:&#10;- &lt;BasicMenu&gt; 레이아웃 작업&#10;- 메인페이지 &lt;ProductComponent&gt; 레이아웃 작업&#10;- &lt;Footer&gt; 로고 삽입&#10;3.작성일: 2024-09-29" />
@@ -227,6 +233,11 @@
           <url>file://$PROJECT_DIR$/src/components/product/ProductListComponent.js</url>
           <line>91</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/index.js</url>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

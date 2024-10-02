@@ -4,7 +4,7 @@ export const API_SERVER_HOST = 'http://localhost:8080'
 
 const host = `${API_SERVER_HOST}/api`
 
-
+// 로그인
 export const loginPost = async (loginParam) => {
         const header = {headers: {"Content-Type": "x-www-form-urlencoded"}}
 
@@ -17,6 +17,7 @@ export const loginPost = async (loginParam) => {
         return res.data
 }
 
+// 로그아웃
 export const logoutPost = async (loginParam) => {
         const header = {headers: {"Content-Type": "x-www-form-urlencoded"}}
 
@@ -25,6 +26,7 @@ export const logoutPost = async (loginParam) => {
         return res.status
 }
 
+// 회원가입
 export const joinPost = async (joinParam) => {
         const header = {headers: {"Content-Type": "x-www-form-urlencoded"}}
 
@@ -41,6 +43,39 @@ export const joinPost = async (joinParam) => {
         form.append('address', joinParam.address)
 
         const res = await axios.post(`${host}/member/join`, form, header)
+
+        return res.data
+}
+
+// 비밀번호 찾기
+export const search = async (searchParam) => {
+        const form = new FormData()
+        form.append('userEmail', searchParam.userEmail)
+        form.append('birthday', searchParam.birthday)
+
+        const res = await axios.post(`${host}/member/searchpw`, form)
+
+        return res.data
+}
+
+// 비밀번호 재설정
+export const resetPw = async (resetPwParam) => {
+        const form = new FormData()
+        form.append('userEmail', resetPwParam.userEmail)
+        form.append('password', resetPwParam.password)
+        form.append('passwordCheck', resetPwParam.passwordCheck)
+
+        const res = await axios.post(`${host}/member/resetpw`, form)
+
+        return res.data
+}
+
+// 아이디 중복 검사
+export const emailCk = async (emailCkParam) => {
+        const form = new FormData()
+        form.append('userEmail', emailCkParam.userEmail)
+
+        const res = await axios.post(`${host}/member/emailcheck`, form)
 
         return res.data
 }
