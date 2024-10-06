@@ -1,8 +1,9 @@
 import axios from "axios";
-import {replace, useNavigate} from "react-router-dom";
 export const API_SERVER_HOST = 'http://localhost:8080'
 
 const host = `${API_SERVER_HOST}/api`
+const ACCESS_TOKEN = localStorage.getItem("accessToken");
+console.log("토큰: ", ACCESS_TOKEN)
 
 // 로그인
 export const loginPost = async (loginParam) => {
@@ -19,7 +20,12 @@ export const loginPost = async (loginParam) => {
 
 // 로그아웃
 export const logoutPost = async (loginParam) => {
-        const header = {headers: {"Content-Type": "x-www-form-urlencoded"}}
+        const header = {
+                headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${ACCESS_TOKEN}`,
+                }
+        }
 
         const res = await axios.post(`${host}/member/logout`, header)
 
@@ -76,6 +82,20 @@ export const emailCk = async (emailCkParam) => {
         form.append('userEmail', emailCkParam.userEmail)
 
         const res = await axios.post(`${host}/member/emailcheck`, form)
+
+        return res.data
+}
+
+// 마이페이지 회원정보 출력
+export const mypageInfo = async () =>{
+        const header = {
+                headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${ACCESS_TOKEN}`,
+                }
+        }
+
+        const res = await axios.get(`${host}/member/info`, header)
 
         return res.data
 }

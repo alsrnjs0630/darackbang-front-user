@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {
     Navbar,
     Typography,
     Button,
     IconButton
 } from "@material-tailwind/react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {FaShoppingCart, FaUserCircle} from "react-icons/fa";
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutPost} from "../../apis/MemberApi";
@@ -13,6 +13,7 @@ import {logoutPost} from "../../apis/MemberApi";
 export function StickyNavbar() {
     const loginState = useSelector(state => state.loginState)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // 컴포넌트가 마운트될 때 로그인 상태 초기화
     useEffect(() => {
@@ -33,10 +34,17 @@ export function StickyNavbar() {
                     alert("로그아웃 되었습니다.")
                     localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
                     dispatch({ type: 'SET_LOGIN_STATE', payload: '비회원' });
+                    navigate("/")
                 } else {
                     alert("예상하지 못한 오류가 발생했습니다. 다시 시도해주세요.")
                 }
             })
+    }
+
+    const handleMypage = () => {
+        {loginState === "비회원" ? (
+            alert("로그인 후 이용할 수 있습니다.")
+        ) : navigate("/mypage/info") }
     }
 
     const navList = (
@@ -122,10 +130,12 @@ export function StickyNavbar() {
                                 </Button>
                             )}
                         </div>
+                        {/* 장바구니 버튼 */}
                         <IconButton>
                             <FaShoppingCart className={"size-5"}/>
                         </IconButton>
-                        <IconButton>
+                        {/* 마이페이지 버튼 */}
+                        <IconButton onClick={handleMypage}>
                             <FaUserCircle className={"size-5"}/>
                         </IconButton>
                     </div>

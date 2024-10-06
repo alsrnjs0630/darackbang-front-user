@@ -75,14 +75,15 @@ const LoginPage = ({loginState, setLoginState}) => {
         loginPost(loginParam)
             .then(data => {
                 console.log(data)
-
                 if (data.error) {
                     alert("이메일과 패스워드를 다시 확인하세요")
                 } else {
                     alert("로그인 성공!")
                     localStorage.setItem('loginState', "회원"); // 로그인 상태를 localStorage에 저장
+                    localStorage.setItem('accessToken', data.token); // 토큰을 localStorage에 저장
                     dispatch({type: 'SET_LOGIN_STATE', payload: '회원'});
                     moveToPath("/")
+
                 }
             })
     }
@@ -272,8 +273,6 @@ const LoginPage = ({loginState, setLoginState}) => {
                         하러가기</Link>
                 </p>
             </div>
-
-
         </div>
     )
 }
