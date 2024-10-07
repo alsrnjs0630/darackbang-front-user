@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Button} from "@material-tailwind/react";
-import {mypageInfo} from "../../apis/MemberApi";
+import {modifyInfo, mypageInfo} from "../../apis/MemberApi";
 import {useNavigate} from "react-router-dom";
 
 
 
 const MyPageInfoComponent = () => {
-    const infoInitState = {
+    const initState = {
         userEmail: '',
         name: '',
+        gender: '',
+        ageGroup: '',
         birthday: '',
         mobileNo: '',
         phoneNo: '',
@@ -18,24 +20,13 @@ const MyPageInfoComponent = () => {
         shippingAddr: '',
         addPostNo: '',
         addShippingAddr: '',
+        mileage: '',
     }
 
-    const modifyInitState = {
-        name: '',
-        mobileNo: '',
-        phoneNo: '',
-        postNo: '',
-        address: '',
-        shipPostNo: '',
-        shippingAddr: '',
-        addPostNo: '',
-        addShippingAddr: '',
-    }
-
-    const [infoParam, setInfoParam] = useState({...infoInitState})
-    const [modifyParam, setModifyParam] = useState()
+    const [infoParam, setInfoParam] = useState({...initState})
     const navigate = useNavigate();
 
+    // 컴포넌트 렌더링 시 사용자 정보 로딩 후 화면에 출력
     useEffect(() => {
         const fetchMyInfo = async () => {
             const myInfo = await mypageInfo()
@@ -49,6 +40,23 @@ const MyPageInfoComponent = () => {
         fetchMyInfo();
     },[]);
 
+
+    //수정 내용 modifyParam으로 설정
+    const handleOnModify = (e) => {
+        infoParam[e.target.name] = e.target.value
+        setInfoParam({...infoParam})
+    }
+
+    const infoModify = async () => {
+        const response = await modifyInfo(infoParam);
+        if (response.RESULT === "SUCCESS") {
+            alert("회원 정보가 수정되었습니다.");
+            window.location.reload(); // 페이지 새로고침
+        } else {
+            alert("예상치 못한 에러가 발생했습니다. 다시 시도해주세요.");
+        }
+    };
+
     return (
         <div className="max-w-4xl mx-auto"> {/* 전체 div의 최대 너비 설정 */}
             <div className="px-4 sm:px-0">
@@ -58,11 +66,11 @@ const MyPageInfoComponent = () => {
                 <dl className="divide-y divide-gray-900">
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">이메일</dt>
-                        <dd className="sm:col-span-3 sm:mt-0 pt-2 pb-3">
+                        <dd className="sm:col-span-3 sm:mt-0 pt-4 pb-3">
                             <input
                                 type="email"
                                 className="mt-1 block w-80 border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue={infoParam.userEmail}
+                                value={infoParam.userEmail}
                                 disabled
                             />
                         </dd>
@@ -72,8 +80,10 @@ const MyPageInfoComponent = () => {
                         <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5">
                             <input
                                 type="text"
+                                name={"name"}
+                                onChange={handleOnModify}
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="홍길동"
+                                value={infoParam.name}
                             />
                         </dd>
                         <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">생년월일</dt>
@@ -81,7 +91,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="19980630"
+                                value={infoParam.birthday}
                                 disabled
                             />
                         </dd>
@@ -91,16 +101,20 @@ const MyPageInfoComponent = () => {
                         <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5">
                             <input
                                 type="text"
+                                name={"mobileNo"}
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="01099049212"
+                                value={infoParam.mobileNo}
+                                onChange={handleOnModify}
                             />
                         </dd>
                         <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">전화번호</dt>
                         <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5">
                             <input
                                 type="text"
+                                name={"phoneNo"}
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="024469252"
+                                value={infoParam.phoneNo}
+                                onChange={handleOnModify}
                             />
                         </dd>
                     </div>
@@ -109,8 +123,10 @@ const MyPageInfoComponent = () => {
                         <dd className="sm:col-span-3 sm:mt-0 flex inline pt-5 pb-5">
                             <input
                                 type="text"
+                                name={"postNo"}
                                 className="mt-1 block w-20 border-gray-300 rounded-md shadow-sm sm:text-sm "
-                                defaultValue="15010"
+                                value={infoParam.postNo}
+                                onChange={handleOnModify}
                                 disabled
                             />
                             <Button color={"blue"}>우편번호 검색</Button>
@@ -122,7 +138,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="경기도 시흥시 배곧 4로"
+                                value="경기도 시흥시 배곧 4로"
                                 style={{whiteSpace: 'nowrap'}}
                             />
                         </dd>
@@ -131,7 +147,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="센텀베이 509동"
+                                value="센텀베이 509동"
                                 style={{whiteSpace: 'nowrap'}}
                             />
                         </dd>
@@ -141,8 +157,10 @@ const MyPageInfoComponent = () => {
                         <dd className="sm:col-span-3 sm:mt-0 flex inline pt-5 pb-5">
                             <input
                                 type="text"
+                                name={"shipPostNo"}
                                 className="mt-1 block w-20 border-gray-300 rounded-md shadow-sm sm:text-sm "
-                                defaultValue="15010"
+                                value={infoParam.shipPostNo}
+                                onChange={handleOnModify}
                                 disabled
                             />
                             <Button color={"blue"}>우편번호 검색</Button>
@@ -154,7 +172,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="경기도 시흥시 배곧 4로"
+                                value="경기도 시흥시 배곧 4로"
                                 style={{whiteSpace: 'nowrap'}}
                             />
                         </dd>
@@ -163,7 +181,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="센텀베이 509동"
+                                value="센텀베이 509동"
                                 style={{whiteSpace: 'nowrap'}}
                             />
                         </dd>
@@ -173,8 +191,10 @@ const MyPageInfoComponent = () => {
                         <dd className="sm:col-span-3 sm:mt-0 flex inline pt-5 pb-5">
                             <input
                                 type="text"
+                                name={"addPostNo"}
                                 className="mt-1 block w-20 border-gray-300 rounded-md shadow-sm sm:text-sm "
-                                defaultValue="15010"
+                                value={infoParam.addPostNo}
+                                onChange={handleOnModify}
                                 disabled
                             />
                             <Button color={"blue"}>우편번호 검색</Button>
@@ -186,7 +206,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="경기도 시흥시 배곧 4로"
+                                value="경기도 시흥시 배곧 4로"
                                 style={{whiteSpace: 'nowrap'}}
                             />
                         </dd>
@@ -195,7 +215,7 @@ const MyPageInfoComponent = () => {
                             <input
                                 type="text"
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                defaultValue="센텀베이 509동"
+                                value="센텀베이 509동"
                                 style={{whiteSpace: 'nowrap'}}
                             />
                         </dd>
@@ -203,7 +223,7 @@ const MyPageInfoComponent = () => {
                 </dl>
             </div>
             <div className={"flex justify-center mt-10"}>
-                <Button>수정완료</Button>
+                <Button onClick={infoModify}>수정완료</Button>
                 <Button variant={"outlined"} className={"ml-10 mr-10"}>수정취소</Button>
                 <Button color={"red"}>회원탈퇴</Button>
             </div>
@@ -212,3 +232,8 @@ const MyPageInfoComponent = () => {
 }
 
 export default MyPageInfoComponent;
+
+
+
+
+

@@ -83,7 +83,7 @@ const LoginPage = ({loginState, setLoginState}) => {
                     localStorage.setItem('accessToken', data.token); // 토큰을 localStorage에 저장
                     dispatch({type: 'SET_LOGIN_STATE', payload: '회원'});
                     moveToPath("/")
-
+                    window.location.reload();
                 }
             })
     }

@@ -99,3 +99,17 @@ export const mypageInfo = async () =>{
 
         return res.data
 }
+
+// 마이페이지 회원정보 수정
+export const modifyInfo = async (modifyParam) => {
+        const header = {
+                headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${ACCESS_TOKEN}`,
+                }
+        }
+
+        const res = await axios.put(`${host}/member/info`, modifyParam, header)
+
+        return res.data
+}

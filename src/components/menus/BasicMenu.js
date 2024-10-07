@@ -33,6 +33,7 @@ export function StickyNavbar() {
                 if (status === 200) {
                     alert("로그아웃 되었습니다.")
                     localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
                     dispatch({ type: 'SET_LOGIN_STATE', payload: '비회원' });
                     navigate("/")
                 } else {
