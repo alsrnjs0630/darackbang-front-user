@@ -19,7 +19,7 @@ export const loginPost = async (loginParam) => {
 }
 
 // 로그아웃
-export const logoutPost = async (loginParam) => {
+export const logoutPost = async () => {
         const header = {
                 headers: {
                         "Content-Type": "application/json",

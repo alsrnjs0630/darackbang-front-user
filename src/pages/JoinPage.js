@@ -7,7 +7,8 @@ import {
 } from "@material-tailwind/react";
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {emailCk, joinPost, loginPost} from "../apis/MemberApi";
+import {emailCk, joinPost} from "../apis/MemberApi";
+import { useDaumPostcodePopup } from "react-daum-postcode";
 
 // 회원가입 form 초기값
 const initState = {
