@@ -89,10 +89,11 @@ export const emailCk = async (emailCkParam) => {
 // 마이페이지 회원정보 출력
 export const mypageInfo = async () =>{
         const header = {
-                headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${ACCESS_TOKEN}`,
+                headers:{
+                        "Content-Type" : "application/json",
+                        "Authorization": `Bearer ${ACCESS_TOKEN}`
                 }
+
         }
 
         const res = await axios.get(`${host}/member/info`, header)
@@ -103,10 +104,11 @@ export const mypageInfo = async () =>{
 // 마이페이지 회원정보 수정
 export const modifyInfo = async (modifyParam) => {
         const header = {
-                headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${ACCESS_TOKEN}`,
-                }
+                headers:{
+                        "Content-Type" : "application/json",
+                        "Authorization": `Bearer ${ACCESS_TOKEN}`
+                    }
+
         }
 
         const res = await axios.put(`${host}/member/info`, modifyParam, header)

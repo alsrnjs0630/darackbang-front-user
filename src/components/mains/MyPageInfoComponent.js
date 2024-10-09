@@ -10,7 +10,6 @@ import {logoutPost, modifyInfo, mypageInfo} from "../../apis/MemberApi";
 import {useNavigate} from "react-router-dom";
 import {useDaumPostcodePopup} from "react-daum-postcode";
 
-
 const MyPageInfoComponent = () => {
     const initState = {
         userEmail: '',
@@ -132,17 +131,28 @@ const MyPageInfoComponent = () => {
     // 컴포넌트 렌더링 시 사용자 정보 로딩 후 화면에 출력
     useEffect(() => {
         const fetchMyInfo = async () => {
-            const myInfo = await mypageInfo()
-            if (myInfo == null) {
-                alert("잘못된 사용자 정보입니다.")
-                navigate("/")
-            } else{
-                setInfoParam(myInfo)
-                console.log(myInfo)
+            try {
+                const myInfo = await mypageInfo()
+                if (myInfo == null) {
+                    alert("잘못된 사용자 정보입니다.")
+                    navigate("/")
+                } else {
+                    setInfoParam(myInfo)
+                    console.log(myInfo)
+                }
+            } catch(error) {
+                if (error.response && error.response.status === 401) {
+                    alert("세션이 만료되었습니다. 다시 로그인 해주세요")
+                    logoutPost()
+                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                    navigate("/login")
+                    window.location.reload()
+                }
             }
         }
         fetchMyInfo();
-    },[]);
+    }, []);
 
     //수정 내용 modifyParam으로 설정
     const handleOnModify = (e) => {
@@ -152,12 +162,24 @@ const MyPageInfoComponent = () => {
 
     // 회원정보 수정 메서드 (수정완료 버튼)
     const infoModify = async () => {
-        const response = await modifyInfo(infoParam);
-        if (response.RESULT === "SUCCESS") {
-            alert("회원 정보가 수정되었습니다.");
-            window.location.reload(); // 페이지 새로고침
-        } else {
-            alert("예상치 못한 에러가 발생했습니다. 다시 시도해주세요.");
+        try {
+            const response = await modifyInfo(infoParam)
+            if (response.RESULT === "SUCCESS") {
+                alert("회원 정보가 수정되었습니다.");
+                window.location.reload(); // 페이지 새로고침
+            } else {
+                alert("예상치 못한 에러가 발생했습니다. 다시 시도해주세요.");
+            }
+        } catch(error) {
+            if (error.response && error.response.status === 401) {
+                alert("세션이 만료되었습니다. 다시 로그인 해주세요")
+                logoutPost()
+                localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                navigate("/login")
+                window.location.reload();
+            }
+            ;
         }
     };
 
@@ -169,24 +191,35 @@ const MyPageInfoComponent = () => {
 
     // 회원 탈퇴 메서드
     const ResignMember = async () => {
-        // infoParam의 복사본을 만들고 memberState를 "03"으로 설정
-        const updatedParam = {
-            ...infoParam,
-            memberState: "03"
-        };
-
-        // 상태를 업데이트
-        await setInfoParam(updatedParam);
-        // updatedParam을 사용하여 modifyInfo 호출
-        await modifyInfo(updatedParam);
-        console.log(updatedParam); // API 호출 결과를 로그에 출력
-        handleOpen(null);
-        // 로그아웃 처리
-        await logoutPost()
-        localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-        // 메인페이지로 이동
-        navigate("/")
-        window.location.reload();
+        try {
+            // infoParam의 복사본을 만들고 memberState를 "03"으로 설정
+            const updatedParam = {
+                ...infoParam,
+                memberState: "03"
+            };
+            // 상태를 업데이트
+            await setInfoParam(updatedParam);
+            // updatedParam을 사용하여 modifyInfo 호출
+            await modifyInfo(updatedParam)
+            console.log(updatedParam); // API 호출 결과를 로그에 출력
+            handleOpen(null);
+            // 로그아웃 처리
+            await logoutPost()
+            localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+            // 메인페이지로 이동
+            navigate("/")
+            window.location.reload();
+        } catch(error) {
+            if (error.response && error.response.status === 401) {
+                alert("세션이 만료되었습니다. 다시 로그인 해주세요")
+                logoutPost()
+                localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                navigate("/login")
+                window.location.reload();
+            }
+            ;
+        }
     }
 
     return (
@@ -251,7 +284,9 @@ const MyPageInfoComponent = () => {
                         </dd>
                     </div>
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-7 pb-5">기본주소 우편번호</dt>
+                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-7 pb-5">기본주소
+                            우편번호
+                        </dt>
                         <dd className="sm:col-span-3 sm:mt-0 flex inline pt-5 pb-5">
                             <input
                                 type="text"
@@ -270,7 +305,7 @@ const MyPageInfoComponent = () => {
                     </div>
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">기본주소</dt>
-                        <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5" >
+                        <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5">
                             <input
                                 type="text"
                                 name={"address"}
@@ -282,7 +317,9 @@ const MyPageInfoComponent = () => {
                         </dd>
                     </div>
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-7 pb-5">기본배송지 우편번호</dt>
+                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-7 pb-5">기본배송지
+                            우편번호
+                        </dt>
                         <dd className="sm:col-span-3 sm:mt-0 flex inline pt-5 pb-5">
                             <input
                                 type="text"
@@ -300,7 +337,9 @@ const MyPageInfoComponent = () => {
                         </dd>
                     </div>
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">기본배송지 주소</dt>
+                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">기본배송지
+                            주소
+                        </dt>
                         <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5">
                             <input
                                 type="text"
@@ -313,7 +352,9 @@ const MyPageInfoComponent = () => {
                         </dd>
                     </div>
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-7 pb-5">추가배송지 우편번호</dt>
+                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-7 pb-5">추가배송지
+                            우편번호
+                        </dt>
                         <dd className="sm:col-span-3 sm:mt-0 flex inline pt-5 pb-5">
                             <input
                                 type="text"
@@ -332,7 +373,9 @@ const MyPageInfoComponent = () => {
                         </dd>
                     </div>
                     <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">추가배송지 주소</dt>
+                        <dt className="text-sm font-bold text-gray-900 bg-gray-200 sm:col-span-1 pl-2 pt-5 pb-5">추가배송지
+                            주소
+                        </dt>
                         <dd className="sm:col-span-1 sm:mt-0 pt-5 pb-5">
                             <input
                                 type="text"
@@ -388,8 +431,3 @@ const MyPageInfoComponent = () => {
 }
 
 export default MyPageInfoComponent;
-
-
-
-
-

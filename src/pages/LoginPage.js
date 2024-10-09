@@ -75,7 +75,7 @@ const LoginPage = ({loginState, setLoginState}) => {
         loginPost(loginParam)
             .then(data => {
                 console.log(data)
-                if (data.error) {
+                if (data.error || data.memberState !== "01") {
                     alert("이메일과 패스워드를 다시 확인하세요")
                 } else {
                     alert("로그인 성공!")
