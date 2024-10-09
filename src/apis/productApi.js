@@ -1,7 +1,7 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./host";
 
-const prefix = `${API_SERVER_HOST}/admin/products`;
+const prefix = `${API_SERVER_HOST}/api/products`;
 /**
  * 리스트
  * @param pageParam

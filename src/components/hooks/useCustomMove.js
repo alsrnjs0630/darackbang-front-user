@@ -15,8 +15,7 @@ const useCustomMove = () => {
     const [queryParams] = useSearchParams()
 
     const page = getNum(queryParams.get("page"), 0)
-    const size = getNum(queryParams.get("size"), 10)
-
+    const size = getNum(queryParams.get("size"), 12)
 
     const queryDefault = createSearchParams({page, size}).toString()
 
@@ -52,8 +51,6 @@ const useCustomMove = () => {
     const moveToRead = (num) => {
         console.log(queryParams)
         console.log("아이디------------>",num)
-
-
 
         navigate({
             pathname: `../read/${num}`,

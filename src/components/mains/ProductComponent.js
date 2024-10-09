@@ -1,6 +1,3 @@
-import {Link} from "react-router-dom";
-import { Button, IconButton } from "@material-tailwind/react";
-import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import {useEffect, useState} from "react";
 import useCustomMove from "../hooks/useCustomMove";
 import {getList} from "../../apis/productApi";
@@ -22,65 +19,11 @@ const initState = {
     search:null
 }
 
-export function DefaultPagination() {
-    const [active, setActive] = useState(1);
-
-    const getItemProps = (index) =>
-        ({
-            variant: active === index ? "filled" : "text",
-            color: "gray",
-            onClick: () => setActive(index),
-        });
-
-    const next = () => {
-        if (active === 5) return;
-
-        setActive(active + 1);
-    };
-
-    const prev = () => {
-        if (active === 1) return;
-
-        setActive(active - 1);
-    };
-
-    return (
-        <div className="flex justify-center items-center gap-4">
-            <Button
-                variant="text"
-                className="flex items-center gap-2"
-                onClick={prev}
-                disabled={active === 1}
-            >
-                <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-            </Button>
-            <div className="flex items-center gap-2">
-                <IconButton {...getItemProps(1)}>1</IconButton>
-                <IconButton {...getItemProps(2)}>2</IconButton>
-                <IconButton {...getItemProps(3)}>3</IconButton>
-                <IconButton {...getItemProps(4)}>4</IconButton>
-                <IconButton {...getItemProps(5)}>5</IconButton>
-            </div>
-            <Button
-                variant="text"
-                className="flex items-center gap-2"
-                onClick={next}
-                disabled={active === 5}
-            >
-                Next
-                <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-            </Button>
-        </div>
-    );
-}
-
-const ProductComponent = ({id}) => {
+const ProductComponent = () => {
 
     const {page, size, refresh, moveToList, moveToRead, moveToCreate} = useCustomMove()
 
     const [serverData, setServerData] = useState(initState)
-    const [files, setFiles] = useState([])
-    const [product, setProduct] = useState(initState)
 
     // State to track which search field (productName or salePrice) is selected
     const [searchType, setSearchType] = useState("productName"); // Default to productName
@@ -95,9 +38,14 @@ const ProductComponent = ({id}) => {
         };
 
         getList(params).then(data => {
-            setServerData(data);
+            // 현재 페이지 정보 추가
+            const currentPage = params.page; // 현재 요청한 페이지
+            setServerData({
+                ...data,
+                current: currentPage, // current에 현재 페이지 설정
+            });
         }).catch(error => {
-            // handle exception here if needed
+            // 예외 처리
         });
     }, [page, size, refresh, searchValue, searchType]);
 
@@ -115,7 +63,7 @@ const ProductComponent = ({id}) => {
                                 <div className="">
                                     {product.productImages.length > 0 && (
                                         <img
-                                            src={`${API_SERVER_HOST}/admin/products/view/thumbnail_${
+                                            src={`${API_SERVER_HOST}/api/products/view/thumbnail_${
                                                 product.productImages
                                                     .filter(image => image.productType === "INFO") // productType이 INFO인 이미지 필터링
                                                     .map(image => image.productFileName)[0] // 첫 번째 이미지 파일명 가져오기
@@ -131,12 +79,11 @@ const ProductComponent = ({id}) => {
                                             {product.productName}
                                         </h6>
                                         <h6 className="font-semibold text-xl leading-8 text-indigo-600">
-                                            {product.salePrice}원
+                                            {product.salePrice.toLocaleString()}원
                                         </h6>
                                     </div>
                                     <p className="mt-2 font-normal text-sm leading-6 text-gray-500">
-                                        {/* 추가 설명이 있다면 여기에 넣으면 돼 */}
-                                        {product.description || "No description available"}
+                                        {product.productDetail || "No description available"}
                                     </p>
                                 </div>
                             </div>
@@ -145,7 +92,9 @@ const ProductComponent = ({id}) => {
                 </div>
             </div>
             <br/>
-            <DefaultPagination/>
+
+            {/* Pagination 컴포넌트 */}
+            <PageComponent serverData={serverData} movePage={moveToList}></PageComponent>
         </section>
 
     );

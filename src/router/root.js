@@ -1,6 +1,5 @@
 import {Suspense, lazy} from "react";
-
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter, Navigate} from "react-router-dom";
 
 const Loading = <div className="text-center">
     <div role="status">
@@ -22,6 +21,7 @@ const Product = lazy(() => import("../components/mains/ProductComponent"))
 const Login = lazy(() => import("../pages/LoginPage"))
 const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
+const ProductInfo = lazy(() => import("../components/product/ProductInfoComponent"))
 
 const root = createBrowserRouter([
     {
@@ -30,6 +30,10 @@ const root = createBrowserRouter([
         children: [
             {
                 path: "",
+                element: <Navigate replace to="list"/>
+            },
+            {
+                path: "list",
                 element: <Suspense fallback={Loading}><Product/></Suspense>
             },
             {
@@ -45,6 +49,10 @@ const root = createBrowserRouter([
     {
         path:"/member/join",
         element: <Suspense fallback={Loading}><Join/></Suspense>
+    },
+    {
+        path: "/read/:id",
+        element: <Suspense fallback={Loading}><ProductInfo /></Suspense>
     }
 ])
 
