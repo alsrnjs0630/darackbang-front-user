@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import useCustomMove from "../hooks/useCustomMove";
 import {getList} from "../../apis/productApi";
-import {getOne} from "../../apis/productApi";
 import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
@@ -19,9 +18,9 @@ const initState = {
     search:null
 }
 
-const ProductComponent = () => {
+const ProductListComponent = () => {
 
-    const {page, size, refresh, moveToList, moveToRead, moveToCreate} = useCustomMove()
+    const {page, size, refresh, moveToList, moveToRead} = useCustomMove()
 
     const [serverData, setServerData] = useState(initState)
 
@@ -75,15 +74,15 @@ const ProductComponent = () => {
                                 </div>
                                 <div className="mt-5">
                                     <div className="flex items-center justify-between">
-                                        <h6 className="font-semibold text-xl leading-8 text-black transition-all duration-500 group-hover:text-indigo-600">
+                                        <h6 className="font-semibold text-xl leading-8 text-black transition-all duration-500 group-hover:text-indigo-600 tracking-tight">
                                             {product.productName}
                                         </h6>
-                                        <h6 className="font-semibold text-xl leading-8 text-indigo-600">
+                                        <h6 className="font-semibold text-xl leading-8 text-indigo-600 text-right">
                                             {product.salePrice.toLocaleString()}원
                                         </h6>
                                     </div>
-                                    <p className="mt-2 font-normal text-sm leading-6 text-gray-500">
-                                        {product.productDetail || "No description available"}
+                                    <p className="mt-2 font-normal text-sm leading-6 text-gray-500 tracking-tight">
+                                        {product.productDetail || "상품 설명이 존재하지 않습니다."}
                                     </p>
                                 </div>
                             </div>
@@ -100,4 +99,4 @@ const ProductComponent = () => {
     );
 }
 
-export default ProductComponent;
+export default ProductListComponent;

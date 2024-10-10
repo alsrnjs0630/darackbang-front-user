@@ -17,7 +17,7 @@ const Loading = <div className="text-center">
 </div>
 
 const Home = lazy(() => import("../pages/HomePage"))
-const Product = lazy(() => import("../components/mains/ProductComponent"))
+const Product = lazy(() => import("../components/product/ProductListComponent"))
 const Login = lazy(() => import("../pages/LoginPage"))
 const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
@@ -42,6 +42,10 @@ const root = createBrowserRouter([
                 element: <Suspense fallback={Loading}><MyInfo/></Suspense>
             },
             {
+                path: "/read/:id",
+                element: <Suspense fallback={Loading}><ProductInfo /></Suspense>
+            },
+            {
                 path: "cart",
                 element: <Suspense fallback={Loading}><Cart/></Suspense>
             }
@@ -54,10 +58,6 @@ const root = createBrowserRouter([
     {
         path:"/member/join",
         element: <Suspense fallback={Loading}><Join/></Suspense>
-    },
-    {
-        path: "/read/:id",
-        element: <Suspense fallback={Loading}><ProductInfo /></Suspense>
     }
 ])
 
