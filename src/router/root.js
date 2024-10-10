@@ -22,6 +22,7 @@ const Login = lazy(() => import("../pages/LoginPage"))
 const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
 const ProductInfo = lazy(() => import("../components/product/ProductInfoComponent"))
+const Cart = lazy(() => import("../components/mains/CartComponent"))
 
 const root = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ const root = createBrowserRouter([
             {
                 path: "/mypage/info",
                 element: <Suspense fallback={Loading}><MyInfo/></Suspense>
+            },
+            {
+                path: "cart",
+                element: <Suspense fallback={Loading}><Cart/></Suspense>
             }
         ]
     },

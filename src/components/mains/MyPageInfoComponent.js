@@ -141,13 +141,19 @@ const MyPageInfoComponent = () => {
                     console.log(myInfo)
                 }
             } catch(error) {
-                if (error.response && error.response.status === 401) {
-                    alert("세션이 만료되었습니다. 다시 로그인 해주세요")
-                    logoutPost()
-                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                    navigate("/login")
-                    window.location.reload()
+                if (error.response) {
+                    if(error.response.status === 401){
+                        alert("세션이 만료되었습니다. 다시 로그인 해주세요")
+                        logoutPost()
+                        localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                        localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                        navigate("/login")
+                        window.location.reload()
+                    } else {
+                        console.log("error : ", error.response)
+                        alert("잘못된 사용자 정보입니다.")
+                        navigate("/")
+                    }
                 }
             }
         }
@@ -168,18 +174,22 @@ const MyPageInfoComponent = () => {
                 alert("회원 정보가 수정되었습니다.");
                 window.location.reload(); // 페이지 새로고침
             } else {
-                alert("예상치 못한 에러가 발생했습니다. 다시 시도해주세요.");
+                alert("회원 정보 수정에 실패하였습니다. 다시 시도해주세요");
             }
         } catch(error) {
-            if (error.response && error.response.status === 401) {
-                alert("세션이 만료되었습니다. 다시 로그인 해주세요")
-                logoutPost()
-                localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                navigate("/login")
-                window.location.reload();
+            if (error.response) {
+                if (error.response.status === 401){
+                    alert("세션이 만료되었습니다. 다시 로그인 해주세요")
+                    logoutPost()
+                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                    navigate("/login")
+                    window.location.reload();
+                } else {
+                    console.log("error: ", error.response)
+                    alert("회원 정보 수정에 실패하였습니다. 다시 시도해주세요");
+                }
             }
-            ;
         }
     };
 
@@ -210,15 +220,19 @@ const MyPageInfoComponent = () => {
             navigate("/")
             window.location.reload();
         } catch(error) {
-            if (error.response && error.response.status === 401) {
-                alert("세션이 만료되었습니다. 다시 로그인 해주세요")
-                logoutPost()
-                localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                navigate("/login")
-                window.location.reload();
+            if (error.response) {
+                if (error.response.status === 401) {
+                    alert("세션이 만료되었습니다. 다시 로그인 해주세요")
+                    logoutPost()
+                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                    navigate("/login")
+                    window.location.reload();
+                } else {
+                    console.log("error: ", error.response)
+                    alert("회원 탈퇴에 실패하였습니다. 다시 시도해주세요");
+                }
             }
-            ;
         }
     }
 

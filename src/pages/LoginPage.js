@@ -86,6 +86,15 @@ const LoginPage = ({loginState, setLoginState}) => {
                     window.location.reload();
                 }
             })
+            .catch(error => {
+                // 에러가 네트워크 문제인지, 서버의 응답 문제인지 확인
+                if (error.response || error.request) {
+                    // 서버로부터의 응답이 있는 경우 (4xx, 5xx 등의 HTTP 오류)
+                    // 네트워크 에러가 발생한 경우
+                    console.log("Server responded with an error:", error);
+                    alert("로그인에 실패했습니다. 잠시후 다시 시도해주세요.");
+                }
+            })
     }
 
     // 비밀번호 찾기 1. 아이디 검색

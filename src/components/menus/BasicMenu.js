@@ -48,6 +48,12 @@ export function StickyNavbar() {
         ) : navigate("/mypage/info") }
     }
 
+    const handleCart = () => {
+        {loginState === "비회원" ? (
+            alert("로그인 후 이용할 수 있습니다.")
+        ) : navigate("/cart") }
+    }
+
     const navList = (
         <ul className="flex ml-10 flex-row items-center gap-6"> {/* 수평 정렬과 간격을 위한 클래스 추가 */}
             <Typography
@@ -132,7 +138,7 @@ export function StickyNavbar() {
                             )}
                         </div>
                         {/* 장바구니 버튼 */}
-                        <IconButton>
+                        <IconButton onClick={handleCart}>
                             <FaShoppingCart className={"size-5"}/>
                         </IconButton>
                         {/* 마이페이지 버튼 */}
