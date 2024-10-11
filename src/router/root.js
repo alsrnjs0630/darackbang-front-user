@@ -23,6 +23,7 @@ const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
 const ProductInfo = lazy(() => import("../components/product/ProductInfoComponent"))
 const Cart = lazy(() => import("../components/mains/CartComponent"))
+const Payment = lazy(() => import("../components/mains/PaymentComponent"))
 
 const root = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const root = createBrowserRouter([
             {
                 path: "cart",
                 element: <Suspense fallback={Loading}><Cart/></Suspense>
+            },
+            {
+                path: "payment",
+                element: <Suspense fallback={Loading}><Payment/></Suspense>
             }
         ]
     },
