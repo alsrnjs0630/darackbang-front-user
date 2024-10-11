@@ -24,6 +24,7 @@ const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
 const ProductInfo = lazy(() => import("../components/product/ProductInfoComponent"))
 const Cart = lazy(() => import("../components/mains/CartComponent"))
 const Payment = lazy(() => import("../components/mains/PaymentComponent"))
+const Privacy = lazy(() => import("../components/mains/PrivacyComponent"))
 
 const root = createBrowserRouter([
     {
@@ -53,6 +54,10 @@ const root = createBrowserRouter([
             {
                 path: "payment",
                 element: <Suspense fallback={Loading}><Payment/></Suspense>
+            },
+            {
+                path: "privacy",
+                element: <Suspense fallback={Loading}><Privacy/></Suspense>
             }
         ]
     },

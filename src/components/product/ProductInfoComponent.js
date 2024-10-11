@@ -103,6 +103,11 @@ const ProductInfoComponent = () => {
         window.scrollTo(0, 0); // 페이지가 로드될 때 맨 위로 스크롤
     }, [location]); // location이 바뀔 때마다 실행
 
+    // 상품 정보 제공 고시 null값 처리 함수
+    const getDisplayValue = (value) => {
+        return (value === "null" || value === null || value === undefined) ? '해당사항 없음' : value;
+    };
+
     return (
         <div className="w-[1000px]">
 
@@ -225,9 +230,66 @@ const ProductInfoComponent = () => {
                     상품 정보 제공 고시
                 </div>
                 <div>
-                    <table>
+                    <table className="min-w-full bg-white border-collapse border border-gray-300 text-base text-gray-800">
                         <tr>
-                            <th>상품명</th>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">상품명</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.productName)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">식품의 유형</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.type)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">제조사</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.manufacture)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">브랜드</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.brand)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">판매사</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.saleCompany)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">원산지</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.origin)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">원재료명</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.material)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">제조일자</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.manufactureDate)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">유통기한</th>
+                            <td className="p-2.5 px-3 border border-gray-300">{getDisplayValue(product.expirationDate)}</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2.5 px-3 border border-gray-300 bg-gray-100 text-left">유전자변형식품 여부</th>
+                            <td className="p-2.5 px-3 border border-gray-300">
+                                {getDisplayValue(product.isGmo === true ? '유전자변형식품 표시' : '해당사항 없음')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="p-2 px-3 border border-gray-300 bg-gray-100 text-left">보관시 주의사항</th>
+                            <td className="p-2 px-3 border border-gray-300">고온 다습한 곳을 피하고 개봉한 차는 밀봉하여 건냉한 곳에 보관하십시오.</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2 px-3 border border-gray-300 bg-gray-100 text-left">소비자안전을 위한 주의사항</th>
+                            <td className="p-2 px-3 border border-gray-300">본 제품은 우유, 대두, 밀, 복숭아를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2 px-3 border border-gray-300 bg-gray-100 text-left">수입신고 문구</th>
+                            <td className="p-2 px-3 border border-gray-300">해당사항 없음</td>
+                        </tr>
+                        <tr>
+                            <th className="p-2 px-3 border border-gray-300 bg-gray-100 text-left">기타</th>
+                            <td className="p-2 px-3 border border-gray-300">• 본 제품에 이상이 있을 경우, 공정거래위원회 고시에 의거 보상해 드립니다.<br/>
+                                • 부정, 불량식품 신고는 국번없이 1399
+                            </td>
                         </tr>
                     </table>
                 </div>

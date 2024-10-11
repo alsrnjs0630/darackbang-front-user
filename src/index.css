@@ -19,3 +19,28 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
+/* Carousel 인디케이터 기본 스타일 */
+.block.h-3.w-3.cursor-pointer.rounded-full.transition-colors.bg-white\/50 {
+	background-color: rgba(0,0,0,0.15);
+}
+
+/* Carousel 활성화된 인디케이터 스타일 */
+.block.h-3.w-3.cursor-pointer.rounded-full.transition-colors.bg-white {
+	background-color: rgba(0,0,0,0.35);
+}
+
+/*왼쪽 오른쪽 이동 인디케이터 배경색 변경*/
+/*.left-4.rounded-full.select-none.transition-all {*/
+/*	background-color: rgb(0,0,0,0.2);*/
+/*}*/
+
+/* SVG 색상 변경 */
+/* 비활성화 상태의 SVG 색상 */
+button:disabled svg {
+	stroke: rgba(0,0,0,0.15);
+}
+/* 활성화 상태의 SVG 색상 */
+button svg {
+	stroke: rgba(0,0,0,0.35);
+}

@@ -10,10 +10,10 @@ export function BreadcrumbsDefault() {
                 고객센터
             </Link>
             <Link to="#" className="opacity-60">
-                회사 정보
+                회사정보
             </Link>
-            <Link to="#" className="opacity-60">
-                개인정보 처리방침
+            <Link to="/privacy" className="opacity-60">
+                개인정보처리방침
             </Link>
         </Breadcrumbs>
     );

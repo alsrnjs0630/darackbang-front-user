@@ -56,24 +56,36 @@ const ProductListComponent = () => {
                         {serverData.contents.map((product) => (
                             <div
                                 key={product.id}
-                                className="mx-auto sm:mr-0 group cursor-pointer lg:mx-auto bg-white transition-all duration-500"
-                                onClick={() => moveToRead(product.id)}
-                            >
-                                <div className="">
+                                className={`mx-auto sm:mr-0 group cursor-pointer lg:mx-auto bg-white transition-all duration-500
+                                ${product.isSoldout ? 'pointer-events-none' : ''}`} // 부모 div에서 pointer-events-none만 적용
+                                onClick={() => moveToRead(product.id)}>
+                                <div className="relative">
                                     {product.productImages.length > 0 && (
                                         <img
                                             src={`${API_SERVER_HOST}/api/products/view/thumbnail_${
                                                 product.productImages
-                                                    .filter(image => image.productType === "INFO") // productType이 INFO인 이미지 필터링
-                                                    .map(image => image.productFileName)[0] // 첫 번째 이미지 파일명 가져오기
+                                                    .filter(image => image.productType === "INFO")
+                                                    .map(image => image.productFileName)[0]
                                             }`}
                                             alt={product.productName}
-                                            className="w-full aspect-square rounded-2xl object-cover"
+                                            className={`w-full aspect-square rounded-2xl object-cover ${product.isSoldout ? 'opacity-50' : ''}`} // 섬네일에 opacity-50 적용
                                         />
                                     )}
+                                    {product.isSoldout && (
+                                        <div>
+                                            {/*텍스트가 배경 위에 오도록 z-index 설정*/}
+                                            <div
+                                                className="absolute inset-0 flex items-center justify-center text-center text-white text-4xl font-bold"
+                                                style={{zIndex: 1, textShadow: '1px 1px 4px rgba(0, 0, 0, 0.15), 1px -1px 4px rgba(0, 0, 0, 0.15), -1px 1px 4px rgba(0, 0, 0, 0.15), -1px -1px 4px rgba(0, 0, 0, 0.15)'}}>
+                                                SOLD OUT
+                                            </div>
+                                            <div className="absolute inset-0 bg-gray-800 opacity-50 rounded-2xl"></div>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="mt-5">
-                                    <div className="flex items-center justify-between">
+                                <div
+                                    className="mt-5"> {/* 텍스트 부분에 opacity-50 적용 */}
+                                    <div className={`flex items-center justify-between ${product.isSoldout ? 'opacity-50' : ''}`}>
                                         <h6 className="font-semibold text-xl leading-8 text-black transition-all duration-500 group-hover:text-indigo-600 tracking-tight">
                                             {product.productName}
                                         </h6>
@@ -82,7 +94,7 @@ const ProductListComponent = () => {
                                         </h6>
                                     </div>
                                     <p className="mt-2 font-normal text-sm leading-6 text-gray-500 tracking-tight">
-                                        {product.productDetail || "상품 설명이 존재하지 않습니다."}
+                                        {product.isSoldout ? '품절된 상품입니다.' : (product.productDetail || "상품 설명이 존재하지 않습니다.")}
                                     </p>
                                 </div>
                             </div>
