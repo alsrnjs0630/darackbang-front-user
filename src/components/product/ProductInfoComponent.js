@@ -100,8 +100,8 @@ const ProductInfoComponent = () => {
     const location = useLocation();
 
     useEffect(() => {
-        window.scrollTo(0, 0); // 페이지가 로드될 때 맨 위로 스크롤
-    }, [location]); // location이 바뀔 때마다 실행
+        window.scrollTo(0, 0);  // 페이지가 로드될 때 맨 위로 스크롤
+    }, [location.pathname]);    // location.pathname이 바뀔 때만 실행
 
     // 상품 정보 제공 고시 null값 처리 함수
     const getDisplayValue = (value) => {
@@ -193,7 +193,8 @@ const ProductInfoComponent = () => {
             {/* 하단 영역 (DESC 이미지 타입, 상품 정보 제공 고시) */}
             <div className="grid place-items-center">
                 <div
-                    className="m-10 py-4 w-[200px] text-center text-2xl text-white font-bold tracking-tight bg-indigo-200 rounded-xl">
+                    className="m-10 py-4 w-[200px] text-center text-2xl text-white font-bold tracking-tight bg-indigo-200 rounded-xl"
+                    style={{textShadow: '1px 1px 4px rgba(0, 0, 0, 0.1), 1px -1px 4px rgba(0, 0, 0, 0.1), -1px 1px 4px rgba(0, 0, 0, 0.1), -1px -1px 4px rgba(0, 0, 0, 0.1)'}}>
                     상품 상세정보
                 </div>
                 <div>
@@ -226,7 +227,8 @@ const ProductInfoComponent = () => {
                 {/*    )}*/}
                 {/*</div>*/}
                 <div
-                    className="m-10 py-4 w-[260px] text-center text-2xl text-white font-bold tracking-tight bg-indigo-200 rounded-xl">
+                    className="m-10 py-4 w-[260px] text-center text-2xl text-white font-bold tracking-tight bg-indigo-200 rounded-xl"
+                    style={{textShadow: '1px 1px 4px rgba(0, 0, 0, 0.1), 1px -1px 4px rgba(0, 0, 0, 0.1), -1px 1px 4px rgba(0, 0, 0, 0.1), -1px -1px 4px rgba(0, 0, 0, 0.1)'}}>
                     상품 정보 제공 고시
                 </div>
                 <div>
