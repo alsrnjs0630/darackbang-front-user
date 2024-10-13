@@ -1,4 +1,3 @@
-import {DocumentIcon} from "@heroicons/react/24/solid";
 import {TrashIcon } from "@heroicons/react/24/outline";
 import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import {
@@ -10,9 +9,14 @@ import {
     IconButton,
     Typography,
 } from "@material-tailwind/react";
+import {useNavigate} from "react-router-dom";
 
 const CartComponent = () => {
+    const navigator = useNavigate();
 
+    const moveToPath = (path) => {
+        navigator({pathname: path}, {replace: true})
+    }
 
     const TABLE_HEAD = [
         {
@@ -251,7 +255,9 @@ const CartComponent = () => {
                                     </dl>
                                 </div>
                             </div>
-                            <Button>
+                            <Button
+                                onClick={() => moveToPath("/payment")}
+                            >
                                 주문하기
                             </Button>
                         </div>

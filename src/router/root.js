@@ -52,7 +52,7 @@ const root = createBrowserRouter([
                 element: <Suspense fallback={Loading}><Cart/></Suspense>
             },
             {
-                path: "payment",
+                path: "/payment",
                 element: <Suspense fallback={Loading}><Payment/></Suspense>
             },
             {
