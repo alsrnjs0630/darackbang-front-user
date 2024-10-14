@@ -259,23 +259,23 @@ const PaymentComponent = () => {
                                     placeholder={"\"-\"없이 숫자만 입력해주세요"}/>
                             </div>
                         </div>
-                        <div className={"w-1/2 mt-3"}>
-                            <div className={"w-full grid grid-cols-2"}>
-                                <div className={"w-36"}>
+                        <div className={"mt-3"}>
+                            <div className={"flex gap-2.5"}>
+                                <div className={"postcodeInput"}>
                                     <Input
                                         size={"lg"}
-                                        className={"w-36"}
                                         label={"우편번호"}
                                         value={checkedValue === "default" ? userInfo.postNo : customAdderess.postNo}
                                         labelProps={{
-                                            className: "w-36",
+                                            className: "w-[150px]",
                                         }}
                                         readOnly={true}/>
                                 </div>
-                                <div className={"w-2/3"}>
+
+                                <div className={"w-[100px]"}>
                                     {checkedValue === "default" ? <></>
                                         : <Button
-                                            className={"w-20 mt-1 ml-[-40px]"}
+                                            className={"w-20 mt-1"}
                                             onClick={handleSearch}>
                                             검색
                                         </Button>

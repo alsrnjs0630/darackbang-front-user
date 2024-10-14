@@ -44,3 +44,11 @@ button:disabled svg {
 button svg {
 	stroke: rgba(0,0,0,0.35);
 }
+
+/* 결제 페이지 우편번호 입력칸 width 변경 */
+.flex div.postcodeInput {
+	width: 150px;
+}
+.flex div.postcodeInput > div.relative {
+	min-width: 150px !important;
+}

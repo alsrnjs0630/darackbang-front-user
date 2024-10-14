@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9798c3e8-cb69-4732-8215-da0112360081" name="변경" comment="1.작성자: 방민권&#10;2.작업내용:&#10;- 로그인 시 memberState가 01인지 확인&#10;- 토큰이 필요한 axios 요청의 경우 토큰만료 후 401 에러 발생시 경고문 출력 후 로그인 페이지로 이동&#10;3.작성일: 2024-10-09">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mains/CartComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mains/CartComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apis/productApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/apis/productApi.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/mains/PaymentComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mains/PaymentComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/root.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/root.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,17 +26,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-        &quot;lastFilter&quot;: {
-        &quot;state&quot;: &quot;OPEN&quot;,
-        &quot;assignee&quot;: &quot;norinus&quot;
-        }
-        }</component>
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;norinus&quot;
+  }
+}</component>
   <component name="GithubPullRequestsUISettings">{
-        &quot;selectedUrlAndAccountId&quot;: {
-        &quot;url&quot;: &quot;https://github.com/norinus/darackbang-front-user.git&quot;,
-        &quot;accountId&quot;: &quot;fdbdbd49-8181-4de2-b385-5dbab5cdf55a&quot;
-        }
-        }</component>
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/norinus/darackbang-front-user.git&quot;,
+    &quot;accountId&quot;: &quot;fdbdbd49-8181-4de2-b385-5dbab5cdf55a&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
         &quot;associatedIndex&quot;: 6
         }</component>
@@ -48,30 +47,30 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
-        &quot;keyToString&quot;: {
-        &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-        &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-        &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-        &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-        &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-        &quot;last_opened_file_path&quot;: &quot;D:/workspace/darackbang/darackbang-front-user/public&quot;,
-        &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-        &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-        &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-        &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-        &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-        &quot;npm.start.executor&quot;: &quot;Run&quot;,
-        &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
-        &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-        &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-        &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-        &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-        &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-        },
-        &quot;keyToStringList&quot;: {
-        &quot;stardust.markdown.MarkdownSplitEditorSuppressor:keyList&quot;: []
-        }
-        }</component>
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/workspace/darackbang/darackbang-front-user/public&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;stardust.markdown.MarkdownSplitEditorSuppressor:keyList&quot;: []
+  }
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -153,6 +152,8 @@
       <workItem from="1728347369218" duration="362000" />
       <workItem from="1728520769637" duration="533000" />
       <workItem from="1728607258376" duration="11942000" />
+      <workItem from="1728879447705" duration="3172000" />
+      <workItem from="1728886399349" duration="9286000" />
     </task>
     <task id="LOCAL-00001" summary="사용자 화면용 업로드">
       <option name="closed" value="true" />
