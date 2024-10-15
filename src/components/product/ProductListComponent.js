@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import useCustomMove from "../hooks/useCustomMove";
-import {getList} from "../../apis/productApi";
+import {getList} from "../../apis/ProductApi";
 import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
@@ -75,7 +75,7 @@ const ProductListComponent = () => {
                                         <div>
                                             {/*텍스트가 배경 위에 오도록 z-index 설정*/}
                                             <div
-                                                className="absolute inset-0 flex items-center justify-center text-center text-white text-4xl font-bold"
+                                                className="absolute inset-0 px-6 flex items-center justify-center text-center text-white text-4xl font-bold"
                                                 style={{zIndex: 1, textShadow: '1px 1px 4px rgba(0, 0, 0, 0.15), 1px -1px 4px rgba(0, 0, 0, 0.15), -1px 1px 4px rgba(0, 0, 0, 0.15), -1px -1px 4px rgba(0, 0, 0, 0.15)'}}>
                                                 SOLD OUT
                                             </div>

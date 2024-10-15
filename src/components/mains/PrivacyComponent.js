@@ -9,7 +9,7 @@ const PrivacyComponent = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);  // 페이지가 로드될 때 맨 위로 스크롤
-    }, [location.pathname]);    // location.pathname이 바뀔 때만 실행
+    }, [location.key]);         // key가 바뀔 때마다 실행
 
     return (
         <div className="w-[1000px]">

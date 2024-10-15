@@ -1,7 +1,9 @@
 import React from "react";
 import {useState, useEffect} from "react";
 import {useLocation, useParams} from "react-router-dom";
-import {getOne} from "../../apis/productApi"
+import {getOne} from "../../apis/ProductApi"
+import {addToCart} from "../../apis/CartApi";
+import Modal from 'react-modal';
 
 import {API_SERVER_HOST} from "../../apis/host";
 
@@ -48,7 +50,8 @@ const ProductInfoComponent = () => {
     const [descImages, setDescImages] = useState([]);
     const [quantity, setQuantity] = useState(1); // 수량을 상태로 관리, 기본값 1
 
-    const [value, setValue] = React.useState(0);
+    const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 가시성 상태
+    const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
 
     useEffect(() => {
         getOne(id).then(data => {
@@ -101,11 +104,34 @@ const ProductInfoComponent = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);  // 페이지가 로드될 때 맨 위로 스크롤
-    }, [location.pathname]);    // location.pathname이 바뀔 때만 실행
+    }, [location.key]);         // key가 바뀔 때마다 실행
 
     // 상품 정보 제공 고시 null값 처리 함수
     const getDisplayValue = (value) => {
         return (value === "null" || value === null || value === undefined) ? '해당사항 없음' : value;
+    };
+
+    // 장바구니 추가 함수
+    const handleAddToCart = () => {
+        const cartItem = {
+            id: id, // 상품 ID (ProductDTO의 정보임)
+            quantity: quantity // 주문 수량 (ProductDTO의 정보임)
+        };
+
+        addToCart(cartItem)
+            .then(response => {
+                setModalMessage('장바구니에 추가되었습니다');
+                setModalIsOpen(true);
+                console.log("장바구니에 추가되었습니다:", response);
+            })
+            .catch(err => {
+                alert("장바구니 추가 중 오류 발생!"); // 오류 발생 시 알림창
+                console.error("장바구니 추가 중 오류 발생:", err);
+            });
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
     };
 
     return (
@@ -181,9 +207,28 @@ const ProductInfoComponent = () => {
                         <Button className="w-[170px] h-[70px] text-2xl rounded-xl">
                             바로구매
                         </Button>
-                        <Button className="w-[170px] h-[70px] text-2xl rounded-xl">
+                        <Button className="w-[170px] h-[70px] text-2xl rounded-xl" onClick={handleAddToCart}>
                             장바구니
                         </Button>
+
+                        {/* 모달 구현 */}
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={closeModal}
+                            className="fixed inset-0 flex items-center justify-center z-50"
+                            overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40" // z-40으로 설정
+                        >
+                            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto z-50">
+                                <h2 className="text-lg font-semibold text-center">{modalMessage}</h2>
+                                <div className="flex justify-between mt-6 p-4 border-t border-gray-200">
+                                    <button onClick={closeModal} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition duration-200">계속 쇼핑하기</button>
+                                    <button onClick={() => {
+                                        // 장바구니 페이지로 이동하는 로직
+                                        window.location.href = '/cart';
+                                    }} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition duration-200">장바구니로 이동</button>
+                                </div>
+                            </div>
+                        </Modal>
                     </div>
                 </div>
             </div>
@@ -212,20 +257,7 @@ const ProductInfoComponent = () => {
                         <p>DESC 이미지가 없습니다.</p>
                     )}
                 </div>
-                {/*<div>*/}
-                {/*    {descImages.length > 0 ? (*/}
-                {/*        descImages.map((img) => (*/}
-                {/*            <div>*/}
-                {/*                <img*/}
-                {/*                    key={img.id} // id를 key로 사용*/}
-                {/*                    src={img.preview}*/}
-                {/*                /><br/>*/}
-                {/*            </div>*/}
-                {/*        ))*/}
-                {/*    ) : (*/}
-                {/*        <p>DESC 이미지가 없습니다.</p>*/}
-                {/*    )}*/}
-                {/*</div>*/}
+
                 <div
                     className="m-10 py-4 w-[260px] text-center text-2xl text-white font-bold tracking-tight bg-indigo-200 rounded-xl"
                     style={{textShadow: '1px 1px 4px rgba(0, 0, 0, 0.1), 1px -1px 4px rgba(0, 0, 0, 0.1), -1px 1px 4px rgba(0, 0, 0, 0.1), -1px -1px 4px rgba(0, 0, 0, 0.1)'}}>
