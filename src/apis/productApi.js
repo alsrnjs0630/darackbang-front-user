@@ -14,6 +14,7 @@ export const getList = async (pageParam) => {
 
     // 회원일 때 Authorization 헤더 추가
     if (loginState === "회원") {
+        console.log("loginState {}", loginState);
         const header = {
             headers: {
                 "Content-Type": "application/json",
@@ -21,8 +22,10 @@ export const getList = async (pageParam) => {
             }
         };
         const res = await axios.get(`${prefix}/list`, {
-            params: { page, size, productName, salePrice }
-        }, header);
+            params: { page, size, productName, salePrice },
+            ...header
+        });
+
         return res.data;
     } else {
         // 비회원일 때 헤더 없이 요청
