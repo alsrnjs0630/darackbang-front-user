@@ -25,6 +25,8 @@ const initState = {
 
 export function SimpleRegistrationForm() {
     const [joinParam, setJoinParam] = useState({...initState})
+    const [passwordMessage, setPasswordMessage] = useState()
+    const [pwCheck, setPwCheck] = useState('')
     const navigator = useNavigate()
 
     // 다음 우편번호 팝업
@@ -68,6 +70,11 @@ export function SimpleRegistrationForm() {
         joinParam[e.target.name] = e.target.value
         joinParam["ageGroup"] = calcAgeGroup()
         setJoinParam({...joinParam})
+    }
+
+    const handlePwCheckChange = (e) => {
+        setPwCheck(e.target.value)
+
     }
 
     // 생년월일 유효성 검사는 나중에 추가할지 말지 결정
@@ -152,6 +159,20 @@ export function SimpleRegistrationForm() {
         }
     };
 
+    const handlePasswordCheck = () => {
+        const regPassword =  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+
+        if(!joinParam.password){
+            setPasswordMessage("비밀번호를 입력해주세요.")
+        } else {
+            if(!regPassword.test(joinParam.password)) {
+                setPasswordMessage("비밀번호는 영문 8자 이상 숫자 1개 이상 + 특수문자 1개 이상으로 조합해주세요")
+            } else {
+                setPasswordMessage("사용 가능한 비밀번호입니다.")
+            }
+        }
+    }
+
     const termsText = `
         개인정보 수집 동의(다락방) 
         - - 수집하는 개인정보의 항목 : 이메일, 패스워드, 이름, 성별, 생년월일, 휴대전화번호, 구매거래내역, 적립금 내역
@@ -204,12 +225,11 @@ export function SimpleRegistrationForm() {
     `;
 
     return (
-        <div className="mx-auto w-full max-w-3xl p-8 border-2 border-gray-400 rounded-2xl shadow-lg">
+        <div className="mx-auto w-full h-screen max-w-3xl p-8 border-2 border-gray-400 rounded-2xl shadow-lg">
             <Typography variant="h5" color="blue-gray" className="text-center mb-6 font-bold">
                 다락방 회원가입
             </Typography>
 
-            {/* 그리드 레이아웃 */}
             <div className="grid grid-cols-1 gap-4">
                 {/* 이메일 */}
                 <div className="grid grid-cols-[80px_auto] gap-4">
@@ -232,7 +252,7 @@ export function SimpleRegistrationForm() {
                 </div>
 
                 {/* 비밀번호 */}
-                <div className="grid grid-cols-[80px_auto] gap-4">
+                <div className="grid grid-cols-[80px_250px_auto] gap-4">
                     <Typography variant="small" color="blue-gray" className="text-left mt-2 pr-4">
                         비밀번호 <span className="text-red-500">*</span>
                     </Typography>
@@ -243,26 +263,45 @@ export function SimpleRegistrationForm() {
                         value={joinParam.password}
                         placeholder="비밀번호 입력"
                         onChange={handleChange}
-                        className="w-full !border-gray-300 focus:!border-gray-900"
+                        onBlur={handlePasswordCheck}
+                        className="w-[250px] !border-gray-300 focus:!border-gray-900"
                     />
+                    {passwordMessage && (
+                        <Typography
+                            variant="small"
+                            color={passwordMessage.includes("사용 가능한") ? "green" : "red"} // 성공 메시지는 초록색, 실패 메시지는 빨간색
+                        >
+                            {passwordMessage}
+                        </Typography>
+                    )}
                 </div>
 
                 {/* 비밀번호 확인 */}
-                <div className="grid grid-cols-[80px_auto] gap-4">
+                <div className="grid grid-cols-[80px_250px_auto] gap-4">
                     <Typography variant="small" color="blue-gray" className="text-left pr-4">
-                        비밀번호 확인
+                        비밀번호 확인 <span className="text-red-500">*</span>
                     </Typography>
                     <Input
                         type="password"
                         size="md"
                         placeholder="비밀번호 확인 입력"
+                        onChange={handlePwCheckChange}
                         className="w-full !border-gray-300 focus:!border-gray-900"
                     />
+                    {pwCheck && joinParam.password && (
+                        joinParam.password === pwCheck
+                            ? <Typography variant={"small"} color={"green"}>
+                                비밀번호가 일치합니다.
+                            </Typography>
+                            : <Typography variant={"small"} color={"red"}>
+                                비밀번호가 일치하지 않습니다.
+                            </Typography>
+                    )}
                 </div>
 
                 {/* 이름과 성별 */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="grid grid-cols-[80px_auto] gap-4">
+                    <div className="grid grid-cols-[80px_250px] gap-4">
                         <Typography variant="small" color="blue-gray" className="text-left mt-2 pr-4">
                             이름 <span className="text-red-500">*</span>
                         </Typography>
@@ -293,7 +332,7 @@ export function SimpleRegistrationForm() {
 
                 {/* 생년월일과 연령대 */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="grid grid-cols-[80px_auto] gap-4">
+                    <div className="grid grid-cols-[80px_250px] gap-4">
                         <Typography variant="small" color="blue-gray" className="text-left mt-2 pr-4">
                             생년월일 <span className="text-red-500">*</span>
                         </Typography>
@@ -324,7 +363,7 @@ export function SimpleRegistrationForm() {
 
                 {/* 휴대폰 번호와 전화번호 */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="grid grid-cols-[80px_auto] gap-4">
+                    <div className="grid grid-cols-[80px_250px] gap-4">
                         <Typography variant="small" color="blue-gray" className="text-left pr-4">
                             휴대폰 <br/>번호 <span className="text-red-500">*</span>
                         </Typography>
@@ -351,17 +390,17 @@ export function SimpleRegistrationForm() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-[80px_auto] gap-4">
+                <div className="grid grid-cols-[80px_150px] gap-4">
                     <Typography variant="small" color="blue-gray" className="text-left mt-2 pr-4">
                         우편번호 <span className="text-red-500">*</span>
                     </Typography>
-                    <div className="grid grid-cols-[250px_auto] gap-2">
+                    <div className="grid grid-cols-[150px_auto] gap-12">
                         <Input
                             size="md"
                             name="postNo"
                             placeholder="우편번호"
                             value={joinParam.postNo}
-                            className="w-[250px] !border-gray-300 focus:!border-gray-900"
+                            className="postcodeInput !border-gray-300 focus:!border-gray-900"
                             onChange={handleChange}
                         />
                         <Button className="ml-2 w-20 h-10 text-xs" onClick={handleSearch}>
@@ -373,7 +412,7 @@ export function SimpleRegistrationForm() {
                 {/* 도로명주소 */}
                 <div className="grid grid-cols-[80px_auto] gap-4">
                     <Typography variant="small" color="blue-gray" className="text-left mt-2 pr-4">
-                        주소
+                        주소<span className="text-red-500">*</span>
                     </Typography>
                     <Input
                         size="md"
@@ -388,11 +427,16 @@ export function SimpleRegistrationForm() {
 
             {/* 이용약관 동의 */}
             <div className="mt-4 justify-center">
-                <Textarea className={"h-[230px]"} value={termsText.replace(/\n/g, '\n')} readOnly />
+                <Textarea
+                    className="h-[250px] !border-gray-300 focus:!border-gray-900" // 높이를 300px로 조정
+                    value={termsText.replace(/\n/g, '\n')}
+                    readOnly
+                />
                 <Checkbox
+                    className={"mx-auto"}
                     label={
-                        <Typography variant="small" color="gray" className="items-center font-normal">
-                            이용약관에 동의합니다.
+                        <Typography variant="small" color="gray" className="items-center font-normal ">
+                            <span className="text-red-500">*</span>이용약관에 동의합니다.
                         </Typography>
                     }
                     containerProps={{className: "-ml-2.5"}}
