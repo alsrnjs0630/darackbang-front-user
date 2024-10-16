@@ -35,27 +35,27 @@ export const getList = async (pageParam) => {
 
 // 상품 상세 정보 가져오기
 export const getOne = async (id) => {
-    const header = {};
-
-    // 로그인 상태에 따라 Authorization 헤더 추가
-    if (loginState === "회원") {
-        if (!ACCESS_TOKEN || typeof ACCESS_TOKEN !== "string") {
-            console.error("유효하지 않은 액세스 토큰입니다.");
-            // 필요한 경우 여기서 에러 처리 추가
-            return;
-        }
-        header.headers = {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${ACCESS_TOKEN}`
+    // ACCESS_TOKEN이 유효한지 확인합니다.
+    if (loginState === "회원" && ACCESS_TOKEN) {
+        console.log("loginState {}", loginState);
+        const header = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${ACCESS_TOKEN}`
+            }
         };
-    }
 
-    try {
         const res = await axios.get(`${prefix}/${id}`, header);
         console.log(res.data);
         return res.data;
-    } catch (error) {
-        console.error("상품 상세 정보 가져오기 실패:", error);
-        throw error;  // 에러를 호출한 곳으로 전달
+    } else {
+        try {
+            const res = await axios.get(`${prefix}/${id}`);
+            console.log(res.data);
+            return res.data;
+        } catch (error) {
+            console.error("상품 상세 정보 가져오기 실패:", error);
+            throw error;  // 에러를 호출한 곳으로 전달
+        }
     }
 };

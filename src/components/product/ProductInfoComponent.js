@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import {API_SERVER_HOST} from "../../apis/host";
 
 import {Button, Carousel} from "@material-tailwind/react";
+import {logoutPost} from "../../apis/MemberApi";
 
 const initState ={
     id: "",
@@ -77,6 +78,19 @@ const ProductInfoComponent = () => {
 
         }).catch(err => {
             console.error("상품 정보를 가져오는 중 오류 발생:", err);
+
+            if (err.response) {
+                if (err.response.status === 401){
+                    alert("세션이 만료되었습니다. 로그아웃됩니다.")
+                    logoutPost()
+                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                    window.location.reload();
+                } else {
+                    console.log("error: ", err.response)
+                    alert("상품 정보를 가져오는 중 오류 발생");
+                }
+            }
         });
     }, [id]);
 
@@ -125,8 +139,16 @@ const ProductInfoComponent = () => {
                 console.log("장바구니에 추가되었습니다:", response);
             })
             .catch(err => {
-                alert("장바구니 추가 중 오류 발생!"); // 오류 발생 시 알림창
-                console.error("장바구니 추가 중 오류 발생:", err);
+                if (err.response.status === 401){
+                    alert("세션이 만료되었습니다. 로그아웃됩니다.")
+                    logoutPost()
+                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                    window.location.reload();
+                } else {
+                    console.log("장바구니 추가 중 오류 발생:", err)
+                    alert("장바구니 추가 중 오류 발생!");
+                }
             });
     };
 

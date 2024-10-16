@@ -1,21 +1,8 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./host";  // 토큰 값을 출력해서 유효한지 확인
 
-import { jwtDecode } from "jwt-decode";
 const ACCESS_TOKEN = localStorage.getItem("accessToken");
-
 console.log("토큰 확인:", ACCESS_TOKEN); // named export로 변경
-
-const decodedToken = jwtDecode(ACCESS_TOKEN);
-console.log("디코딩된 토큰:", decodedToken);
-
-// 토큰의 만료 시간 확인
-const now = Date.now() / 1000;
-if (decodedToken.exp < now) {
-    console.log("토큰이 만료되었습니다. 새로운 토큰을 받아야 합니다.");
-} else {
-    console.log("토큰이 유효합니다.");
-}
 
 const prefix = `${API_SERVER_HOST}/api/carts`;
 

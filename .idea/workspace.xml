@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9798c3e8-cb69-4732-8215-da0112360081" name="변경" comment="1.작성자: 방민권&#10;2.작업내용:&#10;- 결제페이지 우편번호 input 수정&#10;- productAPI 토큰 설정&#10;3.작성일: 2024-10-14">
+    <list default="true" id="9798c3e8-cb69-4732-8215-da0112360081" name="변경" comment="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입페이지 비밀번호 유효성 검사 추가&#10;3.작성일: 2024-10-14">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apis/CartApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/apis/CartApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apis/ProductApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/apis/ProductApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/product/ProductInfoComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/product/ProductInfoComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/product/ProductListComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/product/ProductListComponent.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,31 +49,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/workspace/darackbang/darackbang-front-user/public&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/workspace/darackbang/darackbang-front-admin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;stardust.markdown.MarkdownSplitEditorSuppressor:keyList&quot;: []
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -151,7 +157,8 @@
       <workItem from="1728607258376" duration="11942000" />
       <workItem from="1728879447705" duration="3172000" />
       <workItem from="1728886399349" duration="9632000" />
-      <workItem from="1728952013457" duration="2863000" />
+      <workItem from="1728952013457" duration="12458000" />
+      <workItem from="1729037553635" duration="13018000" />
     </task>
     <task id="LOCAL-00001" summary="사용자 화면용 업로드">
       <option name="closed" value="true" />
@@ -233,7 +240,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728903884130</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입페이지 비밀번호 유효성 검사 추가&#10;3.작성일: 2024-10-14">
+      <option name="closed" value="true" />
+      <created>1728991106693</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728991106693</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,7 +273,8 @@
     <MESSAGE value="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입 페이지 작성&#10;- 회원가입 기능 구현&#10;- 로그인 상태 확인 후 로그인/회원가입, 로그아웃 버튼 출력&#10;- 로그아웃 기능 구현&#10;3.작성일: 2024-10-02" />
     <MESSAGE value="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입 페이지 레이아웃 수정&#10;- 마이페이지 회원정보 조회 레이아웃 생성&#10;- 마이페이지 회원정보 조회 API 구현&#10;- 로그인 시 JWT 토큰 로컬 스토리지에 저장 후 API 요청 마다 사용&#10;3.작성일: 2024-10-06" />
     <MESSAGE value="1.작성자: 방민권&#10;2.작업내용:&#10;- 결제페이지 우편번호 input 수정&#10;- productAPI 토큰 설정&#10;3.작성일: 2024-10-14" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.작성자: 방민권&#10;2.작업내용:&#10;- 결제페이지 우편번호 input 수정&#10;- productAPI 토큰 설정&#10;3.작성일: 2024-10-14" />
+    <MESSAGE value="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입페이지 비밀번호 유효성 검사 추가&#10;3.작성일: 2024-10-14" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.작성자: 방민권&#10;2.작업내용:&#10;- 회원가입페이지 비밀번호 유효성 검사 추가&#10;3.작성일: 2024-10-14" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -4,6 +4,7 @@ import {getList} from "../../apis/ProductApi";
 import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
+import {logoutPost} from "../../apis/MemberApi";
 
 const initState = {
     contents: [],
@@ -44,7 +45,18 @@ const ProductListComponent = () => {
                 current: currentPage, // current에 현재 페이지 설정
             });
         }).catch(error => {
-            // 예외 처리
+            if (error.response) {
+                if (error.response.status === 401){
+                    alert("세션이 만료되었습니다. 로그아웃됩니다.")
+                    logoutPost()
+                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                    window.location.reload();
+                } else {
+                    console.log("error: ", error.response)
+                    alert("상품 정보를 가져오는 중 오류 발생");
+                }
+            }
         });
     }, [page, size, refresh, searchValue, searchType]);
 
