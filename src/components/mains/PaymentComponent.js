@@ -5,7 +5,8 @@ import {
 import React, {useEffect, useState} from "react";
 import {useDaumPostcodePopup} from "react-daum-postcode";
 import {logoutPost, mypageInfo} from "../../apis/MemberApi";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
+import {API_SERVER_HOST} from "../../apis/host";
 
 const PaymentComponent = () => {
     // 배송지 직접 입력 사용 시 우편번호, 주소 초기 상태
@@ -43,6 +44,20 @@ const PaymentComponent = () => {
     const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
     const open = useDaumPostcodePopup(scriptUrl);
 
+    // 장바구니 데이터 수신
+    const location = useLocation();
+    console.log(location);
+    const {checkedItems, totalPrice} = location.state || {
+        checkedItems : [],
+        totalPrice : ''
+    }
+    console.log("가져온 정보: ", checkedItems, totalPrice)
+
+    const shippingCost = totalPrice >= 30000 ? 0 : 3000; // 배송비 계산
+
+    // checkedItems를 배열로 변환
+    const checkedItemsArray = Object.values(checkedItems);
+
     // 페이지 전환 메소드
     const navigate = useNavigate()
 
@@ -55,6 +70,9 @@ const PaymentComponent = () => {
     // 사용자 정보. 기본 배송지 및 보유 적립금에 사용
     // 현재는 기본 배송지 -> 기본 주소 정보 사용. 추후에 기본 배송지 유무 판별 기능 구현
     const [userInfo, setUserInfo] = useState({...userInitState})
+
+    // 사용 마일리지 상태
+    const [mileage, setMileage] = useState("");
 
     // 컴포넌트 렌더링 시 로그인한 유저 정보 불러옴 -> 마일리지 적용, 기본 배송지 출력
     useEffect(() => {
@@ -129,6 +147,24 @@ const PaymentComponent = () => {
         setPayment(value === payment ? null : value);
     }
 
+    // 마일리지 입력값 처리
+    const handleMileageChange = (e) => {
+        const inputValue = e.target.value; // 입력된 값
+        const inputMileage = Number(inputValue); // 숫자로 변환
+
+        // 입력값이 비어있으면 0으로 설정
+        if (inputValue === '') {
+            setMileage(0); // 0으로 설정
+        } else if (isNaN(inputMileage)) {
+            // 숫자가 아닌 경우 아무것도 하지 않음 (이 경우에는 setMileage를 호출하지 않음)
+            return;
+        } else if (inputMileage > userInfo.mileage) {
+            setMileage(userInfo.mileage); // 입력값이 마일리지보다 크면 마일리지로 설정
+        } else {
+            setMileage(inputMileage); // 그렇지 않으면 입력값으로 설정
+        }
+    };
+
     // 주문하기 버튼 클릭 시 실행되는 함수 (추후에 배송지 입력 유무 확인 및 유의사항 동의 체크 확인 기능 구현)
     const handlePaymentModal = (payment) => {
         if(payment === null) {
@@ -146,13 +182,13 @@ const PaymentComponent = () => {
     return (
         <div>
             <div className="w-[1200px] overflow-x-auto">
-                <Typography className={"font-bold text-4xl ml-4 mb-2"}>
+                <Typography className={"font-bold text-3xl ml-4 mb-5"}>
                     결제 정보
                 </Typography>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                     <tr>
-                        <th scope="col" className="px-6 py-3 text-2xl text-center rounded-s-lg">
+                        <th scope="col" className="px-6 py-3 text-2xl text-center rounded-s-lg" colspan="2">
                             상품 정보
                         </th>
                         <th scope="col" className="py-3 text-2xl text-right">
@@ -161,54 +197,46 @@ const PaymentComponent = () => {
                         <th scope="col" className="py-3 text-2xl text-right">
                             금액
                         </th>
-                        <th scope="col" className="pr-6 py-3 text-2xl text-right rounded-e-lg">
-                            총 금액
-                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr className="bg-white dark:bg-gray-800">
-                        <th scope="row"
-                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            Apple MacBook Pro 17"
-                        </th>
-                        <td className="py-4 text-right">
-                            1
-                        </td>
-                        <td className="py-4 text-right">
-                            $2999
-                        </td>
-                    </tr>
-                    <tr className="bg-white dark:bg-gray-800">
-                        <th scope="row"
-                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            Microsoft Surface Pro
-                        </th>
-                        <td className="py-4 text-right">
-                            1
-                        </td>
-                        <td className="y-4 text-right">
-                            $1999
-                        </td>
-                    </tr>
-                    <tr className="bg-white dark:bg-gray-800">
-                        <th scope="row"
-                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            Magic Mouse 2
-                        </th>
-                        <td className="py-4 text-right">
-                            1
-                        </td>
-                        <td className="py-4 text-right">
-                            $99
-                        </td>
-                    </tr>
+                    {checkedItemsArray.map((item) => {
+                        return (
+                            <tr className="bg-white dark:bg-gray-800">
+                                <td scope="row"
+                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {item.productImages.length > 0 && (
+                                        <img
+                                            src={`${API_SERVER_HOST}/api/products/view/thumbnail_${
+                                                item.productImages
+                                                    .filter(image => image.productType === "INFO")
+                                                    .map(image => image.productFileName)[0]
+                                            }`}
+                                            alt={item.productName}
+                                            className={`w-[60px] items-center aspect-square rounded-lg object-cover`}
+                                        />
+                                    )}
+                                </td>
+                                <td scope="row"
+                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {item.productName}
+                                </td>
+                                <td className="py-4 text-right">
+                                    {item.quantity}
+                                </td>
+                                <td className="py-4 text-right">
+                                    {item.productPrice.toLocaleString()}원
+                                </td>
+                            </tr>
+                        );
+                    })}
                     </tbody>
                     <tfoot>
                     <tr className="font-semibold text-gray-900">
-                        <th scope="row" className="px-6 py-3 text-base">Total</th>
-                        <td className="py-3 text-right">3</td>
-                        <td className="py-3 text-right">21,000</td>
+                        <td scope="row" className="px-6 py-3 text-base">Total</td>
+                        <td></td>
+                        <td></td>
+                        <td className="py-3 text-right">{totalPrice.toLocaleString()}원</td>
                     </tr>
                     </tfoot>
                 </table>
@@ -340,7 +368,11 @@ const PaymentComponent = () => {
                         labelProps={{
                             className: "hidden",
                         }}
-                        className="w-full !border-gray-300 focus:!border-gray-900"/>
+                        className="w-full !border-gray-300 focus:!border-gray-900"
+                        value={mileage}
+
+                        onChange={handleMileageChange} // 입력값 변화에 따라 상태 업데이트
+                    />
                 </div>
             </div>
             <div className={"rounded-2xl shadow-md shadow-gray-200 pt-2 pb-5 mt-10"}>
@@ -367,25 +399,25 @@ const PaymentComponent = () => {
                     <tbody>
                     <tr className="bg-white dark:bg-gray-800">
                         <th className="px-3 py-3 text-2xl text-center">
-                            주문 금액
+                            {totalPrice.toLocaleString()}
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             +
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
-                            배송비
+                            {shippingCost.toLocaleString()}
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             -
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
-                            적립금
+                            {mileage.toLocaleString()}
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             =
                         </td>
                         <th className="px-3 py-3 text-2xl text-center ">
-                            결제 금액
+                            {(totalPrice + shippingCost - mileage).toLocaleString()}
                         </th>
                     </tr>
                     </tbody>

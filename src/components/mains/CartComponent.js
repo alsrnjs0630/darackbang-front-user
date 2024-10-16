@@ -17,7 +17,7 @@ const CartComponent = () => {
     }]
 
     const [cartItems, setCartItems] = useState(initState);
-    const [checkedItems, setCheckedItems] = useState({}); // 체크된 아이템 관리
+    const [checkedItems, setCheckedItems] = useState([]); // 체크된 아이템 관리
     const [allChecked, setAllChecked] = useState(false); // 전체 선택 여부 관리
 
     // 장바구니 아이템 가져오기: 장바구니 리스트를 서버로부터 가져옴
@@ -41,37 +41,50 @@ const CartComponent = () => {
     };
 
     // 특정 상품 체크박스 상태 변경
-    const handleCheckboxChange = (id) => {
-        setCheckedItems(prev => ({
-            ...prev,
-            [id]: !prev[id] // 체크 상태 토글
-        }));
-        console.log(checkedItems)
+    const handleCheckboxChange = (item) => {
+        setCheckedItems(prev => {
+            const newCheckedItems = { ...prev };
+
+            if (newCheckedItems[item.id]) {
+                delete newCheckedItems[item.id]; // 체크 해제 시 해당 아이템 삭제
+            } else {
+                newCheckedItems[item.id] = item; // 체크 시 아이템 전체 정보 저장
+            }
+
+            // 전체 선택 체크 여부 업데이트
+            const allItemsChecked = cartItems.every(cartItem => newCheckedItems[cartItem.id]);
+            setAllChecked(allItemsChecked);
+
+            console.log("Updated checkedItems:", newCheckedItems);  // 체크된 아이템 정보 확인
+
+            return newCheckedItems;
+        });
     };
 
     // 전체 선택 체크박스 상태 변경
     const handleAllCheckboxChange = () => {
-        const newAllChecked = !allChecked; // 전체 선택 상태 토글
+        const newAllChecked = !allChecked;
         setAllChecked(newAllChecked);
 
-        // 모든 아이템의 체크박스 상태를 전체 선택/해제로 업데이트
         const newCheckedItems = {};
-        cartItems.forEach(item => {
-            newCheckedItems[item.id] = newAllChecked; // 모든 아이템을 선택하거나 선택 해제
-        });
-        setCheckedItems(newCheckedItems);
+        if (newAllChecked) {
+            cartItems.forEach(item => {
+                newCheckedItems[item.id] = item; // 전체 선택 시 모든 아이템 저장
+            });
+        }
+        setCheckedItems(newCheckedItems); // 전체 해제 시 빈 객체로 초기화
     };
 
     // 체크된 아이템만 필터링하여 반환
     const getCheckedItemsDetails = () => {
-        return cartItems.filter(item => checkedItems[item.id]);
+        return cartItems.filter(item => checkedItems[item.id] !== undefined);
     };
 
     // 체크된 아이템의 총 가격 계산
     const calculateTotalPrice = () => {
         return cartItems.reduce((total, item) => {
             if (checkedItems[item.id]) {
-                return total + (item.productPrice); // 체크된 아이템 가격 합산
+                return total + checkedItems[item.id].productPrice; // 체크된 아이템의 가격 합산
             }
             return total;
         }, 0);
@@ -85,7 +98,7 @@ const CartComponent = () => {
 
     const moveToPath = (path) => {
         console.log(checkedItems, totalPrice);
-        navigate({pathname: path}, {state: checkedItems, totalPrice})
+        navigate(path, { state: { checkedItems, totalPrice } });
     }
 
     return (
@@ -148,7 +161,7 @@ const CartComponent = () => {
                                         <tr key={item.id}> {/* id나 고유한 값을 키로 사용 */}
                                             <td className={classes}>
                                                 <div className="flex">
-                                                    <Checkbox checked={!!checkedItems[item.id]} onChange={() => handleCheckboxChange(item.id)} />
+                                                    <Checkbox checked={!!checkedItems[item.id]} onChange={() => handleCheckboxChange(item)} />
                                                     <div>
                                                         {item.productImages.length > 0 && (
                                                             <img
