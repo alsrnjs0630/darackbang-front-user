@@ -18,13 +18,20 @@ const CartComponent = () => {
 
     const [cartItems, setCartItems] = useState(initState);
     const [checkedItems, setCheckedItems] = useState([]); // 체크된 아이템 관리
-    const [allChecked, setAllChecked] = useState(false); // 전체 선택 여부 관리
+    const [allChecked, setAllChecked] = useState(true); // 전체 선택 여부 관리
 
     // 장바구니 아이템 가져오기: 장바구니 리스트를 서버로부터 가져옴
     useEffect(() => {
         getCartList().then(data => {
             console.log(data); // 가져온 데이터 확인
             setCartItems(data); // 모든 장바구니 아이템 상태 업데이트
+
+            // 전체 선택 상태 초기화
+            const newCheckedItems = {};
+            data.forEach(item => {
+                newCheckedItems[item.id] = item; // 모든 아이템 체크
+            });
+            setCheckedItems(newCheckedItems);
         }).catch(err => {
             console.error("장바구니 아이템 리스트 정보를 가져오는 중 오류 발생:", err);
         });
@@ -97,9 +104,13 @@ const CartComponent = () => {
     const navigate = useNavigate();
 
     const moveToPath = (path) => {
+        if (Object.keys(checkedItems).length === 0) {
+            alert('구매할 상품을 선택한 후에 주문 가능합니다.'); // 체크된 아이템이 없을 때 경고창
+            return;
+        }
         console.log(checkedItems, totalPrice);
         navigate(path, { state: { checkedItems, totalPrice } });
-    }
+    };
 
     return (
         <div>

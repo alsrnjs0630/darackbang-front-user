@@ -154,12 +154,16 @@ const PaymentComponent = () => {
 
         // 입력값이 비어있으면 0으로 설정
         if (inputValue === '') {
-            setMileage(0); // 0으로 설정
+            setMileage(0);
         } else if (isNaN(inputMileage)) {
             // 숫자가 아닌 경우 아무것도 하지 않음 (이 경우에는 setMileage를 호출하지 않음)
             return;
         } else if (inputMileage > userInfo.mileage) {
             setMileage(userInfo.mileage); // 입력값이 마일리지보다 크면 마일리지로 설정
+        } else if (inputMileage > (totalPrice + shippingCost)) {
+            alert("적립금은 결제 금액을 초과하여 사용할 수 없습니다."); // 알림창 띄우기
+            // 여기서는 입력값을 설정하지 않아서 기본값 유지
+            return; // 입력값이 유효하지 않으므로 함수 종료
         } else {
             setMileage(inputMileage); // 그렇지 않으면 입력값으로 설정
         }
