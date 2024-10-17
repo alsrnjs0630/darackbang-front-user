@@ -15,9 +15,7 @@ export function StickyNavbar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
     const [searchValue, setSearchValue] = useState("");
-
 
     // 컴포넌트가 마운트될 때 로그인 상태 초기화
     useEffect(() => {
@@ -59,10 +57,11 @@ export function StickyNavbar() {
     }
 
     const handleSearchSubmit = (e) => {
-        e.preventDefault(); // Prevent form from submitting
-
-        // Dispatch the search value to the Redux store
+        e.preventDefault(); // 이벤트 막기
+        //디스페처를 동한 값 설정
         dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue });
+        //검색을 하면 상품 리스트로 이동
+        navigate('/list')
     };
 
     const navList = (

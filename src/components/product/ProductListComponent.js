@@ -26,13 +26,14 @@ const ProductListComponent = () => {
 
     const [serverData, setServerData] = useState(initState)
 
-    const searchValue = useSelector((state) => state.searchValue); // Access the search value from Redux
+    // 상단매뉴에서 입력한 값을 가져 오는 부분
+    const searchValue = useSelector((state) => state.searchValue); 
 
     useEffect(() => {
         const params = {
             page,
             size,
-            productName: searchValue || null,  // Use search value from Redux
+            productName: searchValue || null,  // 상단 상품이름검색값 설정
         };
 
         getList(params).then(data => {
