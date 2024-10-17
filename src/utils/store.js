@@ -14,6 +14,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loginState: action.payload,
             };
+        case 'SET_SEARCH_VALUE': // Add a new action for setting search value
+            return {
+                ...state,
+                searchValue: action.payload,
+            };
         default:
             return state;
     }
