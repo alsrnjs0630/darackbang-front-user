@@ -14,6 +14,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loginState: action.payload,
             };
+        case 'SET_SEARCH_VALUE': // 상품검색을 위한 값
+            return {
+                ...state,
+                searchValue: action.payload,
+            };
         default:
             return state;
     }

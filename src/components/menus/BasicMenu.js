@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Navbar,
     Typography,
@@ -14,6 +14,8 @@ export function StickyNavbar() {
     const loginState = useSelector(state => state.loginState)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [searchValue, setSearchValue] = useState("");
 
     // 컴포넌트가 마운트될 때 로그인 상태 초기화
     useEffect(() => {
@@ -54,8 +56,15 @@ export function StickyNavbar() {
         ) : navigate("/cart") }
     }
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault(); // 이벤트 막기
+        //디스페처를 동한 값 설정
+        dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue });
+        //검색을 하면 상품 리스트로 이동
+        navigate('/list')
+    };
     const navList = (
-        <ul className="flex ml-10 flex-row items-center gap-6"> {/* 수평 정렬과 간격을 위한 클래스 추가 */}
+        <ul className="flex ml-10 flex-row items-center gap-10"> {/* 수평 정렬과 간격을 위한 클래스 수정 */}
             <Typography
                 as="li"
                 variant="small"
@@ -64,11 +73,11 @@ export function StickyNavbar() {
             >
                 <Link to={"#"} className="flex items-center">
                     <Typography className={"font-semibold"}>
-                    브랜드
+                        브랜드
                     </Typography>
                 </Link>
             </Typography>
-            <form className="max-w-7xl mx-auto">
+            <form className="max-w-7xl mx-auto ml-10" onSubmit={handleSearchSubmit}> {/* ml-10 추가로 더 큰 여백 */}
                 <label htmlFor="default-search"
                        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">검색</label>
                 <div className="relative">
@@ -79,9 +88,13 @@ export function StickyNavbar() {
                                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </div>
-                    <input type="search" id="default-search"
-                           className="block w-96 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                           placeholder="상품 이름" required/>
+                    <input
+                        type="search"
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)} // Update search value
+                        className="block w-96 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="상품 이름"
+                    />
                     <button type="submit"
                             className="text-white absolute end-2.5 bottom-2.5 bg-gray-800 hover:bg-gray-600 focus:bg-gray-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-200">검색
                     </button>
@@ -89,6 +102,7 @@ export function StickyNavbar() {
             </form>
         </ul>
     );
+
 
     return (
         <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-y-scroll overflow-x-hidden">

@@ -5,6 +5,7 @@ import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
 import {logoutPost} from "../../apis/MemberApi";
+import {useSelector} from "react-redux";
 
 const initState = {
     contents: [],
@@ -25,16 +26,14 @@ const ProductListComponent = () => {
 
     const [serverData, setServerData] = useState(initState)
 
-    // State to track which search field (productName or salePrice) is selected
-    const [searchType, setSearchType] = useState("productName"); // Default to productName
-    const [searchValue, setSearchValue] = useState(""); // Value entered in the input field
+    // 상단매뉴에서 입력한 값을 가져 오는 부분
+    const searchValue = useSelector((state) => state.searchValue); 
 
     useEffect(() => {
         const params = {
             page,
             size,
-            productName: searchType === "productName" ? searchValue : null,
-            salePrice: searchType === "salePrice" ? searchValue : null,
+            productName: searchValue || null,  // 상단 상품이름검색값 설정
         };
 
         getList(params).then(data => {
@@ -58,7 +57,7 @@ const ProductListComponent = () => {
                 }
             }
         });
-    }, [page, size, refresh, searchValue, searchType]);
+    }, [page, size, refresh, searchValue]);
 
     return (
         <section className="w-full"> {/* 전체 너비로 설정하고 배경색 추가 */}
