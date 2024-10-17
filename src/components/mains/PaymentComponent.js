@@ -7,8 +7,44 @@ import {useDaumPostcodePopup} from "react-daum-postcode";
 import {logoutPost, mypageInfo} from "../../apis/MemberApi";
 import {useNavigate, useLocation} from "react-router-dom";
 import {API_SERVER_HOST} from "../../apis/host";
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 const PaymentComponent = () => {
+    const uniqueCustomerId = uuidv4();
+    const uniqueMerchantId = uuidv4();
+
+    useEffect(() => {
+        // Dynamically load jQuery
+        const loadScript = (src) => {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                script.onload = () => resolve(true);
+                script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                document.body.appendChild(script);
+            });
+        };
+
+        const loadIamportScript = async () => {
+            try {
+                await loadScript('https://code.jquery.com/jquery-1.12.4.min.js');
+                await loadScript('https://cdn.iamport.kr/js/iamport.payment-1.2.0.js');
+                window.IMP.init('imp74857035'); // Initialize Iamport
+            } catch (error) {
+                console.error('Error loading scripts:', error);
+            }
+        };
+
+        loadIamportScript();
+    }, []);
+
+
+
+
+
+
     // 배송지 직접 입력 사용 시 우편번호, 주소 초기 상태
     const addrInitState = {
         postNo: "",
@@ -169,17 +205,122 @@ const PaymentComponent = () => {
         }
     };
 
+    const requestKakaoPay = () => {
+        if (!window.IMP) {
+            alert('Payment module not loaded');
+            return;
+        }
+
+        window.IMP.request_pay(
+            {
+                pg: 'kakaopay',
+                pay_method: 'card',
+                merchant_uid: uniqueMerchantId,
+                name: '당근 10kg',
+                amount: 1004,
+                customer_uid: uniqueCustomerId,
+                buyer_email: 'Iamport@chai.finance',
+                buyer_name: '포트원 기술지원팀',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 삼성동',
+                buyer_postcode: '123-456',
+            },
+            async (rsp) => {
+                if (rsp.success === true) {
+                    alert('Payment was successful');
+
+                    try {
+                        const ACCESS_TOKEN = localStorage.getItem("accessToken");
+
+                        const header = {
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${ACCESS_TOKEN}`
+                            }
+                        };
+
+                        const {data} = await axios.post(`http://localhost:8080/api/payments/verifyIamport/${rsp.imp_uid}`, {}, header);
+
+
+                        if (rsp.paid_amount === data.response.amount) {
+                            alert('결제 성공');
+                        } else {
+                            alert('결제 실패');
+                        }
+                    } catch (error) {
+                        console.error('Error while verifying payment:', error);
+                        alert('결제 실패');
+                    }
+                } else {
+                    alert(`Payment failed: ${rsp.error_msg}`);
+                }
+                console.log(rsp);
+            }
+        );
+    };
+
+    const requestTossPay = () => {
+        if (!window.IMP) {
+            alert('Payment module not loaded');
+            return;
+        }
+
+        window.IMP.request_pay(
+            {
+                pg: 'tosspay',
+                pay_method: 'card',
+                merchant_uid: uniqueMerchantId,
+                name: '당근 10kg',
+                amount: 1004,
+                customer_uid: uniqueCustomerId,
+                buyer_email: 'klaatus@msn.com',
+                buyer_name: '황재인',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 삼성동',
+                buyer_postcode: '123-456',
+            },
+            async (rsp) => {
+                if (rsp.success === true) {
+                    alert('Payment was successful');
+
+                    try {
+                        const ACCESS_TOKEN = localStorage.getItem("accessToken");
+
+                        const header = {
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${ACCESS_TOKEN}`
+                            }
+                        };
+
+                        const {data} = await axios.post(`http://localhost:8080/verifyIamport/${rsp.imp_uid}`, {}, header);
+
+
+                        if (rsp.paid_amount === data.response.amount) {
+                            alert('결제 성공');
+                        } else {
+                            alert('결제 실패');
+                        }
+                    } catch (error) {
+                        console.error('Error while verifying payment:', error);
+                        alert('결제 실패');
+                    }
+                } else {
+                    alert(`Payment failed: ${rsp.error_msg}`);
+                }
+                console.log(rsp);
+            }
+        );
+    };
+
     // 주문하기 버튼 클릭 시 실행되는 함수 (추후에 배송지 입력 유무 확인 및 유의사항 동의 체크 확인 기능 구현)
     const handlePaymentModal = (payment) => {
         if(payment === null) {
             alert("결제 수단을 선택해주세요.")
-            return;
         } else if(payment === "kakao"){
-            alert("카카오페이 결제입니다.")
-            return;
+            requestKakaoPay()
         } else if(payment === "toss") {
-            alert("토스페이 결제입니다.")
-            return;
+            requestTossPay()
         }
     }
 
@@ -392,7 +533,7 @@ const PaymentComponent = () => {
                         </td>
                         <td/>
                         <td scope="col" className="px-3 py-3 text-base text-center">
-                            적립금
+                            사용적립금
                         </td>
                         <td/>
                         <td scope="col" className="px-3 py-3 text-base text-center">
@@ -403,25 +544,25 @@ const PaymentComponent = () => {
                     <tbody>
                     <tr className="bg-white dark:bg-gray-800">
                         <th className="px-3 py-3 text-2xl text-center">
-                            {totalPrice.toLocaleString()}
+                            {totalPrice.toLocaleString()}원
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             +
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
-                            {shippingCost.toLocaleString()}
+                            {shippingCost.toLocaleString()}원
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             -
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
-                            {mileage.toLocaleString()}
+                            {mileage.toLocaleString()===""?0:mileage.toLocaleString()}원
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             =
                         </td>
                         <th className="px-3 py-3 text-2xl text-center ">
-                            {(totalPrice + shippingCost - mileage).toLocaleString()}
+                            {(totalPrice + shippingCost - mileage).toLocaleString()}원
                         </th>
                     </tr>
                     </tbody>
