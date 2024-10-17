@@ -63,9 +63,8 @@ export function StickyNavbar() {
         //검색을 하면 상품 리스트로 이동
         navigate('/list')
     };
-
     const navList = (
-        <ul className="flex ml-10 flex-row items-center gap-6"> {/* 수평 정렬과 간격을 위한 클래스 추가 */}
+        <ul className="flex ml-10 flex-row items-center gap-10"> {/* 수평 정렬과 간격을 위한 클래스 수정 */}
             <Typography
                 as="li"
                 variant="small"
@@ -74,11 +73,11 @@ export function StickyNavbar() {
             >
                 <Link to={"#"} className="flex items-center">
                     <Typography className={"font-semibold"}>
-                    브랜드
+                        브랜드
                     </Typography>
                 </Link>
             </Typography>
-            <form className="max-w-7xl mx-auto" onSubmit={handleSearchSubmit}>
+            <form className="max-w-7xl mx-auto ml-10" onSubmit={handleSearchSubmit}> {/* ml-10 추가로 더 큰 여백 */}
                 <label htmlFor="default-search"
                        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">검색</label>
                 <div className="relative">
@@ -103,6 +102,7 @@ export function StickyNavbar() {
             </form>
         </ul>
     );
+
 
     return (
         <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-y-scroll overflow-x-hidden">
