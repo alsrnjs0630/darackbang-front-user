@@ -21,9 +21,9 @@ export function StickyNavbar() {
     useEffect(() => {
         const storedLoginState = localStorage.getItem('loginState'); // localStorage에서 로그인 상태 가져오기
         if (storedLoginState) {
-            dispatch({ type: 'SET_LOGIN_STATE', payload: storedLoginState }); // Redux 스토어에 상태 설정
+            dispatch({type: 'SET_LOGIN_STATE', payload: storedLoginState}); // Redux 스토어에 상태 설정
         } else {
-            dispatch({ type: 'SET_LOGIN_STATE', payload: '비회원' }); // 초기 상태 설정
+            dispatch({type: 'SET_LOGIN_STATE', payload: '비회원'}); // 초기 상태 설정
         }
     }, [dispatch]);
 
@@ -31,35 +31,39 @@ export function StickyNavbar() {
         logoutPost()
             .then(status => {
                 console.log(status)
+                alert("로그아웃 되었습니다.")
+                localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+                localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
+                dispatch({type: 'SET_LOGIN_STATE', payload: '비회원'});
+                navigate("/")
 
-                if (status === 200) {
-                    alert("로그아웃 되었습니다.")
-                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                    dispatch({ type: 'SET_LOGIN_STATE', payload: '비회원' });
-                    navigate("/")
-                } else {
-                    alert("예상하지 못한 오류가 발생했습니다. 다시 시도해주세요.")
-                }
+            })
+            .catch((error) => {
+                console.log("에러 발생:", error)
+                alert("예상하지 못한 오류가 발생했습니다. 다시 시도해주세요.")
             })
     }
 
     const handleMypage = () => {
-        {loginState === "비회원" ? (
-            alert("로그인 후 이용할 수 있습니다.")
-        ) : navigate("/mypage/info") }
+        {
+            loginState === "비회원" ? (
+                alert("로그인 후 이용할 수 있습니다.")
+            ) : navigate("/mypage/info")
+        }
     }
 
     const handleCart = () => {
-        {loginState === "비회원" ? (
-            alert("로그인 후 이용할 수 있습니다.")
-        ) : navigate("/cart") }
+        {
+            loginState === "비회원" ? (
+                alert("로그인 후 이용할 수 있습니다.")
+            ) : navigate("/cart")
+        }
     }
 
     const handleSearchSubmit = (e) => {
         e.preventDefault(); // 이벤트 막기
         //디스페처를 동한 값 설정
-        dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue });
+        dispatch({type: 'SET_SEARCH_VALUE', payload: searchValue});
         //검색을 하면 상품 리스트로 이동
         navigate('/list')
     };

@@ -8,7 +8,7 @@ import {logoutPost, mypageInfo} from "../../apis/MemberApi";
 import {useNavigate, useLocation} from "react-router-dom";
 import {API_SERVER_HOST} from "../../apis/host";
 import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {verifyPayment} from "../../apis/PaymentApi";
 
 const PaymentComponent = () => {
@@ -76,8 +76,8 @@ const PaymentComponent = () => {
     // 장바구니 데이터 수신
     const location = useLocation();
     const {checkedItems, totalPrice} = location.state || {
-        checkedItems : [],
-        totalPrice : ''
+        checkedItems: [],
+        totalPrice: ''
     }
 
     const shippingCost = totalPrice >= 30000 ? 0 : 3000; // 배송비 계산
@@ -144,7 +144,7 @@ const PaymentComponent = () => {
     }, []);
 
     useEffect(() => {
-        if (checkedValue === "default"){
+        if (checkedValue === "default") {
             setOrderAddress((prevState) => ({
                 ...prevState,
                 name: userInfo.name,
@@ -185,7 +185,7 @@ const PaymentComponent = () => {
             address: fullAddress,         // 선택된 주소
             postNo: data.zonecode         // 선택된 우편번호
         }));
-        console.log("주소",fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+        console.log("주소", fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     };
 
     // 우편번호 API 오픈 메소드
@@ -234,7 +234,7 @@ const PaymentComponent = () => {
         } else if (mileage > (totalPrice + shippingCost)) {
             alert("적립금은 결제 금액을 초과하여 사용할 수 없습니다."); // 알림창 띄우기
             setMileage(0)
-        }else if (mileage < 1000 && mileage > 0) {
+        } else if (mileage < 1000 && mileage > 0) {
             alert("적립금은 1000원 이상부터 사용 가능합니다.")
         } else {
             setResult(Number(mileage))
@@ -242,7 +242,7 @@ const PaymentComponent = () => {
     }
 
     const handleMileageFocus = () => {
-        if(mileage === 0) {
+        if (mileage === 0) {
             setMileage("");
         }
     };
@@ -272,18 +272,11 @@ const PaymentComponent = () => {
         console.log("상품명:", productNames)
         console.log("장바구니아이템ID:", cartItemIds)
 
-
-        console.log("페이먼트 유저정보 이름 ",userInfo.name)
-        console.log("페이먼트 유저정보 전화번호",userInfo.mobileNo)
-        console.log("페이먼트 유저정보 주소",userInfo.address)
-        console.log("페이먼트 유저정보 우편번호",userInfo.addPostNo)
-        console.log("페이먼트 유저정보 이메일",userInfo.userEmail)
-
-        if (userInfo.address === null || userInfo.postNo === null) {
-            alert("우편번호와 상세주소를 입력해야 주문할 수 있습니다.")
-            return;
-        }
-
+        console.log("페이먼트 유저정보 이름 ", userInfo.name)
+        console.log("페이먼트 유저정보 전화번호", userInfo.mobileNo)
+        console.log("페이먼트 유저정보 주소", userInfo.address)
+        console.log("페이먼트 유저정보 우편번호", userInfo.addPostNo)
+        console.log("페이먼트 유저정보 이메일", userInfo.userEmail)
 
         window.IMP.request_pay(
             {
@@ -299,27 +292,28 @@ const PaymentComponent = () => {
                 buyer_addr: userInfo.address,
                 buyer_postcode: userInfo.postNo,
             },
+
             async (rsp) => {
-                if (rsp.success === true) {
-                    alert('Payment was successful');
+                console.log(rsp)
+                if (rsp.success) {
+                    await verifyPayment(rsp.imp_uid)
+                        .then(data => {
+                            if (data && data.response && rsp.imp_uid === data.response.impUid) {
+                                alert('결제 성공');
+                            } else {
+                                alert('결제 실패: 결제 정보 확인이 필요합니다.');
+                            }
+                        })
+                        .catch(error => {
+                                console.error('Payment verification failed:', error.response);
+                                alert('결제가 확인되지 않았습니다. 다시 시도해주세요.');
+                            }
+                        )
+                    // Verify payment success based on the response
 
-                    try {
-                        // Call the verifyPayment function to verify the payment
-                        const data = await verifyPayment(rsp.imp_uid);
-
-                        if (rsp.imp_uid === data.response.imp_uid) {
-                            alert('결제 성공');
-                        } else {
-                            alert('결제 실패');
-                        }
-                    } catch (error) {
-                        console.error('Error while verifying payment:', error);
-                        alert('결제 실패');
-                    }
                 } else {
                     alert(`Payment failed: ${rsp.error_msg}`);
                 }
-                console.log(rsp); // Log the response for debugging purposes
             }
         );
     };
@@ -380,9 +374,28 @@ const PaymentComponent = () => {
 
     // 주문하기 버튼 클릭 시 실행되는 함수 (추후에 배송지 입력 유무 확인 및 유의사항 동의 체크 확인 기능 구현)
     const handlePaymentModal = (payment) => {
-        if(payment === null) {
+        if (payment === null) {
             console.log(orderAddress)
             alert("결제 수단을 선택해주세요.")
+            return;
+        }
+        if (orderAddress.name === null || orderAddress.name === '') {
+            alert("이름을 입력하세요.");
+            return;
+        }
+
+        if (orderAddress.mobileNo === null || orderAddress.mobileNo === '') {
+            alert("휴대폰 번호를 입력하세요.");
+            return;
+        }
+
+        if (orderAddress.address === null || orderAddress.address === '') {
+            alert("상세 주소를 입력해야 주문할 수 있습니다.");
+            return;
+        }
+
+        if (orderAddress.postNo === null || orderAddress.postNo === '') {
+            alert("우편번호를 입력해야 주문할 수 있습니다.");
             return;
         }
 
@@ -485,7 +498,7 @@ const PaymentComponent = () => {
                                     labelProps={{
                                         className: "w-52",
                                     }}
-                                    onChange={(e) => handleChangeCustom(e,"name")}
+                                    onChange={(e) => handleChangeCustom(e, "name")}
                                     value={checkedValue === "default" ? userInfo.name : customInput.name}
                                     label={"받는분"}/>
                             </div>
@@ -494,7 +507,7 @@ const PaymentComponent = () => {
                                     size={"lg"}
                                     className={"w-72"}
                                     label={"휴대폰번호"}
-                                    onChange={(e) => handleChangeCustom(e,"mobileNo")}
+                                    onChange={(e) => handleChangeCustom(e, "mobileNo")}
                                     value={checkedValue === "default" ? userInfo.mobileNo : customInput.mobileNo}
                                     placeholder={"\"-\"없이 숫자만 입력해주세요"}/>
                             </div>

@@ -11,6 +11,7 @@ import {
     Typography,
     Input,
 } from "@material-tailwind/react";
+import useExeptionHandler from "../hooks/useExeptionHandler";
 
 const loginInitState = {
     userEmail: '',
@@ -34,6 +35,7 @@ const LoginPage = ({loginState, setLoginState}) => {
     const [resetPwParam, setResetPwParam] = useState({...resetPwInitState})
     const [open, setOpen] = React.useState(false);
     const [resetOpen, setResetOpen] = React.useState(false);
+    const {exceptionHandle} = useExeptionHandler()
 
     // 비밀번호 찾기 모달창
     const handlesearchOpen = () => {
@@ -88,13 +90,14 @@ const LoginPage = ({loginState, setLoginState}) => {
                 }
             })
             .catch(error => {
-                // 에러가 네트워크 문제인지, 서버의 응답 문제인지 확인
-                if (error.response || error.request) {
-                    // 서버로부터의 응답이 있는 경우 (4xx, 5xx 등의 HTTP 오류)
-                    // 네트워크 에러가 발생한 경우
-                    console.log("Server responded with an error:", error);
-                    alert("로그인에 실패했습니다. 잠시후 다시 시도해주세요.");
-                }
+                exceptionHandle(error)
+                // // 에러가 네트워크 문제인지, 서버의 응답 문제인지 확인
+                // if (error.response || error.request) {
+                //     // 서버로부터의 응답이 있는 경우 (4xx, 5xx 등의 HTTP 오류)
+                //     // 네트워크 에러가 발생한 경우
+                //     console.log("Server responded with an error:", error);
+                //     alert("로그인에 실패했습니다. 잠시후 다시 시도해주세요.");
+                // }
             })
     }
 
@@ -119,6 +122,9 @@ const LoginPage = ({loginState, setLoginState}) => {
                     alert("일치하는 회원이 없습니다.")
                 }
             })
+            .catch(error => {
+                exceptionHandle(error)
+            })
     }
 
     // 비밀번호 찾기 2. 비밀번호 재설정
@@ -135,6 +141,9 @@ const LoginPage = ({loginState, setLoginState}) => {
                 } else {
                     alert("서버오류로 실패했습니다. 다시 시도해주세요.")
                 }
+            })
+            .catch(error => {
+                exceptionHandle(error)
             })
     }
 
