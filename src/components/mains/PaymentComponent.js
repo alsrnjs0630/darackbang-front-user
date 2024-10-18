@@ -41,20 +41,12 @@ const PaymentComponent = () => {
         loadIamportScript();
     }, []);
 
-
-
-
-
-
     // 배송지 직접 입력 사용 시 우편번호, 주소 초기 상태
     const addrInitState = {
+        name: "",
+        mobileNo: "",
         postNo: "",
         address: ""
-    }
-
-    // 사용 마일리지
-    const handleMileage = {
-        handleMile: ""
     }
 
     // 결제 페이지 진입시 회원 정보 갖고 옴 (회원정보 출력, 회원정보 수정 API 사용)
@@ -83,12 +75,10 @@ const PaymentComponent = () => {
 
     // 장바구니 데이터 수신
     const location = useLocation();
-    console.log(location);
     const {checkedItems, totalPrice} = location.state || {
         checkedItems : [],
         totalPrice : ''
     }
-    console.log("가져온 정보: ", checkedItems, totalPrice)
 
     const shippingCost = totalPrice >= 30000 ? 0 : 3000; // 배송비 계산
 
@@ -99,20 +89,24 @@ const PaymentComponent = () => {
     const navigate = useNavigate()
 
     // 체크박스 상태
-    const [checkedValue, setCheckedValue] = useState("custom");
+    const [checkedValue, setCheckedValue] = useState("default");
     // 결제 수단 선택 상태
     const [payment, setPayment] = useState(null)
     // 배송지 직접입력 시 주소 값
-    const [customAdderess, setCustomAddress] = useState({...addrInitState});
+    const [customInput, setCustomInput] = useState({...addrInitState});
+    // 최종 주문 배송지 -> 결제 메소드 요청 정보에 들어가는 주소값
+    const [orderAddress, setOrderAddress] = useState({...addrInitState});
     // 사용자 정보. 기본 배송지 및 보유 적립금에 사용
     // 현재는 기본 배송지 -> 기본 주소 정보 사용. 추후에 기본 배송지 유무 판별 기능 구현
     const [userInfo, setUserInfo] = useState({...userInitState})
 
     // 사용 마일리지 상태
-    const [mileage, setMileage] = useState("");
+    const [mileage, setMileage] = useState(0);
+    const [result, setResult] = useState(0);
 
     // 컴포넌트 렌더링 시 로그인한 유저 정보 불러옴 -> 마일리지 적용, 기본 배송지 출력
     useEffect(() => {
+        // 유저 정보 가져오는 함수
         const fetchMyInfo = async () => {
             try {
                 const myInfo = await mypageInfo()
@@ -122,6 +116,12 @@ const PaymentComponent = () => {
                 } else {
                     setUserInfo(myInfo)
                     console.log(myInfo)
+                    setOrderAddress({
+                        name: myInfo.name,
+                        mobileNo: myInfo.mobileNo,
+                        postNo: myInfo.postNo,
+                        address: myInfo.address,
+                    });
                 }
             } catch (error) {
                 if (error.response) {
@@ -143,6 +143,26 @@ const PaymentComponent = () => {
         fetchMyInfo();
     }, []);
 
+    useEffect(() => {
+        if (checkedValue === "default"){
+            setOrderAddress((prevState) => ({
+                ...prevState,
+                name: userInfo.name,
+                mobileNo: userInfo.mobileNo,
+                postNo: userInfo.postNo,
+                address: userInfo.address
+            }))
+        } else if (checkedValue === "custom") {
+            setOrderAddress((prevState) => ({
+                ...prevState,
+                name: customInput.name,
+                mobileNo: customInput.mobileNo,
+                postNo: customInput.postNo,
+                address: customInput.address
+            }))
+        }
+    }, [checkedValue, customInput]);
+
     // 우편번호 API
     const handleComplete = (data) => {
         let fullAddress = data.address;
@@ -160,7 +180,7 @@ const PaymentComponent = () => {
         }
 
         // 주소와 우편번호 상태 업데이트
-        setCustomAddress((prevState) => ({
+        setCustomInput((prevState) => ({
             ...prevState,
             address: fullAddress,         // 선택된 주소
             postNo: data.zonecode         // 선택된 우편번호
@@ -179,6 +199,14 @@ const PaymentComponent = () => {
         setCheckedValue(value === checkedValue ? null : value); // 동일한 값 클릭 시 선택 해제
     }
 
+    // 직접입력("custom")시 입력하는 이름, 휴대폰 번호
+    const handleChangeCustom = (e, field) => {
+        setCustomInput((prevState) => ({
+            ...prevState,
+            [field]: e.target.value,
+        }))
+    }
+
     // 결제수단 (카카오페이, 토스페이)
     const handlePayment = (value) => {
         setPayment(value === payment ? null : value);
@@ -187,22 +215,35 @@ const PaymentComponent = () => {
     // 마일리지 입력값 처리
     const handleMileageChange = (e) => {
         const inputValue = e.target.value; // 입력된 값
-        const inputMileage = Number(inputValue); // 숫자로 변환
 
         // 입력값이 비어있으면 0으로 설정
-        if (inputValue === '') {
-            setMileage(0);
-        } else if (isNaN(inputMileage)) {
+        if (isNaN(inputValue)) {
             // 숫자가 아닌 경우 아무것도 하지 않음 (이 경우에는 setMileage를 호출하지 않음)
             return;
-        } else if (inputMileage > userInfo.mileage) {
-            setMileage(userInfo.mileage); // 입력값이 마일리지보다 크면 마일리지로 설정
-        } else if (inputMileage > (totalPrice + shippingCost)) {
-            alert("적립금은 결제 금액을 초과하여 사용할 수 없습니다."); // 알림창 띄우기
-            // 여기서는 입력값을 설정하지 않아서 기본값 유지
-            return; // 입력값이 유효하지 않으므로 함수 종료
+        } else if (inputValue > userInfo.mileage) {
+            setMileage(userInfo.mileage)
+            return;
         } else {
-            setMileage(inputMileage); // 그렇지 않으면 입력값으로 설정
+            setMileage(inputValue); // 그렇지 않으면 입력값으로 설정
+        }
+    };
+
+    const handleCheckMileage = (mileage) => {
+        if (mileage === "" || mileage === null) {
+            setMileage(0)
+        } else if (mileage > (totalPrice + shippingCost)) {
+            alert("적립금은 결제 금액을 초과하여 사용할 수 없습니다."); // 알림창 띄우기
+            setMileage(0)
+        }else if (mileage < 1000 && mileage > 0) {
+            alert("적립금은 1000원 이상부터 사용 가능합니다.")
+        } else {
+            setResult(Number(mileage))
+        }
+    }
+
+    const handleMileageFocus = () => {
+        if(mileage === 0) {
+            setMileage("");
         }
     };
 
@@ -260,6 +301,7 @@ const PaymentComponent = () => {
             },
             async (rsp) => {
                 if (rsp.success === true) {
+                    alert('Payment was successful');
 
                     try {
                         // Call the verifyPayment function to verify the payment
@@ -296,11 +338,11 @@ const PaymentComponent = () => {
                 name: '당근 10kg',
                 amount: 1004,
                 customer_uid: uniqueCustomerId,
-                buyer_email: userInfo.userEmail,
-                buyer_name: userInfo.name,
-                buyer_tel: userInfo.mobileNo,
-                buyer_addr: userInfo.address,
-                buyer_postcode: userInfo.addPostNo,
+                buyer_email: 'klaatus@msn.com',
+                buyer_name: '황재인',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 삼성동',
+                buyer_postcode: '123-456',
             },
             async (rsp) => {
                 if (rsp.success === true) {
@@ -339,6 +381,7 @@ const PaymentComponent = () => {
     // 주문하기 버튼 클릭 시 실행되는 함수 (추후에 배송지 입력 유무 확인 및 유의사항 동의 체크 확인 기능 구현)
     const handlePaymentModal = (payment) => {
         if(payment === null) {
+            console.log(orderAddress)
             alert("결제 수단을 선택해주세요.")
             return;
         }
@@ -442,7 +485,8 @@ const PaymentComponent = () => {
                                     labelProps={{
                                         className: "w-52",
                                     }}
-                                    value={checkedValue === "default" ? userInfo.name : ""}
+                                    onChange={(e) => handleChangeCustom(e,"name")}
+                                    value={checkedValue === "default" ? userInfo.name : customInput.name}
                                     label={"받는분"}/>
                             </div>
                             <div className={"w-72 ml-[-170px]"}>
@@ -450,7 +494,8 @@ const PaymentComponent = () => {
                                     size={"lg"}
                                     className={"w-72"}
                                     label={"휴대폰번호"}
-                                    value={checkedValue === "default" ? userInfo.mobileNo : ""}
+                                    onChange={(e) => handleChangeCustom(e,"mobileNo")}
+                                    value={checkedValue === "default" ? userInfo.mobileNo : customInput.mobileNo}
                                     placeholder={"\"-\"없이 숫자만 입력해주세요"}/>
                             </div>
                         </div>
@@ -460,7 +505,7 @@ const PaymentComponent = () => {
                                     <Input
                                         size={"lg"}
                                         label={"우편번호"}
-                                        value={checkedValue === "default" ? userInfo.postNo : customAdderess.postNo}
+                                        value={checkedValue === "default" ? (userInfo.postNo === null ? "" : userInfo.postNo) : customInput.postNo}
                                         labelProps={{
                                             className: "w-[150px]",
                                         }}
@@ -481,7 +526,7 @@ const PaymentComponent = () => {
                                 <Input
                                     size={"lg"}
                                     className={"w-full"}
-                                    value={checkedValue === "default" ? userInfo.address : customAdderess.address}
+                                    value={checkedValue === "default" ? (userInfo.address === null ? "" : userInfo.address) : customInput.address}
                                     label={"상세주소"}/>
                             </div>
                         </div>
@@ -539,6 +584,8 @@ const PaymentComponent = () => {
                         value={mileage}
 
                         onChange={handleMileageChange} // 입력값 변화에 따라 상태 업데이트
+                        onBlur={() => handleCheckMileage(mileage)}
+                        onFocus={handleMileageFocus}
                     />
                 </div>
             </div>
@@ -578,13 +625,13 @@ const PaymentComponent = () => {
                             -
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
-                            {mileage.toLocaleString()===""?0:mileage.toLocaleString()}원
+                            {result.toLocaleString()}원
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             =
                         </td>
                         <th className="px-3 py-3 text-2xl text-center ">
-                            {(totalPrice + shippingCost - mileage).toLocaleString()}원
+                            {(totalPrice + shippingCost - result).toLocaleString() + "원"}
                         </th>
                     </tr>
                     </tbody>
