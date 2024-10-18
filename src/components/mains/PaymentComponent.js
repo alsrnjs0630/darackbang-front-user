@@ -9,6 +9,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 import {API_SERVER_HOST} from "../../apis/host";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
+import {verifyPayment} from "../../apis/PaymentApi";
 
 const PaymentComponent = () => {
     const uniqueCustomerId = uuidv4();
@@ -164,7 +165,7 @@ const PaymentComponent = () => {
             address: fullAddress,         // 선택된 주소
             postNo: data.zonecode         // 선택된 우편번호
         }));
-        console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+        console.log("주소",fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     };
 
     // 우편번호 API 오픈 메소드
@@ -205,7 +206,83 @@ const PaymentComponent = () => {
         }
     };
 
-    const requestKakaoPay = () => {
+    const createProductIds = (items) => {
+        return Object.values(items).map((product) => product.id);
+    };
+
+    const createSingleProductName = (items) => {
+        const totalCount = Object.keys(items).length;
+        const firstProduct = Object.values(items)[0].productName;
+        return totalCount > 1 ? `${firstProduct} 외 ${totalCount - 1}건` : firstProduct;
+    };
+
+    const requestPayment = (payment) => {
+        if (!window.IMP) {
+            alert('Payment module not loaded');
+            return;
+        }
+        const calculatedPrice = (totalPrice + shippingCost) - mileage;
+
+
+        // Generate Product IDs and Product Names
+        const cartItemIds = createProductIds(checkedItems);
+        const productNames = createSingleProductName(checkedItems);
+
+        console.log("상품명:", productNames)
+        console.log("장바구니아이템ID:", cartItemIds)
+
+
+        console.log("페이먼트 유저정보 이름 ",userInfo.name)
+        console.log("페이먼트 유저정보 전화번호",userInfo.mobileNo)
+        console.log("페이먼트 유저정보 주소",userInfo.address)
+        console.log("페이먼트 유저정보 우편번호",userInfo.addPostNo)
+        console.log("페이먼트 유저정보 이메일",userInfo.userEmail)
+
+        if (userInfo.address === null || userInfo.postNo === null) {
+            alert("우편번호와 상세주소를 입력해야 주문할 수 있습니다.")
+            return;
+        }
+
+
+        window.IMP.request_pay(
+            {
+                pg: payment,
+                pay_method: 'card',
+                merchant_uid: uniqueMerchantId,
+                name: productNames,
+                amount: calculatedPrice,
+                customer_uid: uniqueCustomerId,
+                buyer_email: userInfo.userEmail,
+                buyer_name: userInfo.name,
+                buyer_tel: userInfo.mobileNo,
+                buyer_addr: userInfo.address,
+                buyer_postcode: userInfo.postNo,
+            },
+            async (rsp) => {
+                if (rsp.success === true) {
+
+                    try {
+                        // Call the verifyPayment function to verify the payment
+                        const data = await verifyPayment(rsp.imp_uid);
+
+                        if (rsp.imp_uid === data.response.imp_uid) {
+                            alert('결제 성공');
+                        } else {
+                            alert('결제 실패');
+                        }
+                    } catch (error) {
+                        console.error('Error while verifying payment:', error);
+                        alert('결제 실패');
+                    }
+                } else {
+                    alert(`Payment failed: ${rsp.error_msg}`);
+                }
+                console.log(rsp); // Log the response for debugging purposes
+            }
+        );
+    };
+
+    /*const requestTossPay = () => {
         if (!window.IMP) {
             alert('Payment module not loaded');
             return;
@@ -213,17 +290,17 @@ const PaymentComponent = () => {
 
         window.IMP.request_pay(
             {
-                pg: 'kakaopay',
+                pg: 'tosspay',
                 pay_method: 'card',
                 merchant_uid: uniqueMerchantId,
                 name: '당근 10kg',
                 amount: 1004,
                 customer_uid: uniqueCustomerId,
-                buyer_email: 'Iamport@chai.finance',
-                buyer_name: '포트원 기술지원팀',
-                buyer_tel: '010-1234-5678',
-                buyer_addr: '서울특별시 강남구 삼성동',
-                buyer_postcode: '123-456',
+                buyer_email: userInfo.userEmail,
+                buyer_name: userInfo.name,
+                buyer_tel: userInfo.mobileNo,
+                buyer_addr: userInfo.address,
+                buyer_postcode: userInfo.addPostNo,
             },
             async (rsp) => {
                 if (rsp.success === true) {
@@ -257,71 +334,16 @@ const PaymentComponent = () => {
                 console.log(rsp);
             }
         );
-    };
-
-    const requestTossPay = () => {
-        if (!window.IMP) {
-            alert('Payment module not loaded');
-            return;
-        }
-
-        window.IMP.request_pay(
-            {
-                pg: 'tosspay',
-                pay_method: 'card',
-                merchant_uid: uniqueMerchantId,
-                name: '당근 10kg',
-                amount: 1004,
-                customer_uid: uniqueCustomerId,
-                buyer_email: 'klaatus@msn.com',
-                buyer_name: '황재인',
-                buyer_tel: '010-1234-5678',
-                buyer_addr: '서울특별시 강남구 삼성동',
-                buyer_postcode: '123-456',
-            },
-            async (rsp) => {
-                if (rsp.success === true) {
-                    alert('Payment was successful');
-
-                    try {
-                        const ACCESS_TOKEN = localStorage.getItem("accessToken");
-
-                        const header = {
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer ${ACCESS_TOKEN}`
-                            }
-                        };
-
-                        const {data} = await axios.post(`http://localhost:8080/verifyIamport/${rsp.imp_uid}`, {}, header);
-
-
-                        if (rsp.paid_amount === data.response.amount) {
-                            alert('결제 성공');
-                        } else {
-                            alert('결제 실패');
-                        }
-                    } catch (error) {
-                        console.error('Error while verifying payment:', error);
-                        alert('결제 실패');
-                    }
-                } else {
-                    alert(`Payment failed: ${rsp.error_msg}`);
-                }
-                console.log(rsp);
-            }
-        );
-    };
+    };*/
 
     // 주문하기 버튼 클릭 시 실행되는 함수 (추후에 배송지 입력 유무 확인 및 유의사항 동의 체크 확인 기능 구현)
     const handlePaymentModal = (payment) => {
         if(payment === null) {
             alert("결제 수단을 선택해주세요.")
-        } else if(payment === "kakao"){
-            requestKakaoPay()
-        } else if(payment === "toss") {
-            requestTossPay()
+            return;
         }
+
+        requestPayment(payment)
     }
 
     return (
@@ -472,17 +494,17 @@ const PaymentComponent = () => {
                     <div className={"mt-5 flex flex-col"}>
                         <Button
                             className={"text-blue-gray-900"}
-                            variant={payment === "kakao" ? "filled" : "outlined"}
+                            variant={payment === "kakaopay" ? "filled" : "outlined"}
                             color={"yellow"}
-                            onClick={() => handlePayment("kakao")}
+                            onClick={() => handlePayment("kakaopay")}
                         >
                             카카오페이
                         </Button>
                         <Button
                             className={"mt-5"}
-                            variant={payment === "toss" ? "filled" : "outlined"}
+                            variant={payment === "tosspay" ? "filled" : "outlined"}
                             color={"blue"}
-                            onClick={() => handlePayment("toss")}
+                            onClick={() => handlePayment("tosspay")}
                         >
                             토스페이
                         </Button>
