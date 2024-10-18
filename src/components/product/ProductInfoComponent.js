@@ -1,6 +1,6 @@
 import React from "react";
 import {useState, useEffect} from "react";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {getOne} from "../../apis/ProductApi"
 import {addToCart} from "../../apis/CartApi";
 import Modal from 'react-modal';
@@ -9,6 +9,7 @@ import {API_SERVER_HOST} from "../../apis/host";
 
 import {Button, Carousel} from "@material-tailwind/react";
 import {logoutPost} from "../../apis/MemberApi";
+import {useSelector} from "react-redux";
 
 const initState ={
     id: "",
@@ -125,14 +126,34 @@ const ProductInfoComponent = () => {
         return (value === "null" || value === null || value === undefined) ? '해당사항 없음' : value;
     };
 
+    const loginState = useSelector(state => state.loginState)
+
+    // 바로구매 버튼 클릭 시 결제 페이지로 이동
+    const navigate = useNavigate();
+
+    const moveToPath = (path) => {
+        navigate(path, { state: { } });
+    };
+
+    // 바로구매 추가 함수
+    const handleBuyNow = () => {
+
+        {loginState === "비회원" ? (
+            alert("로그인 후 이용할 수 있습니다.")
+        ) : moveToPath("/payment");}
+
+    };
+
     // 장바구니 추가 함수
-    const handleAddToCart = () => {
+    const handleCart = () => {
         const cartItem = {
             id: id, // 상품 ID (ProductDTO의 정보임)
             quantity: quantity // 주문 수량 (ProductDTO의 정보임)
         };
 
-        addToCart(cartItem)
+        {loginState === "비회원" ? (
+            alert("로그인 후 이용할 수 있습니다.")
+        ) : addToCart(cartItem)
             .then(response => {
                 setModalMessage('장바구니에 추가되었습니다');
                 setModalIsOpen(true);
@@ -149,7 +170,7 @@ const ProductInfoComponent = () => {
                     console.log("장바구니 추가 중 오류 발생:", err)
                     alert("장바구니 추가 중 오류 발생!");
                 }
-            });
+            }); }
     };
 
     const closeModal = () => {
@@ -226,10 +247,10 @@ const ProductInfoComponent = () => {
                     </div>
                     <br/>
                     <div className="flex gap-8 justify-center">
-                        <Button className="w-[170px] h-[70px] text-2xl rounded-xl">
+                        <Button className="w-[170px] h-[70px] text-2xl rounded-xl" onClick={handleBuyNow}>
                             바로구매
                         </Button>
-                        <Button className="w-[170px] h-[70px] text-2xl rounded-xl" onClick={handleAddToCart}>
+                        <Button className="w-[170px] h-[70px] text-2xl rounded-xl" onClick={handleCart}>
                             장바구니
                         </Button>
 
