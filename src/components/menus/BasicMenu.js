@@ -9,13 +9,14 @@ import {Link, useNavigate} from "react-router-dom";
 import {FaShoppingCart, FaUserCircle} from "react-icons/fa";
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutPost} from "../../apis/MemberApi";
+import useExeptionHandler from "../../hooks/useExeptionHandler";
 
 export function StickyNavbar() {
     const loginState = useSelector(state => state.loginState)
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const [searchValue, setSearchValue] = useState("");
+    const {exceptionHandle} = useExeptionHandler();
 
     // 컴포넌트가 마운트될 때 로그인 상태 초기화
     useEffect(() => {
@@ -39,8 +40,10 @@ export function StickyNavbar() {
 
             })
             .catch((error) => {
+                exceptionHandle(error)
+                /*
                 console.log("에러 발생:", error)
-                alert("예상하지 못한 오류가 발생했습니다. 다시 시도해주세요.")
+                alert("예상하지 못한 오류가 발생했습니다. 다시 시도해주세요.")*/
             })
     }
 

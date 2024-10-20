@@ -8,6 +8,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {emailCk, joinPost} from "../apis/MemberApi";
 import { useDaumPostcodePopup } from "react-daum-postcode";
+import useExeptionHandler from "../hooks/useExeptionHandler";
 
 // 회원가입 form 초기값
 const initState = {
@@ -24,15 +25,22 @@ const initState = {
 }
 
 export function SimpleRegistrationForm() {
+    // 회원가입 요청 데이터
     const [joinParam, setJoinParam] = useState({...initState})
+    // 비밀번호 유효성 검사 메세지
     const [passwordMessage, setPasswordMessage] = useState()
+    // 비밀번호 확인
     const [pwCheck, setPwCheck] = useState('')
+    // 페이지 이동 함수
     const navigator = useNavigate()
+    // 예외처리 핸들러
+    const {exceptionHandle} = useExeptionHandler();
 
     // 다음 우편번호 팝업
     const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
     const open = useDaumPostcodePopup(scriptUrl);
 
+    // 우편번호 검색 후 등록 메소드
     const handleComplete = (data) => {
         let fullAddress = data.address;
         let extraAddress = '';
@@ -57,21 +65,25 @@ export function SimpleRegistrationForm() {
         console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     };
 
+    // 경로 이동
     const moveToPath = (path) => {
         navigator({pathname: path}, {replace: true})
     }
 
+    // 우편번호 모달창 오픈 메소드
     const handleSearch = () => {
         console.log("오픈")
         open({onComplete: handleComplete});
     }
 
+    // 회원가입 양식 입력값 업데이트
     const handleChange = (e) => {
         joinParam[e.target.name] = e.target.value
         joinParam["ageGroup"] = calcAgeGroup()
         setJoinParam({...joinParam})
     }
 
+    // 비밀번호 확인 입력값 업데이트
     const handlePwCheckChange = (e) => {
         setPwCheck(e.target.value)
 
@@ -108,6 +120,7 @@ export function SimpleRegistrationForm() {
         }
     }
 
+    // 회원가입 메소드
     const handleClickJoin = () => {
         joinPost(joinParam)
             .then(data => {
@@ -121,17 +134,11 @@ export function SimpleRegistrationForm() {
                 }
             })
             .catch(error => {
-                // 에러가 네트워크 문제인지, 서버의 응답 문제인지 확인
-                if (error.response || error.request) {
-                    // 서버로부터의 응답이 있는 경우 (4xx, 5xx 등의 HTTP 오류)
-                    // 네트워크 에러가 발생한 경우
-                    console.log("Server responded with an error:", error);
-                    alert("회원가입에 실패했습니다. 잠시후 다시 시도해주세요.");
-                }
+                exceptionHandle(error)
             })
     }
 
-    // 이메일 중복확인 및 유효성 검사
+    // 이메일 중복확인 및 정규식 검사
     const handleEmailCheck = () => {
         const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
@@ -159,6 +166,7 @@ export function SimpleRegistrationForm() {
         }
     };
 
+    // 비밀번호 정규식 검사
     const handlePasswordCheck = () => {
         const regPassword =  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
@@ -173,6 +181,7 @@ export function SimpleRegistrationForm() {
         }
     }
 
+    // 이용약관
     const termsText = `
         개인정보 수집 동의(다락방) 
         - - 수집하는 개인정보의 항목 : 이메일, 패스워드, 이름, 성별, 생년월일, 휴대전화번호, 구매거래내역, 적립금 내역
