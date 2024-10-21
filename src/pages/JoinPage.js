@@ -7,7 +7,7 @@ import {
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {emailCk, joinPost} from "../apis/MemberApi";
-import { useDaumPostcodePopup } from "react-daum-postcode";
+import {useDaumPostcodePopup} from "react-daum-postcode";
 import useExeptionHandler from "../hooks/useExeptionHandler";
 
 // 회원가입 form 초기값
@@ -99,7 +99,7 @@ export function SimpleRegistrationForm() {
     // 생년월일 유효성 검사는 나중에 추가할지 말지 결정
     // 연령대 계산 메서드
     const calcAgeGroup = (birthday = joinParam["birthDay"]) => {
-        if(birthday === null){
+        if (birthday === null) {
             return 0
         } else {
             // birthDay 형식: "yyyyMMdd" (예: "19980630")
@@ -140,7 +140,7 @@ export function SimpleRegistrationForm() {
                 alert("이메일 형식에 맞게 정확히 입력해주세요. (예)darackbang@test.com");
             } else {
                 // 이메일 형식이 맞으면 바로 이메일 체크 요청
-                emailCk({ userEmail: joinParam.userEmail })
+                emailCk({userEmail: joinParam.userEmail})
                     .then(data => {
                         console.log(data);
                         console.log(joinParam.userEmail);
@@ -158,12 +158,12 @@ export function SimpleRegistrationForm() {
 
     // 비밀번호 정규식 검사
     const handlePassword = () => {
-        const regPassword =  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+        const regPassword = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
-        if(!joinParam.password){
+        if (!joinParam.password) {
             setPasswordMessage("비밀번호를 입력해주세요.")
         } else {
-            if(!regPassword.test(joinParam.password)) {
+            if (!regPassword.test(joinParam.password)) {
                 setPasswordMessage("비밀번호는 영문 8자 이상 숫자 1개 이상 + 특수문자 1개 이상으로 조합해주세요")
                 setPasswordCheck(false)
             } else {
@@ -215,26 +215,29 @@ export function SimpleRegistrationForm() {
             alert("주소를 입력해주세요")
             return false;
         }
+        return true;
     }
 
     // 회원가입 메소드
     const handleClickJoin = () => {
         if (!RequiredCheckHandle()) {
             return;  // 필수 입력 조건을 만족하지 않으면 joinPost 실행하지 않음
+        } else {
+            joinPost(joinParam)
+                .then(data => {
+                    console.log(data)
+                    if (data.RESULT === "SUCCESS") {
+                        alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+                        moveToPath("/login");
+                    } else {
+                        alert("입력하신 내용을 다시 한 번 확인해주세요.");
+                    }
+                })
+                .catch(error => {
+                    exceptionHandle(error)
+                })
         }
-        joinPost(joinParam)
-            .then(data => {
-                console.log(data)
-                if (data.RESULT === "SUCCESS") {
-                    alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
-                    moveToPath("/login");
-                } else {
-                    alert("입력하신 내용을 다시 한 번 확인해주세요.");
-                }
-            })
-            .catch(error => {
-                exceptionHandle(error)
-            })
+
     }
 
     // 이용약관

@@ -298,7 +298,7 @@ const PaymentComponent = () => {
                 if (rsp.success) {
                     await verifyPayment(rsp.imp_uid, cartItemIds)
                         .then(data => {
-                            if (data && data.response && rsp.imp_uid === data.response.impUid) {
+                            if ( data.RESULT === "SUCCESS") {
                                 console.log(data)
                                 console.log(data.response)
                                 alert('결제 성공');
@@ -319,62 +319,6 @@ const PaymentComponent = () => {
             }
         );
     };
-
-
-
-    /*const requestTossPay = () => {
-        if (!window.IMP) {
-            alert('Payment module not loaded');
-            return;
-        }
-
-        window.IMP.request_pay(
-            {
-                pg: 'tosspay',
-                pay_method: 'card',
-                merchant_uid: uniqueMerchantId,
-                name: '당근 10kg',
-                amount: 1004,
-                customer_uid: uniqueCustomerId,
-                buyer_email: 'klaatus@msn.com',
-                buyer_name: '황재인',
-                buyer_tel: '010-1234-5678',
-                buyer_addr: '서울특별시 강남구 삼성동',
-                buyer_postcode: '123-456',
-            },
-            async (rsp) => {
-                if (rsp.success === true) {
-                    alert('Payment was successful');
-
-                    try {
-                        const ACCESS_TOKEN = localStorage.getItem("accessToken");
-
-                        const header = {
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer ${ACCESS_TOKEN}`
-                            }
-                        };
-
-                        const {data} = await axios.post(`http://localhost:8080/api/payments/verifyIamport/${rsp.imp_uid}`, {}, header);
-
-
-                        if (rsp.paid_amount === data.response.amount) {
-                            alert('결제 성공');
-                        } else {
-                            alert('결제 실패');
-                        }
-                    } catch (error) {
-                        console.error('Error while verifying payment:', error);
-                        alert('결제 실패');
-                    }
-                } else {
-                    alert(`Payment failed: ${rsp.error_msg}`);
-                }
-                console.log(rsp);
-            }
-        );
-    };*/
 
     // 주문하기 버튼 클릭 시 실행되는 함수 (추후에 배송지 입력 유무 확인 및 유의사항 동의 체크 확인 기능 구현)
     const handlePaymentModal = (payment) => {

@@ -11,20 +11,17 @@ export const verifyPayment = async (impUid, cartItemIds) => {
         }
     };
 
+    console.log("요청 정보: ",impUid, cartItemIds, ACCESS_TOKEN)
     try {
         console.log('Payment verification request for imp_uid:', impUid); // Check the payment UID log
         // Send a POST request to verify the payment with the imp_uid
-        const res = await axios.post(`${prefix}/verifyIamport/${impUid}`,{cartItemIds}, header);
-
+        const res = await axios.post(`${prefix}/verifyIamport/${impUid}`,cartItemIds, header);
+        console.log("결과: ", res)
         // Check if the imp_uid matches the server response
-        if (res.data.response.status === "paid") {
-            return res.data;
-        } else {
-            alert('Payment amount mismatch. Payment failed.');
-            throw new Error('Payment amount mismatch.');
-        }
+       return res.data
     } catch (error) {
         alert('Payment verification failed');
+        console.log("에러: ", error)
         throw error; // 필요에 따라 상위로 재던짐
     }
 };
