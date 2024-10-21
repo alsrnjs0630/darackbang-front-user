@@ -3,7 +3,7 @@ import {API_SERVER_HOST} from "./host";
 const ACCESS_TOKEN = localStorage.getItem("accessToken");
 const prefix = `${API_SERVER_HOST}/api/payments`;
 
-export const verifyPayment = async (impUid) => {
+export const verifyPayment = async (impUid, cartItemIds) => {
     const header = {
         headers: {
             "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export const verifyPayment = async (impUid) => {
     try {
         console.log('Payment verification request for imp_uid:', impUid); // Check the payment UID log
         // Send a POST request to verify the payment with the imp_uid
-        const res = await axios.post(`${prefix}/verifyIamport/${impUid}`,{}, header);
+        const res = await axios.post(`${prefix}/verifyIamport/${impUid}`,{cartItemIds}, header);
 
         // Check if the imp_uid matches the server response
         if (res.data.response.status === "paid") {

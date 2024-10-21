@@ -296,7 +296,7 @@ const PaymentComponent = () => {
             async (rsp) => {
                 console.log(rsp)
                 if (rsp.success) {
-                    await verifyPayment(rsp.imp_uid)
+                    await verifyPayment(rsp.imp_uid, cartItemIds)
                         .then(data => {
                             if (data && data.response && rsp.imp_uid === data.response.impUid) {
                                 console.log(data)
@@ -319,6 +319,8 @@ const PaymentComponent = () => {
             }
         );
     };
+
+
 
     /*const requestTossPay = () => {
         if (!window.IMP) {
