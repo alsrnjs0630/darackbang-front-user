@@ -4,7 +4,7 @@ import {
     Button,
     Typography, Textarea,
 } from "@material-tailwind/react";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {emailCk, joinPost} from "../apis/MemberApi";
 import { useDaumPostcodePopup } from "react-daum-postcode";
@@ -27,10 +27,18 @@ const initState = {
 export function SimpleRegistrationForm() {
     // 회원가입 요청 데이터
     const [joinParam, setJoinParam] = useState({...initState})
+    // 이메일 중복확인 체크
+    const [emailCheckState, setEmailCheckState] = useState(false)
+    // 비밀번호 입력 체크
+    const [passwordCheck, setPasswordCheck] = useState(false)
     // 비밀번호 유효성 검사 메세지
     const [passwordMessage, setPasswordMessage] = useState()
     // 비밀번호 확인
-    const [pwCheck, setPwCheck] = useState('')
+    const [pwCheckMessage, setPwCheckMessage] = useState()
+    // 비밀번호 확인 상태
+    const [pwCheckState, setPwCheckState] = useState(false)
+    // 비밀번호 확인 입력
+    const [pwCheck, setPwCheck] = useState()
     // 페이지 이동 함수
     const navigator = useNavigate()
     // 예외처리 핸들러
@@ -86,7 +94,6 @@ export function SimpleRegistrationForm() {
     // 비밀번호 확인 입력값 업데이트
     const handlePwCheckChange = (e) => {
         setPwCheck(e.target.value)
-
     }
 
     // 생년월일 유효성 검사는 나중에 추가할지 말지 결정
@@ -120,24 +127,6 @@ export function SimpleRegistrationForm() {
         }
     }
 
-    // 회원가입 메소드
-    const handleClickJoin = () => {
-        joinPost(joinParam)
-            .then(data => {
-                console.log(data)
-
-                if (data.RESULT === "SUCCESS") {
-                    alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
-                    moveToPath("/login");
-                } else {
-                    alert("입력하신 내용을 다시 한 번 확인해주세요.");
-                }
-            })
-            .catch(error => {
-                exceptionHandle(error)
-            })
-    }
-
     // 이메일 중복확인 및 정규식 검사
     const handleEmailCheck = () => {
         const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -159,6 +148,7 @@ export function SimpleRegistrationForm() {
                         if (data.RESULT === "EXIST") {
                             alert("이미 존재하는 이메일입니다.");
                         } else {
+                            setEmailCheckState(true)
                             alert("사용가능한 이메일입니다.");
                         }
                     });
@@ -167,7 +157,7 @@ export function SimpleRegistrationForm() {
     };
 
     // 비밀번호 정규식 검사
-    const handlePasswordCheck = () => {
+    const handlePassword = () => {
         const regPassword =  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
         if(!joinParam.password){
@@ -175,16 +165,81 @@ export function SimpleRegistrationForm() {
         } else {
             if(!regPassword.test(joinParam.password)) {
                 setPasswordMessage("비밀번호는 영문 8자 이상 숫자 1개 이상 + 특수문자 1개 이상으로 조합해주세요")
+                setPasswordCheck(false)
             } else {
                 setPasswordMessage("사용 가능한 비밀번호입니다.")
+                setPasswordCheck(true)
             }
         }
     }
 
+    // 비밀번호 확인 메소드
+    const handlePasswordCheck = () => {
+        // 비밀번호 = 비밀번호 확인
+        if (pwCheck === joinParam.password) {
+            setPwCheckMessage("비밀번호가 일치합니다.")
+            setPwCheckState(true)
+        } else {
+            setPwCheckMessage("비밀번호가 일치하지 않습니다.")
+            setPwCheckState(false)
+        }
+    }
+
+    // 필수 입력사항 체크 메소드
+    const RequiredCheckHandle = () => {
+        if (emailCheckState === false) {
+            alert("이메일 중복확인을 진행해주세요")
+            return false;
+        }
+        if (passwordCheck === false) {
+            alert("비밀번호를 입력해주세요")
+            return false;
+        }
+        if (pwCheckState === false) {
+            alert("비밀번호 확인을 입력해주세요")
+            return false;
+        }
+        if (!joinParam.name) {
+            alert("이름을 입력해주세요")
+            return false;
+        }
+        if (!joinParam.birthDay) {
+            alert("생년월일을 입력해주세요")
+            return false;
+        }
+        if (!joinParam.mobileNo) {
+            alert("휴대폰 번호를 입력해주세요")
+            return false;
+        }
+        if (!joinParam.postNo) {
+            alert("주소를 입력해주세요")
+            return false;
+        }
+    }
+
+    // 회원가입 메소드
+    const handleClickJoin = () => {
+        if (!RequiredCheckHandle()) {
+            return;  // 필수 입력 조건을 만족하지 않으면 joinPost 실행하지 않음
+        }
+        joinPost(joinParam)
+            .then(data => {
+                console.log(data)
+                if (data.RESULT === "SUCCESS") {
+                    alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+                    moveToPath("/login");
+                } else {
+                    alert("입력하신 내용을 다시 한 번 확인해주세요.");
+                }
+            })
+            .catch(error => {
+                exceptionHandle(error)
+            })
+    }
+
     // 이용약관
-    const termsText = `
-        개인정보 수집 동의(다락방) 
-        - - 수집하는 개인정보의 항목 : 이메일, 패스워드, 이름, 성별, 생년월일, 휴대전화번호, 구매거래내역, 적립금 내역
+    const termsText = `개인정보 수집 동의(다락방) 
+        - 수집하는 개인정보의 항목 : 이메일, 패스워드, 이름, 성별, 생년월일, 휴대전화번호, 구매거래내역, 적립금 내역
         - 수집 및 이용 목적 : 서비스 이용에 따른 본인 식별/ 가입연령 확인/ 불량 회원의 부정이용 방지/ 공지사항 전달/ 본인 의사 확인 등을 위한 의사소통 경로 확보
         - 보유 및 이용 기간 : 동의철회 시 혹은 회원 탈퇴 시까지
         * 고객님께서는 개인정보 수집 및 이용 동의에 거부할 수 있습니다. 다만, 거부하는 경우, 회원가입이 불가합니다.
@@ -272,7 +327,7 @@ export function SimpleRegistrationForm() {
                         value={joinParam.password}
                         placeholder="비밀번호 입력"
                         onChange={handleChange}
-                        onBlur={handlePasswordCheck}
+                        onBlur={handlePassword}
                         className="w-[250px] !border-gray-300 focus:!border-gray-900"
                     />
                     {passwordMessage && (
@@ -295,16 +350,16 @@ export function SimpleRegistrationForm() {
                         size="md"
                         placeholder="비밀번호 확인 입력"
                         onChange={handlePwCheckChange}
+                        onBlur={handlePasswordCheck}
                         className="w-full !border-gray-300 focus:!border-gray-900"
                     />
-                    {pwCheck && joinParam.password && (
-                        joinParam.password === pwCheck
-                            ? <Typography variant={"small"} color={"green"}>
-                                비밀번호가 일치합니다.
-                            </Typography>
-                            : <Typography variant={"small"} color={"red"}>
-                                비밀번호가 일치하지 않습니다.
-                            </Typography>
+                    {pwCheckMessage && (
+                        <Typography
+                            variant="small"
+                            color={pwCheckMessage.includes("일치합니다") ? "green" : "red"} // 성공 메시지는 초록색, 실패 메시지는 빨간색
+                        >
+                            {pwCheckMessage}
+                        </Typography>
                     )}
                 </div>
 

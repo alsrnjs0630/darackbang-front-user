@@ -299,6 +299,8 @@ const PaymentComponent = () => {
                     await verifyPayment(rsp.imp_uid)
                         .then(data => {
                             if (data && data.response && rsp.imp_uid === data.response.impUid) {
+                                console.log(data)
+                                console.log(data.response)
                                 alert('결제 성공');
                             } else {
                                 alert('결제 실패: 결제 정보 확인이 필요합니다.');

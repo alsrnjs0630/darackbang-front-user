@@ -70,6 +70,12 @@ export function StickyNavbar() {
         //검색을 하면 상품 리스트로 이동
         navigate('/list')
     };
+
+    const handleOnClickLogo = () => {
+        dispatch({type: 'SET_SEARCH_VALUE', payload: null});
+        setSearchValue("")
+    }
+
     const navList = (
         <ul className="flex ml-10 flex-row items-center gap-10"> {/* 수평 정렬과 간격을 위한 클래스 수정 */}
             <Typography
@@ -110,7 +116,6 @@ export function StickyNavbar() {
         </ul>
     );
 
-
     return (
         <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-y-scroll overflow-x-hidden">
             <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
@@ -120,6 +125,7 @@ export function StickyNavbar() {
                             src='/images/darackbang_logo.png'
                             alt="다락방"
                             className="h-48 w-48"
+                            onClick={handleOnClickLogo}
                         />
                     </Link>
                     <div className="flex items-center gap-4">{navList}</div>

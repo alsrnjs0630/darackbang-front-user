@@ -5,7 +5,8 @@ import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
 import {logoutPost} from "../../apis/MemberApi";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import useExeptionHandler from "../../hooks/useExeptionHandler";
 
 const initState = {
     contents: [],
@@ -26,8 +27,12 @@ const ProductListComponent = () => {
 
     const [serverData, setServerData] = useState(initState)
 
+    const dispatch = useDispatch();
+
     // 상단매뉴에서 입력한 값을 가져 오는 부분
-    const searchValue = useSelector((state) => state.searchValue); 
+    const searchValue = useSelector((state) => state.searchValue);
+    // 예외처리 핸들러
+    const {exceptionHandle} = useExeptionHandler()
 
     useEffect(() => {
         const params = {
@@ -44,20 +49,10 @@ const ProductListComponent = () => {
                 current: currentPage, // current에 현재 페이지 설정
             });
         }).catch(error => {
-            if (error.response) {
-                if (error.response.status === 401){
-                    alert("세션이 만료되었습니다. 로그아웃됩니다.")
-                    logoutPost()
-                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                    window.location.reload();
-                } else {
-                    console.log("error: ", error.response)
-                    alert("상품 정보를 가져오는 중 오류 발생");
-                }
-            }
+                exceptionHandle(error)
         });
     }, [page, size, refresh, searchValue]);
+
 
     return (
         <section className="w-full"> {/* 전체 너비로 설정하고 배경색 추가 */}
