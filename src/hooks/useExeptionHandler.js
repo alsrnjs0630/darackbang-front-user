@@ -25,6 +25,13 @@ const useExeptionHandler = () => {
                 localStorage.removeItem("accessToken")
                 navigate({pathname:"/login"})
             }
+
+            if(errorMsg === "ERROR_USER_NOT_FOUND") {
+                alert("유저 정보가 잘못 되었습니다. 다시 로그인해주세요")
+                localStorage.setItem("loginState", "비회원")
+                localStorage.removeItem("accessToken")
+                navigate({pathname:"/login"})
+            }
         }
     }
     return {exceptionHandle}
