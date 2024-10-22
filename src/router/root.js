@@ -23,6 +23,7 @@ const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
 const ProductInfo = lazy(() => import("../components/product/ProductInfoComponent"))
 const Cart = lazy(() => import("../components/mains/CartComponent"))
+const BuyNow = lazy(() => import("../components/mains/BuyNowComponent"))
 const Payment = lazy(() => import("../components/mains/PaymentComponent"))
 const Privacy = lazy(() => import("../components/mains/PrivacyComponent"))
 
@@ -50,6 +51,10 @@ const root = createBrowserRouter([
             {
                 path: "cart",
                 element: <Suspense fallback={Loading}><Cart/></Suspense>
+            },
+            {
+                path: "/buyNow",
+                element: <Suspense fallback={Loading}><BuyNow/></Suspense>
             },
             {
                 path: "/payment",

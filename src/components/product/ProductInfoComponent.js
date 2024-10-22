@@ -43,14 +43,26 @@ const initState ={
     updatedDate:"",
 }
 
+// 초기 상태 정의
+const buyNowInitstate = {
+    id: '',
+    quantity: 0,
+    productName: '',
+    salePrice: 0,
+    buyNowTotalPrice: 0,
+    productImages: [] // 이미지 배열
+};
+
+
 const ProductInfoComponent = () => {
     const { id } = useParams(); // URL에서 id 가져오기
     console.log(`상품 아이디: ${id}`);
 
-    const [product, setProduct] = useState(initState)
+    const [product, setProduct] = useState({...initState})
     const [infoImages, setInfoImages] = useState([]);
     const [descImages, setDescImages] = useState([]);
     const [quantity, setQuantity] = useState(1); // 수량을 상태로 관리, 기본값 1
+    const [buyNowItem, setBuyNowItem] = useState(buyNowInitstate);   // 바로구매 페이지로 넘길 상품
 
     const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 가시성 상태
     const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
@@ -128,20 +140,42 @@ const ProductInfoComponent = () => {
 
     const loginState = useSelector(state => state.loginState)
 
-    // 바로구매 버튼 클릭 시 결제 페이지로 이동
+    // 바로구매 버튼 클릭 시 결제 페이지로 이동하는 함수
+    const handleBuyNow = () => {
+        setBuyNowItem(prevItem => ({
+            ...prevItem, // 기존의 모든 프로퍼티를 복사
+            id: product.id, // 상품 ID 업데이트
+            quantity: quantity, // 주문 수량 업데이트
+            productName: product.productName, // 상품명 업데이트
+            salePrice: product.salePrice, // 판매 가격 업데이트
+            buyNowTotalPrice: quantity * product.salePrice, // 총 가격 업데이트
+            productImages: product.productImages // 이미지 배열 업데이트
+        }));
+    };
+
+    useEffect(() => {
+        /* setBuyNowItem이 비동기로 동작하기 때문에
+        buyNowItem이 업데이트되기 전에 페이지가 이동할 수 있으므로
+        buyNowItem에 데이터가 저장됐을 때(buyNowItem.length > 0) 이동하게 함 */
+        if (buyNowItem.id) {
+            console.log("바로구매 상품 정보 : ", buyNowItem);
+            if (loginState === "비회원") {
+                alert("로그인 후 이용할 수 있습니다.");
+            } else {
+                moveToPath("/buyNow");  // 로그인된 경우에만 결제 페이지로 이동
+            }
+        }
+    }, [buyNowItem]);
+
+    // 결제 페이지로 정보 넘기기
     const navigate = useNavigate();
 
     const moveToPath = (path) => {
-        navigate(path, { state: { } });
-    };
-
-    // 바로구매 추가 함수
-    const handleBuyNow = () => {
-
-        {loginState === "비회원" ? (
-            alert("로그인 후 이용할 수 있습니다.")
-        ) : moveToPath("/payment");}
-
+        if (quantity === 0) {
+            alert('상품 수량을 입력한 후에 주문 가능합니다.'); // 주문 수량이 없을 때 경고창
+            return;
+        }
+        navigate(path, { state: { buyNowItem } });
     };
 
     // 장바구니 추가 함수
