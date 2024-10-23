@@ -39,6 +39,8 @@ export function SimpleRegistrationForm() {
     const [pwCheckState, setPwCheckState] = useState(false)
     // 비밀번호 확인 입력
     const [pwCheck, setPwCheck] = useState()
+    // 이용약관 상태
+    const [termsOfUseState, setTermsOfUseState] = useState(false)
     // 페이지 이동 함수
     const navigator = useNavigate()
     // 예외처리 핸들러
@@ -185,6 +187,11 @@ export function SimpleRegistrationForm() {
         }
     }
 
+    // 이용약관 상태 업데이트 메소드
+    const handleTermsOfUse = () => {
+        setTermsOfUseState(prevState => !prevState);
+    }
+
     // 필수 입력사항 체크 메소드
     const RequiredCheckHandle = () => {
         if (emailCheckState === false) {
@@ -213,6 +220,10 @@ export function SimpleRegistrationForm() {
         }
         if (!joinParam.postNo) {
             alert("주소를 입력해주세요")
+            return false;
+        }
+        if (!termsOfUseState) {
+            alert("이용약관에 동의해주세요")
             return false;
         }
         return true;
@@ -507,11 +518,16 @@ export function SimpleRegistrationForm() {
                         </Typography>
                     }
                     containerProps={{className: "-ml-2.5"}}
+                    onClick={handleTermsOfUse}
                 />
             </div>
 
             {/* 가입 버튼 */}
-            <Button onClick={handleClickJoin}
+            <Button onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                    handleClickJoin(); // Enter 키를 누르면 회원가입 함수 호출
+                }
+            }}
                     className="mt-4 w-full h-12 bg-blue-500 hover:bg-blue-600 text-white text-sm">
                 회원가입
             </Button>

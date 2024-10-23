@@ -121,7 +121,7 @@ const CartComponent = () => {
                     <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
                         <Card className="h-full w-full">
 
-                            <CardHeader
+                            {/*<CardHeader
                                 floated={false}
                                 shadow={false}
                                 className="mb-2 rounded-none p-2"
@@ -139,7 +139,7 @@ const CartComponent = () => {
                                         </Button>
                                     </div>
                                 </div>
-                            </CardHeader>
+                            </CardHeader>*/}
 
                             <table className="w-full min-w-max table-auto">
                                 <thead>

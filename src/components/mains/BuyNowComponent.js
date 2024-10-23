@@ -8,7 +8,7 @@ import {logoutPost, mypageInfo} from "../../apis/MemberApi";
 import {useNavigate, useLocation} from "react-router-dom";
 import {API_SERVER_HOST} from "../../apis/host";
 import {v4 as uuidv4} from 'uuid';
-import {verifyPayment} from "../../apis/PaymentApi";
+import {buynowPayment, verifyPayment} from "../../apis/PaymentApi";
 
 const BuyNowComponent = () => {
     const uniqueCustomerId = uuidv4();
@@ -259,13 +259,7 @@ const BuyNowComponent = () => {
         }
         const calculatedPrice = (buyNowItem.buyNowTotalPrice + shippingCost) - mileage;
 
-
-        // Generate Product IDs and Product Names
-        const cartItemIds = createProductIds(buyNowItem);
-        const productNames = createSingleProductName(buyNowItem);
-
-        console.log("상품명:", productNames)
-        console.log("장바구니아이템ID:", cartItemIds)
+        console.log("구매할 상품 정보 : ", buyNowItem)
 
         console.log("페이먼트 유저정보 이름 ", userInfo.name)
         console.log("페이먼트 유저정보 전화번호", userInfo.mobileNo)
@@ -278,7 +272,7 @@ const BuyNowComponent = () => {
                 pg: payment,
                 pay_method: 'card',
                 merchant_uid: uniqueMerchantId,
-                name: productNames,
+                name: buyNowItem.productName,
                 amount: calculatedPrice,
                 customer_uid: uniqueCustomerId,
                 buyer_email: userInfo.userEmail,
@@ -291,12 +285,13 @@ const BuyNowComponent = () => {
             async (rsp) => {
                 console.log(rsp)
                 if (rsp.success) {
-                    await verifyPayment(rsp.imp_uid, cartItemIds)
+                    await buynowPayment(rsp.imp_uid, buyNowItem.id, buyNowItem.quantity)
                         .then(data => {
                             if ( data.RESULT === "SUCCESS") {
                                 console.log(data)
                                 console.log(data.response)
                                 alert('결제 성공');
+
                             } else {
                                 alert('결제 실패: 결제 정보 확인이 필요합니다.');
                             }

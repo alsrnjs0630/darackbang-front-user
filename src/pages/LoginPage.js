@@ -166,6 +166,11 @@ const LoginPage = ({loginState, setLoginState}) => {
                     <div className="mt-2">
                         <input id="email" name="userEmail" type="text" value={loginParam.userEmail} required
                                onChange={handleChange}
+                               onKeyDown={(e) => {
+                                   if(e.key === "Enter") {
+                                       handleClickLogin();
+                                   }
+                               }}
                                className="block w-full rounded-md border-0 py-1.5 pl-3 pr-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                     </div>
                 </div>
@@ -266,6 +271,11 @@ const LoginPage = ({loginState, setLoginState}) => {
                         <input id="password" name="password" type="password" value={loginParam.password}
                                autoComplete="current-password"
                                required onChange={handleChange}
+                               onKeyDown={(e) => {
+                                   if(e.key === "Enter") {
+                                       handleClickLogin();
+                                   }
+                               }}
                                className="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                     </div>
                 </div>
