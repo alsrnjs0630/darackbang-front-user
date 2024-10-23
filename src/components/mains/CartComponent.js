@@ -41,7 +41,16 @@ const CartComponent = () => {
     const handleDeleteItem = async (id) => {
         try {
             await deleteCartItem(id); // 삭제 요청
-            setCartItems(prevItems => prevItems.filter(item => item.id !== id)); // 상태 업데이트
+
+            // 상태 업데이트: 삭제된 아이템을 장바구니에서 제거
+            setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+
+            // 삭제된 아이템이 체크된 상태에서도 제거
+            setCheckedItems(prevChecked => {
+                const updatedCheckedItems = { ...prevChecked };
+                delete updatedCheckedItems[id]; // 삭제된 상품 체크 해제
+                return updatedCheckedItems;
+            });
         } catch (error) {
             console.error("장바구니 아이템 삭제 중 오류 발생:", error);
         }
