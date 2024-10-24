@@ -301,6 +301,7 @@ const PaymentComponent = () => {
                                 console.log(data)
                                 console.log(data.response)
                                 alert('결제 성공');
+                                window.location.href = '/'; // 메인 페이지로 이동
                             } else {
                                 alert('결제 실패: 결제 정보 확인이 필요합니다.');
                             }
