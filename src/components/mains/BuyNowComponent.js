@@ -284,8 +284,9 @@ const BuyNowComponent = () => {
 
             async (rsp) => {
                 console.log(rsp)
+                const mileage = Math.ceil(buyNowItem.buyNowTotalPrice * 0.01)
                 if (rsp.success) {
-                    await buynowPayment(rsp.imp_uid, buyNowItem.id, buyNowItem.quantity)
+                    await buynowPayment(rsp.imp_uid, buyNowItem.id, buyNowItem.quantity, mileage, result)
                         .then(data => {
                             if ( data.RESULT === "SUCCESS") {
                                 console.log(data)

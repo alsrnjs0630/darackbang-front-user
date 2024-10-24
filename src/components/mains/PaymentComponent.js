@@ -98,7 +98,6 @@ const PaymentComponent = () => {
     // 사용자 정보. 기본 배송지 및 보유 적립금에 사용
     // 현재는 기본 배송지 -> 기본 주소 정보 사용. 추후에 기본 배송지 유무 판별 기능 구현
     const [userInfo, setUserInfo] = useState({...userInitState})
-
     // 사용 마일리지 상태
     const [mileage, setMileage] = useState(0);
     const [result, setResult] = useState(0);
@@ -294,8 +293,11 @@ const PaymentComponent = () => {
 
             async (rsp) => {
                 console.log(rsp)
+                const mileage = Math.ceil(totalPrice * 0.01);
+                console.log("적립된 마일리지 : ", mileage)
+                console.log("사용 마일리지 : ", result)
                 if (rsp.success) {
-                    await verifyPayment(rsp.imp_uid, cartItemIds)
+                    await verifyPayment(rsp.imp_uid, cartItemIds, mileage, result)
                         .then(data => {
                             if ( data.RESULT === "SUCCESS") {
                                 console.log(data)
