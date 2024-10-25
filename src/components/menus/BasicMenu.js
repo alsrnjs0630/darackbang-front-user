@@ -28,6 +28,22 @@ export function StickyNavbar() {
         }
     }, [dispatch]);
 
+    // 페이지가 변경될 때 검색어 초기화 및 이벤트 컴포넌트와 상품목록 컴포넌트 렌더링
+    useEffect(() => {
+        const handlePopState = () => {
+            const currentUrl = window.location.href;
+            if (currentUrl === "http://localhost:3000/") {
+                setSearchValue(""); // 검색어 초기화
+                dispatch({ type: 'SET_SEARCH_VALUE', payload: null }); // Redux에서 검색어 초기화
+            }
+        };
+
+        window.addEventListener("popstate", handlePopState);
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+    }, [dispatch]);
+
     const handleLogoutClick = () => {
         logoutPost()
             .then(status => {
@@ -65,15 +81,19 @@ export function StickyNavbar() {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault(); // 이벤트 막기
+        if (!searchValue.trim()) { // 검색어가 비어있는지 확인
+            return; // 빈 경우 아무 동작도 하지 않음
+        }
         //디스페처를 동한 값 설정
         dispatch({type: 'SET_SEARCH_VALUE', payload: searchValue});
         //검색을 하면 상품 리스트로 이동
-        navigate('/list')
+        navigate(`/list?search=${encodeURIComponent(searchValue)}`); // 쿼리 파라미터를 사용하여 검색어 전달
     };
 
     const handleOnClickLogo = () => {
         dispatch({type: 'SET_SEARCH_VALUE', payload: null});
-        setSearchValue("")
+        setSearchValue(""); // 검색어 초기화
+        navigate("/"); // 기본 페이지로 이동
     }
 
     const navList = (
@@ -120,11 +140,11 @@ export function StickyNavbar() {
         <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-y-scroll overflow-x-hidden">
             <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
                 <div className="flex mt-4 items-center justify-start text-blue-gray-900"> {/* justify-start로 왼쪽 정렬 */}
-                    <Link href="" className="mr-4 cursor-pointer py-1.5">
+                    <Link href="/" className="mr-4 cursor-pointer py-1.5">
                         <img
                             src='/images/darackbang_logo.png'
                             alt="다락방"
-                            className="h-48 w-48"
+                            className="max-w-48 h-auto"
                             onClick={handleOnClickLogo}
                         />
                     </Link>

@@ -19,9 +19,11 @@ const Loading = <div className="text-center">
 const Home = lazy(() => import("../pages/HomePage"))
 const Main = lazy(() => import("../pages/MainPage"))
 const Brand = lazy(() => import("../components/mains/BrandComponent"))
+const Company = lazy(() => import("../components/mains/CompanyComponent"))
 const Login = lazy(() => import("../pages/LoginPage"))
 const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
+const ProductList = lazy(() => import("../components/mains/ProductListComponent"))
 const ProductInfo = lazy(() => import("../components/mains/ProductInfoComponent"))
 const Cart = lazy(() => import("../components/mains/CartComponent"))
 const BuyNow = lazy(() => import("../components/mains/BuyNowComponent"))
@@ -39,12 +41,20 @@ const root = createBrowserRouter([
                 element: <Suspense fallback={Loading}><Main/></Suspense>
             },
             {
+                path: "/list",
+                element: <Suspense fallback={Loading}><ProductList/></Suspense>
+            },
+            {
                 path: "/read/:id",
                 element: <Suspense fallback={Loading}><ProductInfo/></Suspense>
             },
             {
                 path: "brand",
                 element: <Suspense fallback={Loading}><Brand/></Suspense>
+            },
+            {
+                path: "company",
+                element: <Suspense fallback={Loading}><Company/></Suspense>
             },
             {
                 path: "/mypage/info",

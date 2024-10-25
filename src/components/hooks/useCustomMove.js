@@ -40,14 +40,6 @@ const useCustomMove = () => {
         setRefresh(!refresh);
     };
 
-    const moveToModify = (num) => {
-        console.log(queryDefault)
-        navigate({
-            pathname: `../modify/${num}`,
-            search: queryDefault
-        })
-    }
-
     const moveToRead = (num) => {
         console.log(queryParams)
         console.log("아이디------------>",num)
@@ -57,14 +49,7 @@ const useCustomMove = () => {
         })
     }
 
-    const moveToCreate = () => {
-
-        navigate({
-            pathname: `../create`,
-        })
-    }
-
-    return {moveToList, moveToModify, moveToRead, moveToCreate, page, size, refresh}
+    return {moveToList, moveToRead, page, size, refresh}
 }
 
 export default useCustomMove

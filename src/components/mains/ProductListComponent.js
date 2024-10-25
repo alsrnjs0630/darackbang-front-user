@@ -4,7 +4,7 @@ import {getList} from "../../apis/ProductApi";
 import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import useExeptionHandler from "../../hooks/useExeptionHandler";
 
 const initState = {
@@ -25,8 +25,6 @@ const ProductListComponent = () => {
     const {page, size, refresh, moveToList, moveToRead} = useCustomMove()
 
     const [serverData, setServerData] = useState(initState)
-
-    const dispatch = useDispatch();
 
     // 상단매뉴에서 입력한 값을 가져 오는 부분
     const searchValue = useSelector((state) => state.searchValue);
