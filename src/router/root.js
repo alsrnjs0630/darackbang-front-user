@@ -17,15 +17,17 @@ const Loading = <div className="text-center">
 </div>
 
 const Home = lazy(() => import("../pages/HomePage"))
-const Product = lazy(() => import("../components/product/ProductListComponent"))
+const Main = lazy(() => import("../pages/MainPage"))
+const Brand = lazy(() => import("../components/mains/BrandComponent"))
 const Login = lazy(() => import("../pages/LoginPage"))
 const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
-const ProductInfo = lazy(() => import("../components/product/ProductInfoComponent"))
+const ProductInfo = lazy(() => import("../components/mains/ProductInfoComponent"))
 const Cart = lazy(() => import("../components/mains/CartComponent"))
 const BuyNow = lazy(() => import("../components/mains/BuyNowComponent"))
 const Payment = lazy(() => import("../components/mains/PaymentComponent"))
 const Privacy = lazy(() => import("../components/mains/PrivacyComponent"))
+const Event = lazy(() => import("../components/mains/EventComponent"))
 
 const root = createBrowserRouter([
     {
@@ -34,19 +36,19 @@ const root = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <Navigate replace to="list"/>
+                element: <Suspense fallback={Loading}><Main/></Suspense>
             },
             {
-                path: "list",
-                element: <Suspense fallback={Loading}><Product/></Suspense>
+                path: "/read/:id",
+                element: <Suspense fallback={Loading}><ProductInfo/></Suspense>
+            },
+            {
+                path: "brand",
+                element: <Suspense fallback={Loading}><Brand/></Suspense>
             },
             {
                 path: "/mypage/info",
                 element: <Suspense fallback={Loading}><MyInfo/></Suspense>
-            },
-            {
-                path: "/read/:id",
-                element: <Suspense fallback={Loading}><ProductInfo /></Suspense>
             },
             {
                 path: "cart",
@@ -63,6 +65,10 @@ const root = createBrowserRouter([
             {
                 path: "privacy",
                 element: <Suspense fallback={Loading}><Privacy/></Suspense>
+            },
+            {
+                path: "/event",
+                element: <Suspense fallback={Loading}><Event/></Suspense>
             }
         ]
     },

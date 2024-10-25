@@ -255,7 +255,7 @@ const CartComponent = () => {
                                         )}
 
                                         <div className="text-xs font-normal text-gray-500 dark:text-gray-400">
-                                            30,000원 이상 구매시 무료 배송
+                                            30,000원 이상 구매 시 무료 배송
                                         </div>
                                     </div>
 

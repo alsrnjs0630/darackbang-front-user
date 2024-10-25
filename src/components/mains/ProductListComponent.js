@@ -4,7 +4,6 @@ import {getList} from "../../apis/ProductApi";
 import PageComponent from "../common/PageComponent";
 
 import {API_SERVER_HOST} from "../../apis/host";
-import {logoutPost} from "../../apis/MemberApi";
 import {useDispatch, useSelector} from "react-redux";
 import useExeptionHandler from "../../hooks/useExeptionHandler";
 

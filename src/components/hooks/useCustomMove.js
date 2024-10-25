@@ -20,25 +20,25 @@ const useCustomMove = () => {
     const queryDefault = createSearchParams({page, size}).toString()
 
     const moveToList = (pageParam) => {
-        let queryStr = ""
+        let queryStr = "";
 
-        if (pageParam) {
-            //springboot 페이지 0 부터 시작함
-            const pageNum = getNum(pageParam.page, page)
-            const sizeNum = getNum(pageParam.size, size)
-            queryStr = createSearchParams({page: pageNum, size: sizeNum}).toString()
-
+        if (typeof pageParam === 'number') {
+            const pageNum = pageParam;
+            // pageParam이 숫자일 때만 page 파라미터를 사용하고, size가 기본값(12)일 때는 제외
+            queryStr = size !== 12
+                ? createSearchParams({ page: pageNum, size }).toString()
+                : createSearchParams({ page: pageNum }).toString();
         } else {
-            queryStr = queryDefault
+            queryStr = queryDefault;
         }
 
         navigate({
-            pathname: `../list`,
+            pathname: `/`,
             search: queryStr
-        })
+        });
 
-        setRefresh(!refresh)
-    }
+        setRefresh(!refresh);
+    };
 
     const moveToModify = (num) => {
         console.log(queryDefault)
@@ -54,7 +54,6 @@ const useCustomMove = () => {
 
         navigate({
             pathname: `../read/${num}`,
-            search: queryDefault
         })
     }
 
@@ -65,7 +64,7 @@ const useCustomMove = () => {
         })
     }
 
-    return {moveToList, moveToModify, moveToRead,moveToCreate, page, size, refresh}
+    return {moveToList, moveToModify, moveToRead, moveToCreate, page, size, refresh}
 }
 
 export default useCustomMove
