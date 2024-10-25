@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 const useExeptionHandler = () => {
     const navigate = useNavigate();
 
-
     const exceptionHandle = (exception) => {
         console.log("현재 발생 에러: ", exception)
 

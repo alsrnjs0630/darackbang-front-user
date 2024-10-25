@@ -109,6 +109,17 @@ export function StickyNavbar() {
                         브랜드
                     </Typography>
                 </Link>
+            </Typography><Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal text-base"
+            >
+                <Link to={"/event"} className="flex items-center">
+                    <Typography className={"font-semibold"}>
+                        이벤트
+                    </Typography>
+                </Link>
             </Typography>
             <form className="max-w-7xl mx-auto ml-10" onSubmit={handleSearchSubmit}> {/* ml-10 추가로 더 큰 여백 */}
                 <label htmlFor="default-search"

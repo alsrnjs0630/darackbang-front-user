@@ -29,7 +29,7 @@ const Cart = lazy(() => import("../components/mains/CartComponent"))
 const BuyNow = lazy(() => import("../components/mains/BuyNowComponent"))
 const Payment = lazy(() => import("../components/mains/PaymentComponent"))
 const Privacy = lazy(() => import("../components/mains/PrivacyComponent"))
-const Event = lazy(() => import("../components/mains/EventComponent"))
+const Event = lazy(() => import("../components/mains/EventComponents"))
 
 const root = createBrowserRouter([
     {

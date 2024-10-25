@@ -89,7 +89,7 @@ export function SimpleRegistrationForm() {
     // 회원가입 양식 입력값 업데이트
     const handleChange = (e) => {
         joinParam[e.target.name] = e.target.value
-        joinParam["ageGroup"] = calcAgeGroup()
+        joinParam["ageGroup"] = calcAgeGroup();
         setJoinParam({...joinParam})
     }
 
@@ -98,7 +98,27 @@ export function SimpleRegistrationForm() {
         setPwCheck(e.target.value)
     }
 
-    // 생년월일 유효성 검사는 나중에 추가할지 말지 결정
+    // 생년월일 유효성 검사
+    const validateBirthday = (date) => {
+        // 정규 표현식을 사용하여 YYYYMMDD 형식 확인
+        const regex = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/;
+
+        if (!regex.test(date)) {
+            return false; // 형식이 올바르지 않음
+        }
+
+        // Date 객체로 유효성 확인
+        const year = parseInt(date.substring(0, 4), 10);
+        const month = parseInt(date.substring(4, 6), 10);
+        const day = parseInt(date.substring(6, 8), 10);
+
+        const dateObj = new Date(year, month - 1, day); // month는 0부터 시작하므로 -1
+
+        // 날짜가 일치하는지 확인
+        return dateObj.getFullYear() === year &&
+            dateObj.getMonth() === month - 1 &&
+            dateObj.getDate() === day;
+    };
     // 연령대 계산 메서드
     const calcAgeGroup = (birthday = joinParam["birthDay"]) => {
         if (birthday === null) {
@@ -212,6 +232,10 @@ export function SimpleRegistrationForm() {
         }
         if (!joinParam.birthDay) {
             alert("생년월일을 입력해주세요")
+            return false;
+        }
+        if (!validateBirthday(joinParam.birthDay)) {
+            alert("예시와 같게 입력해주세요.")
             return false;
         }
         if (!joinParam.mobileNo) {
@@ -432,7 +456,7 @@ export function SimpleRegistrationForm() {
                             placeholder="20"
                             onChange={handleChange}
                             name="ageGroup"
-                            value={joinParam.ageGroup}
+                            value={isNaN(calcAgeGroup()) ? "" : joinParam.ageGroup}
                             className="w-full !border-gray-300 focus:!border-gray-900"
                             disabled={true}
                         />
@@ -480,6 +504,7 @@ export function SimpleRegistrationForm() {
                             value={joinParam.postNo}
                             className="postcodeInput !border-gray-300 focus:!border-gray-900"
                             onChange={handleChange}
+                            readOnly
                         />
                         <Button className="ml-2 w-20 h-10 text-xs" onClick={handleSearch}>
                             검색
@@ -504,9 +529,10 @@ export function SimpleRegistrationForm() {
             </div>
 
             {/* 이용약관 동의 */}
-            <div className="mt-4 justify-center">
+            <div className="grid grid-cols-1 mt-4">
                 <Textarea
-                    className="h-[250px] !border-gray-300 focus:!border-gray-900" // 높이를 300px로 조정
+                    style={{ height: '250px' }}
+                    className=" !border-gray-300 focus:!border-gray-900" // 높이를 300px로 조정
                     value={termsText.replace(/\n/g, '\n')}
                     readOnly
                 />
@@ -520,17 +546,12 @@ export function SimpleRegistrationForm() {
                     containerProps={{className: "-ml-2.5"}}
                     onClick={handleTermsOfUse}
                 />
+                {/* 가입 버튼 */}
+                <Button onClick={handleClickJoin}
+                        className="mt-4 w-full h-12 bg-blue-500 hover:bg-blue-600 text-white text-sm">
+                    회원가입
+                </Button>
             </div>
-
-            {/* 가입 버튼 */}
-            <Button onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                    handleClickJoin(); // Enter 키를 누르면 회원가입 함수 호출
-                }
-            }}
-                    className="mt-4 w-full h-12 bg-blue-500 hover:bg-blue-600 text-white text-sm">
-                회원가입
-            </Button>
         </div>
     );
 }
