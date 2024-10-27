@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import useCustomMove from "../hooks/useCustomMove";
-import {getList} from "../../apis/ProductApi";
-import PageComponent from "../common/PageComponent";
+import useCustomMove from "../../hooks/useCustomMove";
+import {getList} from "../../../apis/ProductApi";
+import PageComponent from "../../common/PageComponent";
 
-import {API_SERVER_HOST} from "../../apis/host";
+import {API_SERVER_HOST} from "../../../apis/host";
 import {useSelector} from "react-redux";
-import useExeptionHandler from "../../hooks/useExeptionHandler";
+import useExeptionHandler from "../../../hooks/useExeptionHandler";
 
 const initState = {
     contents: [],

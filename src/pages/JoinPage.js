@@ -531,7 +531,7 @@ export function SimpleRegistrationForm() {
             {/* 이용약관 동의 */}
             <div className="grid grid-cols-1 mt-4">
                 <Textarea
-                    style={{ height: '250px' }}
+                    style={{ height: '200px' }}
                     className=" !border-gray-300 focus:!border-gray-900" // 높이를 300px로 조정
                     value={termsText.replace(/\n/g, '\n')}
                     readOnly

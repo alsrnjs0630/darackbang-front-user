@@ -4,13 +4,13 @@ import {
 } from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import {useDaumPostcodePopup} from "react-daum-postcode";
-import {logoutPost, mypageInfo} from "../../apis/MemberApi";
+import {logoutPost, mypageInfo} from "../../../apis/MemberApi";
 import {useNavigate, useLocation} from "react-router-dom";
-import {API_SERVER_HOST} from "../../apis/host";
+import {API_SERVER_HOST} from "../../../apis/host";
 import {v4 as uuidv4} from 'uuid';
-import {verifyPayment} from "../../apis/PaymentApi";
+import {buynowPayment, verifyPayment} from "../../../apis/PaymentApi";
 
-const PaymentComponent = () => {
+const BuyNowComponent = () => {
     const uniqueCustomerId = uuidv4();
     const uniqueMerchantId = uuidv4();
 
@@ -72,17 +72,13 @@ const PaymentComponent = () => {
     const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
     const open = useDaumPostcodePopup(scriptUrl);
 
-    // 장바구니 데이터 수신
+    // 상품 상세정보 데이터 수신
     const location = useLocation();
-    const {checkedItems, totalPrice} = location.state || {
-        checkedItems: {},
-        totalPrice: ''
+    const {buyNowItem} = location.state || {
+        buyNowItem: {}
     }
 
-    const shippingCost = totalPrice >= 30000 ? 0 : 3000; // 배송비 계산
-
-    // checkedItems를 배열로 변환
-    const checkedItemsArray = Object.values(checkedItems);
+    const shippingCost = buyNowItem.buyNowTotalPrice >= 30000 ? 0 : 3000; // 배송비 계산
 
     // 페이지 전환 메소드
     const navigate = useNavigate()
@@ -98,6 +94,7 @@ const PaymentComponent = () => {
     // 사용자 정보. 기본 배송지 및 보유 적립금에 사용
     // 현재는 기본 배송지 -> 기본 주소 정보 사용. 추후에 기본 배송지 유무 판별 기능 구현
     const [userInfo, setUserInfo] = useState({...userInitState})
+
     // 사용 마일리지 상태
     const [mileage, setMileage] = useState(0);
     const [result, setResult] = useState(0);
@@ -229,7 +226,7 @@ const PaymentComponent = () => {
     const handleCheckMileage = (mileage) => {
         if (mileage === "" || mileage === null) {
             setMileage(0)
-        } else if (mileage > (totalPrice + shippingCost)) {
+        } else if (mileage > (buyNowItem.buyNowTotalPrice + shippingCost)) {
             alert("적립금은 결제 금액을 초과하여 사용할 수 없습니다."); // 알림창 띄우기
             setMileage(0)
         } else if (mileage < 1000 && mileage > 0) {
@@ -260,15 +257,9 @@ const PaymentComponent = () => {
             alert('Payment module not loaded');
             return;
         }
-        const calculatedPrice = (totalPrice + shippingCost) - mileage;
+        const calculatedPrice = (buyNowItem.buyNowTotalPrice + shippingCost) - mileage;
 
-
-        // Generate Product IDs and Product Names
-        const cartItemIds = createProductIds(checkedItems);
-        const productNames = createSingleProductName(checkedItems);
-
-        console.log("상품명:", productNames)
-        console.log("장바구니아이템ID:", cartItemIds)
+        console.log("구매할 상품 정보 : ", buyNowItem)
 
         console.log("페이먼트 유저정보 이름 ", userInfo.name)
         console.log("페이먼트 유저정보 전화번호", userInfo.mobileNo)
@@ -281,7 +272,7 @@ const PaymentComponent = () => {
                 pg: payment,
                 pay_method: 'card',
                 merchant_uid: uniqueMerchantId,
-                name: productNames,
+                name: buyNowItem.productName,
                 amount: calculatedPrice,
                 customer_uid: uniqueCustomerId,
                 buyer_email: userInfo.userEmail,
@@ -293,11 +284,9 @@ const PaymentComponent = () => {
 
             async (rsp) => {
                 console.log(rsp)
-                const mileage = Math.ceil(totalPrice * 0.01);
-                console.log("적립된 마일리지 : ", mileage)
-                console.log("사용 마일리지 : ", result)
+                const mileage = Math.ceil(buyNowItem.buyNowTotalPrice * 0.01)
                 if (rsp.success) {
-                    await verifyPayment(rsp.imp_uid, cartItemIds, mileage, result)
+                    await buynowPayment(rsp.imp_uid, buyNowItem.id, buyNowItem.quantity, mileage, result)
                         .then(data => {
                             if ( data.RESULT === "SUCCESS") {
                                 console.log(data)
@@ -373,43 +362,39 @@ const PaymentComponent = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {checkedItemsArray.map((item) => {
-                        return (
-                            <tr className="bg-white dark:bg-gray-800">
-                                <td scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {item.productImages.length > 0 && (
-                                        <img
-                                            src={`${API_SERVER_HOST}/api/products/view/thumbnail_${
-                                                item.productImages
-                                                    .filter(image => image.productType === "INFO")
-                                                    .map(image => image.productFileName)[0]
-                                            }`}
-                                            alt={item.productName}
-                                            className={`w-[60px] items-center aspect-square rounded-lg object-cover`}
-                                        />
-                                    )}
-                                </td>
-                                <td scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {item.productName}
-                                </td>
-                                <td className="py-4 text-right">
-                                    {item.quantity}
-                                </td>
-                                <td className="py-4 text-right">
-                                    {item.productPrice.toLocaleString()}원
-                                </td>
-                            </tr>
-                        );
-                    })}
+                    <tr className="bg-white dark:bg-gray-800">
+                        <td scope="row"
+                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {buyNowItem.productImages.length > 0 && (
+                                <img
+                                    src={`${API_SERVER_HOST}/api/products/view/thumbnail_${
+                                        buyNowItem.productImages
+                                            .filter(image => image.productType === "INFO")
+                                            .map(image => image.productFileName)[0]
+                                    }`}
+                                    alt={buyNowItem.productName}
+                                    className={`w-[60px] items-center aspect-square rounded-lg object-cover`}
+                                />
+                            )}
+                        </td>
+                        <td scope="row"
+                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {buyNowItem.productName}
+                        </td>
+                        <td className="py-4 text-right">
+                            {buyNowItem.quantity}
+                        </td>
+                        <td className="py-4 text-right">
+                            {buyNowItem.buyNowTotalPrice.toLocaleString()}원
+                        </td>
+                    </tr>
                     </tbody>
                     <tfoot>
                     <tr className="font-semibold text-gray-900">
                         <td scope="row" className="px-6 py-3 text-base">Total</td>
                         <td></td>
                         <td></td>
-                        <td className="py-3 text-right">{totalPrice.toLocaleString()}원</td>
+                        <td className="py-3 text-right">{buyNowItem.buyNowTotalPrice.toLocaleString()}원</td>
                     </tr>
                     </tfoot>
                 </table>
@@ -576,7 +561,7 @@ const PaymentComponent = () => {
                     <tbody>
                     <tr className="bg-white dark:bg-gray-800">
                         <th className="px-3 py-3 text-2xl text-center">
-                            {totalPrice.toLocaleString()}원
+                            {buyNowItem.buyNowTotalPrice.toLocaleString()}원
                         </th>
                         <td className={"text-3xl text-center text-green-300 font-bold"}>
                             +
@@ -594,7 +579,7 @@ const PaymentComponent = () => {
                             =
                         </td>
                         <th className="px-3 py-3 text-2xl text-center ">
-                            {(totalPrice + shippingCost - result).toLocaleString() + "원"}
+                            {(buyNowItem.buyNowTotalPrice + shippingCost - result).toLocaleString() + "원"}
                         </th>
                     </tr>
                     </tbody>
@@ -610,4 +595,4 @@ const PaymentComponent = () => {
         </div>
     )
 }
-export default PaymentComponent;
+export default BuyNowComponent;

@@ -1,10 +1,10 @@
-import ProductListComponent from "../components/mains/ProductListComponent";
-import EventComponent from "../components/mains/EventComponent";
+import ProductListComponent from "../components/mains/product/ProductListComponent";
+import MainEventComponent from "../components/mains/MainEventComponent";
 
 const MainPage = () => {
     return (
         <div>
-            <EventComponent/>
+            <MainEventComponent/>
             <ProductListComponent/>
         </div>
     );

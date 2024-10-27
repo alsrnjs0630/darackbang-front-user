@@ -1,14 +1,14 @@
 import React from "react";
 import {useState, useEffect} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {getOne} from "../../apis/ProductApi"
-import {addToCart} from "../../apis/CartApi";
+import {getOne} from "../../../apis/ProductApi"
+import {addToCart} from "../../../apis/CartApi";
 import Modal from 'react-modal';
 
-import {API_SERVER_HOST} from "../../apis/host";
+import {API_SERVER_HOST} from "../../../apis/host";
 
 import {Button, Carousel} from "@material-tailwind/react";
-import {logoutPost} from "../../apis/MemberApi";
+import {logoutPost} from "../../../apis/MemberApi";
 import {useSelector} from "react-redux";
 
 const initState ={

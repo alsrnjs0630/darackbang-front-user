@@ -1,4 +1,4 @@
-import { ArrowDownTrayIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import {
     Card,
     CardHeader,
@@ -7,51 +7,83 @@ import {
     CardBody,
     Chip,
     CardFooter,
-    Avatar,
     Input,
 } from "@material-tailwind/react";
+import {useEffect, useState} from "react";
+import {getList} from "../../../apis/EventApi";
+import {useSearchParams} from "react-router-dom";
+import useExeptionHandler from "../../../hooks/useExeptionHandler";
+import useCustomMove from "../../hooks/useCustomMove";
+import PageComponent from "../../common/PageComponent";
 
 const TABLE_HEAD = ["제목", "진행상태", "시작일", "마감일"];
 
-const TABLE_ROWS = [
-    {
-        img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
-        name: "Spotify",
-        startDate: "Mon 7:00am",
-        endDate: "Wed 3:00pm",
-        status: "paid",
-    },
-    {
-        img: "https://docs.material-tailwind.com/img/logos/logo-amazon.svg",
-        name: "Amazon",
-        startDate: "Tue 9:00am",
-        endDate: "Wed 1:00pm",
-        status: "paid",
-    },
-    {
-        img: "https://docs.material-tailwind.com/img/logos/logo-pinterest.svg",
-        name: "Pinterest",
-        startDate: "Mon 5:40pm",
-        endDate: "Mon 7:40pm",
-        status: "pending",
-    },
-    {
-        img: "https://docs.material-tailwind.com/img/logos/logo-google.svg",
-        name: "Google",
-        startDate: "Mon 3:00pm",
-        endDate: "Wed 5:00pm",
-        status: "paid",
-    },
-    {
-        img: "https://docs.material-tailwind.com/img/logos/logo-netflix.svg",
-        name: "Netflix",
-        startDate: "Mon 1:30am",
-        endDate: "Wed 3:30am",
-        status: "cancelled",
-    },
-];
+const getNum = (param, defaultValue) => {
+    if (!param) {
+        return defaultValue;
+    }
+    return parseInt(param);
+}
 
-const EventComponents = () => {
+const EventListComponent = () => {
+    const {exceptionHandle} = useExeptionHandler()
+    const {moveToEventRead, moveToEventList} = useCustomMove()
+    // 선택된 검색 필드 (제목 또는 내용)를 추적하는 상태
+    const [searchValue, setSearchValue] = useState(""); // 입력 필드에 입력된 값
+    const [eventState, setEventState] = useState(""); // 이벤트 상태를 위한 새 상태
+    const [eventData, setEventData] = useState(
+        {
+            contents: [],
+            pageNumbers: [],
+            prev: false,
+            next: false,
+            totalCount: 0,
+            prevPage: 0,
+            nextPage: 0,
+            totalPage: 0,
+            currentPage: 0,
+            search: null
+        }
+    )
+    const [queryParams] = useSearchParams()
+
+    const page = getNum(queryParams.get("page"), 0)
+    const size = getNum(queryParams.get("size"), 5)
+
+    useEffect(() => {
+        const params = {
+            page,
+            size,
+            title: searchValue,
+            eventState: eventState// 새로운 eventState 상태 사용
+        };
+
+        getList(params).then(data => {
+            console.log("데이터:{}", data);
+            setEventData(data);
+        }).catch(error => {
+            exceptionHandle(error);
+        });
+    }, [page, size, searchValue, eventState]);
+
+    const handleSearch = () => {
+        const params = {
+            page,
+            size,
+            title: searchValue,
+            eventState: eventState// 새로운 eventState 상태 사용
+        };
+
+        console.log(params)
+
+        getList(params).then(data => {
+            console.log("데이터:{}", data);
+            setEventData(data);
+        }).catch(error => {
+            exceptionHandle(error);
+        });
+    }
+
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -65,14 +97,34 @@ const EventComponents = () => {
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
+                        {/* 이벤트 상태 선택을 위한 새로운 드롭다운 */}
+                        <select
+                            name={"eventState"}
+                            value={eventState}
+                            onChange={(e) => {
+                                setEventState(e.target.value)
+                                setSearchValue("");
+                            }}
+                            className="border px-2 py-1 rounded"
+                        >
+                            <option value="">전체</option>
+                            <option value="02">진행중</option>
+                            <option value="01">진행준비</option>
+                            <option value="03">마감</option>
+                        </select>
                         <div className="w-full md:w-72">
                             <Input
-                                label="Search"
-                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                                name={"title"}
+                                type={"text"}
+                                label="이벤트 제목"
+                                size={"lg"}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                                icon={<MagnifyingGlassIcon className="h-5 w-5"/>}
                             />
                         </div>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Download
+                        <Button className="h-12"
+                        onClick={handleSearch}>
+                            검색
                         </Button>
                     </div>
                 </div>
@@ -98,29 +150,24 @@ const EventComponents = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {TABLE_ROWS.map(
-                        ({ img, name, status, startDate, endDate }, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
+                    {eventData.contents.map(
+                        ({id,title, eventState, startDate, endDate}, index) => {
+                            const isLast = index === eventData.length - 1;
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
 
                             return (
-                                <tr key={name}>
+                                <tr key={title}>
                                     <td className={classes}>
                                         <div className="flex items-center gap-3">
-                                            <Avatar
-                                                src={img}
-                                                alt={name}
-                                                size="md"
-                                                className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                            />
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className="font-bold"
+                                                className="font-bold cursor-pointer"
+                                                onClick={() => moveToEventRead(id)}
                                             >
-                                                {name}
+                                                {title}
                                             </Typography>
                                         </div>
                                     </td>
@@ -129,11 +176,16 @@ const EventComponents = () => {
                                             <Chip
                                                 size="sm"
                                                 variant="ghost"
-                                                value={status}
+                                                value={
+                                                    eventState === "01"
+                                                    ? "진행준비"
+                                                    : eventState === "02"
+                                                    ? "진행중"
+                                                    : "마감"}
                                                 color={
-                                                    status === "paid"
+                                                    eventState === "02"
                                                         ? "green"
-                                                        : status === "pending"
+                                                        : eventState === "01"
                                                             ? "amber"
                                                             : "red"
                                                 }
@@ -166,38 +218,10 @@ const EventComponents = () => {
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Button variant="outlined" size="sm">
-                    Previous
-                </Button>
-                <div className="flex items-center gap-2">
-                    <Button variant="outlined" size="sm">
-                        1
-                    </Button>
-                    <Button variant="text" size="sm">
-                        2
-                    </Button>
-                    <Button variant="text" size="sm">
-                        3
-                    </Button>
-                    <Button variant="text" size="sm">
-                        ...
-                    </Button>
-                    <Button variant="text" size="sm">
-                        8
-                    </Button>
-                    <Button variant="text" size="sm">
-                        9
-                    </Button>
-                    <Button variant="text" size="sm">
-                        10
-                    </Button>
-                </div>
-                <Button variant="outlined" size="sm">
-                    Next
-                </Button>
+                <PageComponent serverData={eventData} movePage={moveToEventList}></PageComponent>
             </CardFooter>
         </Card>
     );
 };
 
-export default EventComponents;
+export default EventListComponent;

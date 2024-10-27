@@ -23,13 +23,14 @@ const Company = lazy(() => import("../components/mains/CompanyComponent"))
 const Login = lazy(() => import("../pages/LoginPage"))
 const Join = lazy(() => import("../pages/JoinPage"))
 const MyInfo = lazy(() => import("../components/mains/MyPageInfoComponent"))
-const ProductList = lazy(() => import("../components/mains/ProductListComponent"))
-const ProductInfo = lazy(() => import("../components/mains/ProductInfoComponent"))
+const ProductList = lazy(() => import("../components/mains/product/ProductListComponent"))
+const ProductInfo = lazy(() => import("../components/mains/product/ProductInfoComponent"))
 const Cart = lazy(() => import("../components/mains/CartComponent"))
-const BuyNow = lazy(() => import("../components/mains/BuyNowComponent"))
-const Payment = lazy(() => import("../components/mains/PaymentComponent"))
+const BuyNow = lazy(() => import("../components/mains/payment/BuyNowComponent"))
+const Payment = lazy(() => import("../components/mains/payment/PaymentComponent"))
 const Privacy = lazy(() => import("../components/mains/PrivacyComponent"))
-const Event = lazy(() => import("../components/mains/EventComponents"))
+const Event = lazy(() => import("../components/mains/event/EventListComponent"))
+const EventOne = lazy(() => import("../components/mains/event/EventReadComponent"))
 
 const root = createBrowserRouter([
     {
@@ -79,6 +80,10 @@ const root = createBrowserRouter([
             {
                 path: "/event",
                 element: <Suspense fallback={Loading}><Event/></Suspense>
+            },
+            {
+                path: "/event/read/:id",
+                element: <Suspense fallback={Loading}><EventOne/></Suspense>
             }
         ]
     },
