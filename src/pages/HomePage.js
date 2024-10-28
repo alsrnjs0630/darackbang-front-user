@@ -5,7 +5,7 @@ const HomePage = () => {
 
 	return (
 		<BasicLayout>
-			<div className={'w-full flex justify-center text-3xl'}>
+			<div className={'w-full flex flex-col items-center justify-center text-3xl'}>
 				<Outlet/>
 			</div>
 		</BasicLayout>

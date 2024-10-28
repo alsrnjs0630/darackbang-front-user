@@ -343,20 +343,20 @@ const BuyNowComponent = () => {
 
     return (
         <div>
-            <div className="w-[1200px] overflow-x-auto">
-                <Typography className={"font-bold text-3xl ml-4 mb-5"}>
+            <div className="w-[1000px] overflow-x-auto">
+                <Typography className={"font-bold text-2xl ml-4 mb-5"}>
                     결제 정보
                 </Typography>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                    <thead className="text-xs text-gray-700 bg-gray-100">
                     <tr>
-                        <th scope="col" className="px-6 py-3 text-2xl text-center rounded-s-lg" colspan="2">
+                        <th scope="col" className="py-3 text-lg text-center rounded-s-lg" colspan="2">
                             상품 정보
                         </th>
-                        <th scope="col" className="py-3 text-2xl text-right">
+                        <th scope="col" className="py-3 text-lg text-center">
                             수량
                         </th>
-                        <th scope="col" className="py-3 text-2xl text-right">
+                        <th scope="col" className="py-3 text-lg text-center rounded-e-lg">
                             금액
                         </th>
                     </tr>
@@ -381,20 +381,20 @@ const BuyNowComponent = () => {
                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {buyNowItem.productName}
                         </td>
-                        <td className="py-4 text-right">
+                        <td className="py-4 text-center">
                             {buyNowItem.quantity}
                         </td>
-                        <td className="py-4 text-right">
+                        <td className="py-4 text-center">
                             {buyNowItem.buyNowTotalPrice.toLocaleString()}원
                         </td>
                     </tr>
                     </tbody>
                     <tfoot>
                     <tr className="font-semibold text-gray-900">
-                        <td scope="row" className="px-6 py-3 text-base">Total</td>
+                        <td scope="row" className="px-6 py-3 text-base text-right">Total</td>
                         <td></td>
                         <td></td>
-                        <td className="py-3 text-right">{buyNowItem.buyNowTotalPrice.toLocaleString()}원</td>
+                        <td className="py-3 text-center">{buyNowItem.buyNowTotalPrice.toLocaleString()}원</td>
                     </tr>
                     </tfoot>
                 </table>
@@ -407,21 +407,24 @@ const BuyNowComponent = () => {
                         <Typography variant="h4" color="blue-gray" className="pr-4">
                             배송지 입력
                         </Typography>
-                        <div className="flex items-center">
-                            <Checkbox
-                                id={"default"}
-                                name={"address"}
-                                checked={checkedValue === "default"}
-                                onChange={() => handleCheckboxChange("default")}/>
-                            <label htmlFor={"default"} className="text-base text-blue-500 font-bold">기본 배송지 사용</label>
-                        </div>
-                        <div className="flex items-center">
-                            <Checkbox
-                                id={"custom"}
-                                name={"address"}
-                                checked={checkedValue === "custom"}
-                                onChange={() => handleCheckboxChange("custom")}/>
-                            <label htmlFor={"custom"} className="text-base text-pink-500 font-bold">직접 입력</label>
+                        <div className="flex ml-[100px] mt-[-5px]">
+                            <div className="flex items-center">
+                                <Checkbox
+                                    id={"default"}
+                                    name={"address"}
+                                    checked={checkedValue === "default"}
+                                    onChange={() => handleCheckboxChange("default")}/>
+                                <label htmlFor={"default"} className="text-base text-indigo-600 font-bold">기본 주소
+                                    사용</label>
+                            </div>
+                            <div className="flex items-center">
+                                <Checkbox
+                                    id={"custom"}
+                                    name={"address"}
+                                    checked={checkedValue === "custom"}
+                                    onChange={() => handleCheckboxChange("custom")}/>
+                                <label htmlFor={"custom"} className="text-base text-brown-500 font-bold">직접 입력</label>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -437,7 +440,7 @@ const BuyNowComponent = () => {
                                     value={checkedValue === "default" ? userInfo.name : customInput.name}
                                     label={"받는분"}/>
                             </div>
-                            <div className={"w-72 ml-[-170px]"}>
+                            <div className={"w-72 ml-[-102px]"}>
                                 <Input
                                     size={"lg"}
                                     className={"w-72"}
@@ -563,19 +566,19 @@ const BuyNowComponent = () => {
                         <th className="px-3 py-3 text-2xl text-center">
                             {buyNowItem.buyNowTotalPrice.toLocaleString()}원
                         </th>
-                        <td className={"text-3xl text-center text-green-300 font-bold"}>
+                        <td className={"text-3xl text-center text-indigo-400 font-bold"}>
                             +
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
                             {shippingCost.toLocaleString()}원
                         </th>
-                        <td className={"text-3xl text-center text-green-300 font-bold"}>
+                        <td className={"text-3xl text-center text-indigo-400 font-bold"}>
                             -
                         </td>
                         <th className="px-3 py-3 text-2xl text-center">
                             {result.toLocaleString()}원
                         </th>
-                        <td className={"text-3xl text-center text-green-300 font-bold"}>
+                        <td className={"text-3xl text-center text-indigo-400 font-bold"}>
                             =
                         </td>
                         <th className="px-3 py-3 text-2xl text-center ">
@@ -586,8 +589,8 @@ const BuyNowComponent = () => {
                 </table>
             </div>
             <Button
-                className={"w-full mt-10"}
-                color={"green"}
+                className={"w-full mt-10 text-center text-2xl text-white font-bold tracking-tight bg-indigo-200 rounded-xl"}
+                style={{textShadow: '1px 1px 4px rgba(0, 0, 0, 0.1), 1px -1px 4px rgba(0, 0, 0, 0.1), -1px 1px 4px rgba(0, 0, 0, 0.1), -1px -1px 4px rgba(0, 0, 0, 0.1)'}}
                 onClick={() => handlePaymentModal(payment)}
             >
                 <span className={"text-2xl"}>주문하기</span>

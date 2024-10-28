@@ -12,7 +12,7 @@ const PrivacyComponent = () => {
     }, [location.key]);         // key가 바뀔 때마다 실행
 
     return (
-        <div className="w-[1000px]">
+        <div className="w-[1000px] mb-5">
             <h5 className="mb-10 font-bold text-indigo-600">다락방(茶樂房) 개인정보처리방침</h5>
             <div className="text-gray-800">
                 <div className={sectionContentClass}>

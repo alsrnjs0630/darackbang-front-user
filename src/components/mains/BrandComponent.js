@@ -5,14 +5,14 @@ const BrandComponent = () => {
     const location = useLocation();
 
     const sectionTitleClass = "text-lg font-bold";
-    const sectionContentClass = "text-base pl-4 pt-3";
+    const sectionContentClass = "text-base pl-5 pt-3";
 
     useEffect(() => {
         window.scrollTo(0, 0);  // 페이지가 로드될 때 맨 위로 스크롤
     }, [location.key]);         // key가 바뀔 때마다 실행
 
     return (
-        <div className="w-[1000px]">
+        <div className="w-[1000px] mb-5">
             <h5 className="mb-10 font-bold text-indigo-600">다락방(茶樂房) 브랜드 소개</h5>
             <div className="text-gray-800">
                 <div className="text-2xl font-bold text-center text-brown-300">
@@ -27,7 +27,7 @@ const BrandComponent = () => {
                         /><br/>
                     </div>
                     <div className={sectionTitleClass}>
-                        • 다양한 차 제공
+                        •&nbsp;&nbsp;다양한 차 제공
                     </div>
                     <div className={sectionContentClass}>
                         다락방은 차 애호가 여러분을 위해 다양한 업체의 인기 상품을 한곳에 모아 판매합니다.
@@ -45,7 +45,7 @@ const BrandComponent = () => {
                         /><br/>
                     </div>
                     <div className={sectionTitleClass}>
-                        • 간편결제로 편리한 구매
+                        •&nbsp;&nbsp;간편결제로 편리한 구매
                     </div>
                     <div className={sectionContentClass}>
                         고객님들의 편리한 쇼핑을 위해 다락방은 포트원 QR코드 결제를 통한 간편 결제 시스템을 도입했습니다.

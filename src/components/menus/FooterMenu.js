@@ -21,7 +21,7 @@ export function BreadcrumbsDefault() {
 
 const FooterMenu = () => {
     return (
-        <footer className='w-full footer py-12 pt-24 px-8'>
+        <footer className='w-full footer py-12 pt-15 px-8'>
             <div className='w-full flex items-center flex-col justify-center'>
                 <div className={"flex"}>
                     <Typography className='font-poppins text-lg font-semibold text-purple-100'>
@@ -35,7 +35,7 @@ const FooterMenu = () => {
                         <div>
                             <div className="flex">
                                 <div className="text-xl font-bold text-indigo-600">고객센터</div>
-                                <div className="ml-2 transform -translate-y-0.5 text-xl text-brown-300">1588-1234</div>
+                                <div className="ml-2 text-xl text-brown-300">1588-1234</div>
                             </div>
                             <div className="text-sm mb-3 text-gray-800">
                                 평일 9:00-18:00 · 점심시간 12:00-13:00 · 주말 및 공휴일 휴무

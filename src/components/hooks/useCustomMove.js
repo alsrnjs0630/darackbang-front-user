@@ -51,7 +51,7 @@ const useCustomMove = () => {
             const pageNum = pageParam;
             // pageParam이 숫자일 때만 page 파라미터를 사용하고, size가 기본값(5)일 때는 제외
             queryStr = eventSize !== 5
-                ? createSearchParams({ page: pageNum, size }).toString()
+                ? createSearchParams({ page: pageNum, eventSize }).toString()
                 : createSearchParams({ page: pageNum }).toString();
         } else {
             queryStr = eventQueryDefault;

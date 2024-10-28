@@ -62,7 +62,12 @@ const EventListComponent = () => {
 
         getList(params).then(data => {
             console.log("데이터:{}", data);
-            setEventData(data);
+            // 현재 페이지 정보 추가
+            const currentPage = params.page; // 현재 요청한 페이지
+            setEventData({
+                ...data,
+                current: currentPage, // current에 현재 페이지 설정
+            });
         }).catch(error => {
             exceptionHandle(error);
         });
@@ -106,7 +111,7 @@ const EventListComponent = () => {
                             onChange={(e) => {
                                 setEventState(e.target.value)
                             }}
-                            className="border px-2 py-1 rounded"
+                            className="border px-2 py-1 rounded text-sm"
                         >
                             <option value="">전체</option>
                             <option value="02">진행중</option>
@@ -221,7 +226,7 @@ const EventListComponent = () => {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
                 <PageComponent serverData={eventData} movePage={moveToEventList}></PageComponent>
             </CardFooter>
         </Card>

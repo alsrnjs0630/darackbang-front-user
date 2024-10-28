@@ -105,7 +105,6 @@ const ProductListComponent = () => {
                     </div>
                 </div>
             </div>
-            <br/>
 
             {/* Pagination 컴포넌트 */}
             <PageComponent serverData={serverData} movePage={moveToList}></PageComponent>

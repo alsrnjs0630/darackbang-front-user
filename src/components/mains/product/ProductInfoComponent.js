@@ -293,7 +293,7 @@ const ProductInfoComponent = () => {
                             isOpen={modalIsOpen}
                             onRequestClose={closeModal}
                             className="fixed inset-0 flex items-center justify-center z-50"
-                            overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40" // z-40으로 설정
+                            overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-[1000]"
                         >
                             <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto z-50">
                                 <h2 className="text-lg font-semibold text-center">{modalMessage}</h2>

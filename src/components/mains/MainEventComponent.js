@@ -21,7 +21,7 @@ const MainEventComponent = () => {
     }, [location.key]);         // key가 바뀔 때마다 실행
 
     return (
-        <div className={"h-1/3"}>
+        <div className={"h-[400px] mb-[60px]"}>
             <Carousel
                 className="rounded-xl"
                 autoplay
@@ -52,12 +52,15 @@ const MainEventComponent = () => {
                         />
                     ))
                 ) : (
-                    // 파일 리스트가 없을 경우 기본 이미지
-                    <img
-                        src={`${API_SERVER_HOST}/api/events/view/default.png`}
-                        alt="default image"
-                        className="h-full w-full object-cover"
-                    />
+                    // 파일 리스트가 없을 경우 기본 이미지 3장을 배열로 Carousel 구성
+                    ['/images/darackbang_event1.jpg', '/images/darackbang_event2.jpg', '/images/darackbang_event3.jpg'].map((src, index) => (
+                        <img
+                            key={index}
+                            src={src}
+                            alt={`default image ${index + 1}`}
+                            className="h-full w-full object-cover"
+                        />
+                    ))
                 )}
             </Carousel>
         </div>

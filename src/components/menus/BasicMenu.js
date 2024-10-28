@@ -149,7 +149,7 @@ export function StickyNavbar() {
 
     return (
         <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-y-scroll overflow-x-hidden">
-            <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+            <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none ml-2 px-4 py-2 lg:px-8 lg:pt-4">
                 <div className="flex mt-4 items-center justify-start text-blue-gray-900"> {/* justify-start로 왼쪽 정렬 */}
                     <Link href="/" className="mr-4 cursor-pointer py-1.5">
                         <img
