@@ -58,6 +58,8 @@ const EventListComponent = () => {
             eventState: eventState// 새로운 eventState 상태 사용
         };
 
+        console.log("파람 정보: ", params)
+
         getList(params).then(data => {
             console.log("데이터:{}", data);
             setEventData(data);
@@ -103,7 +105,6 @@ const EventListComponent = () => {
                             value={eventState}
                             onChange={(e) => {
                                 setEventState(e.target.value)
-                                setSearchValue("");
                             }}
                             className="border px-2 py-1 rounded"
                         >
@@ -151,7 +152,7 @@ const EventListComponent = () => {
                     </thead>
                     <tbody>
                     {eventData.contents.map(
-                        ({id,title, eventState, startDate, endDate}, index) => {
+                        ({id ,title, eventState, startDate, endDate}, index) => {
                             const isLast = index === eventData.length - 1;
                             const classes = isLast
                                 ? "p-4"
@@ -165,7 +166,10 @@ const EventListComponent = () => {
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-bold cursor-pointer"
-                                                onClick={() => moveToEventRead(id)}
+                                                onClick={() => {
+                                                    console.log("이벤트 ID: ", typeof id, id)
+                                                    moveToEventRead(id)
+                                                }}
                                             >
                                                 {title}
                                             </Typography>

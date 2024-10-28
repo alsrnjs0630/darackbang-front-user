@@ -1,12 +1,23 @@
 import {useLocation} from "react-router-dom";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Carousel} from "@material-tailwind/react";
+import {getFileNameList} from "../../apis/EventApi";
+import {API_SERVER_HOST} from "../../apis/host";
 
 const MainEventComponent = () => {
     const location = useLocation();
+    const [fileList, setFileList] = useState({
+        fileName: ""
+    })
 
     useEffect(() => {
         window.scrollTo(0, 0);  // 페이지가 로드될 때 맨 위로 스크롤
+
+        getFileNameList().then(data => {
+            setFileList(data)
+            console.log("data")
+        })
+
     }, [location.key]);         // key가 바뀔 때마다 실행
 
     return (
@@ -30,21 +41,24 @@ const MainEventComponent = () => {
                     </div>
                 )}
             >
-                <img
-                    src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
-                    alt="image 1"
-                    className="h-full w-full object-cover"
-                />
-                <img
-                    src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
-                    alt="image 2"
-                    className="h-full w-full object-cover"
-                />
-                <img
-                    src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
-                    alt="image 3"
-                    className="h-full w-full object-cover"
-                />
+                {fileList.length > 0 ? (
+                    // 파일 이름 리스트를 이용해 이미지 렌더링
+                    fileList.map((fileName, index) => (
+                        <img
+                            key={index}
+                            src={`${API_SERVER_HOST}/api/events/view/${fileName || "default.png"}`}
+                            alt={`image ${index + 1}`}
+                            className="h-full w-full object-cover"
+                        />
+                    ))
+                ) : (
+                    // 파일 리스트가 없을 경우 기본 이미지
+                    <img
+                        src={`${API_SERVER_HOST}/api/events/view/default.png`}
+                        alt="default image"
+                        className="h-full w-full object-cover"
+                    />
+                )}
             </Carousel>
         </div>
     );

@@ -78,9 +78,9 @@ const useCustomMove = () => {
         console.log(queryParams)
         console.log("아이디------------>",num)
 
-        navigate({
-            pathname: `../event/read/${num}`,
-        })
+        console.log("moveToEventRead - id 타입:", typeof num, num);
+
+        navigate(`../event/read/${num}`);
     }
 
     return {moveToList, moveToEventList, moveToRead, moveToEventRead, page, size, refresh}
