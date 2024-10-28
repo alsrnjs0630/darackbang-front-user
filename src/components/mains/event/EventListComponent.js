@@ -92,18 +92,18 @@ const EventListComponent = () => {
     }
 
     return (
-        <Card className="h-full w-full">
+        <Card className="h-full w-[1000px]">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
+                <div className="flex justify-between gap-8 items-center">
+                    <div className="mt-5 ml-2">
+                        <Typography variant="h4" color="blue-gray">
                             다락방 이벤트
                         </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
+                        <Typography color="gray" className="font-normal">
                             다양한 혜택을 드립니다!
                         </Typography>
                     </div>
-                    <div className="flex w-full shrink-0 gap-2 md:w-max">
+                    <div className="flex mt-4 w-full shrink-0 gap-2 md:w-max">
                         {/* 이벤트 상태 선택을 위한 새로운 드롭다운 */}
                         <select
                             name={"eventState"}
@@ -111,7 +111,7 @@ const EventListComponent = () => {
                             onChange={(e) => {
                                 setEventState(e.target.value)
                             }}
-                            className="border px-2 py-1 rounded text-sm"
+                            className="border px-2 py-1 rounded-lg text-sm"
                         >
                             <option value="">전체</option>
                             <option value="02">진행중</option>
@@ -135,7 +135,7 @@ const EventListComponent = () => {
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="px-0">
+            <CardBody className="px-0 pb-0">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
                     <tr>
@@ -147,7 +147,7 @@ const EventListComponent = () => {
                                 <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="font-normal leading-none opacity-70"
+                                    className="font-normal leading-none opacity-70 pl-2"
                                 >
                                     {head}
                                 </Typography>
@@ -170,7 +170,7 @@ const EventListComponent = () => {
                                             <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className="font-bold cursor-pointer"
+                                                className="font-bold cursor-pointer pl-2"
                                                 onClick={() => {
                                                     console.log("이벤트 ID: ", typeof id, id)
                                                     moveToEventRead(id)
@@ -181,7 +181,7 @@ const EventListComponent = () => {
                                         </div>
                                     </td>
                                     <td className={classes}>
-                                        <div className="w-max">
+                                        <div className="w-max pl-2">
                                             <Chip
                                                 size="sm"
                                                 variant="ghost"
@@ -205,7 +205,7 @@ const EventListComponent = () => {
                                         <Typography
                                             variant="small"
                                             color="blue-gray"
-                                            className="font-normal"
+                                            className="font-normal pl-2"
                                         >
                                             {startDate}
                                         </Typography>
@@ -214,7 +214,7 @@ const EventListComponent = () => {
                                         <Typography
                                             variant="small"
                                             color="blue-gray"
-                                            className="font-normal"
+                                            className="font-normal pl-2"
                                         >
                                             {endDate}
                                         </Typography>
@@ -226,7 +226,7 @@ const EventListComponent = () => {
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+            <CardFooter className="flex items-center justify-center">
                 <PageComponent serverData={eventData} movePage={moveToEventList}></PageComponent>
             </CardFooter>
         </Card>

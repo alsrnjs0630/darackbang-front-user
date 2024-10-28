@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {getOne} from "../../../apis/EventApi";
 import {useParams} from "react-router-dom";
 import {API_SERVER_HOST} from "../../../apis/host";
+import {Chip} from "@material-tailwind/react";
 
 const EventReadComponent = () => {
     const {id} = useParams(); // URL에서 id 가져오기
@@ -28,17 +29,34 @@ const EventReadComponent = () => {
         })
     }, [id]);
 
-    const eventImageFileSize = (size) => {
-        const i = Math.floor(Math.log(size) / Math.log(1024));
-        return (size / Math.pow(1024, i)).toFixed(2) + " " + ["B", "kB", "MB", "GB", "TB"][i];
-    };
-
     return (
-        <div className="max-w-6xl mx-auto p-5">
+        <div className="w-[1000px]">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-3xl font-bold">{eventData.title}</h1>
+                <h1 className="text-3xl font-bold text-indigo-600 tracking-tight">
+                    {eventData.title}
+                </h1>
                 <div className="text-sm text-gray-600">
-                    <div>상태: {eventData.eventState}</div>
+                    <div className="flex items-center">
+                        진행상태:&nbsp;
+                        <Chip
+                            size="sm"
+                            style={{width: '63px', textAlign: 'center'}}
+                            variant="ghost"
+                            value={
+                                eventData.eventState === "01"
+                                    ? "진행준비"
+                                    : eventData.eventState === "02"
+                                        ? "진행중"
+                                        : "마감"}
+                            color={
+                                eventData.eventState === "02"
+                                    ? "green"
+                                    : eventData.eventState === "01"
+                                        ? "amber"
+                                        : "red"
+                            }
+                        />
+                    </div>
                     <div>시작일: {eventData.startDate}</div>
                     <div>종료일: {eventData.endDate}</div>
                 </div>
@@ -46,15 +64,12 @@ const EventReadComponent = () => {
 
             <hr className="border-gray-300 mb-4" />
 
-            <div className="relative flex flex-col text-gray-400 border border-gray-200 border-dashed rounded cursor-pointer py-10 text-center">
+            <div className="relative flex flex-col mt-5 text-gray-400 text-center">
                 {files && files.preview ? (
-                    <div
-                        className="relative flex flex-col items-center overflow-hidden text-center bg-gray-100 border rounded cursor-default select-none"
-                        style={{ paddingTop: "100%", position: "relative" }}
-                    >
+                    <div className="flex flex-col items-center overflow-hidden text-center">
                         <img
                             src={files.preview}
-                            className="absolute inset-0 object-cover w-full h-full"
+                            className="inset-0 object-cover w-full h-[400px]"
                             alt={files.name}
                         />
                     </div>
@@ -63,9 +78,14 @@ const EventReadComponent = () => {
                 )}
             </div>
 
-            <div className="mt-4">
-                <h2 className="text-lg font-semibold">내용</h2>
-                <p>{eventData.contents}</p>
+            <div className="mt-5 text-base text-gray-800">
+                {/* 줄바꿈을 <br />로 변환 */}
+                {eventData.contents.split('\n').map((line, index) => (
+                    <span key={index}>
+                        {line}
+                        <br /> {/* 각 줄마다 <br /> 추가 */}
+                    </span>
+                ))}
             </div>
         </div>
     );

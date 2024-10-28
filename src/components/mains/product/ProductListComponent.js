@@ -54,7 +54,7 @@ const ProductListComponent = () => {
     return (
         <section className="w-full"> {/* 전체 너비로 설정하고 배경색 추가 */}
             <div className="flex justify-center"> {/* 가로 방향으로 가운데 정렬 */}
-                <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {serverData.contents.map((product) => (
                             <div
