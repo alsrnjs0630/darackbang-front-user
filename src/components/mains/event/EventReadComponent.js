@@ -69,7 +69,7 @@ const EventReadComponent = () => {
                     <div className="flex flex-col items-center overflow-hidden text-center">
                         <img
                             src={files.preview}
-                            className="inset-0 object-cover w-full h-[400px]"
+                            className="inset-0 object-cover"
                             alt={files.name}
                         />
                     </div>
@@ -78,14 +78,8 @@ const EventReadComponent = () => {
                 )}
             </div>
 
-            <div className="mt-5 text-base text-gray-800">
-                {/* 줄바꿈을 <br />로 변환 */}
-                {eventData.contents.split('\n').map((line, index) => (
-                    <span key={index}>
-                        {line}
-                        <br /> {/* 각 줄마다 <br /> 추가 */}
-                    </span>
-                ))}
+            <div className="mt-5 text-base text-gray-800 whitespace-pre-wrap">
+                {eventData.contents}
             </div>
         </div>
     );
