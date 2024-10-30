@@ -21,7 +21,7 @@ const MainEventComponent = () => {
     }, [location.key]);         // key가 바뀔 때마다 실행
 
     return (
-        <div className={"w-[1000px] h-[400px] mb-[60px]"}>
+        <div className={"w-auto lg:w-[1200px] lg:h-[400px] mb-[60px]"}>
             <Carousel
                 className="rounded-xl"
                 autoplay

@@ -52,7 +52,7 @@ const ProductListComponent = () => {
 
 
     return (
-        <section className="w-[1000px]"> {/* 전체 너비로 설정하고 배경색 추가 */}
+        <section className="w-auto lg:w-[1200px]"> {/* 전체 너비로 설정하고 배경색 추가 */}
             <div className="flex justify-center"> {/* 가로 방향으로 가운데 정렬 */}
                 <div className="max-w-7xl">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -80,7 +80,7 @@ const ProductListComponent = () => {
                                             <div
                                                 className="absolute inset-0 px-6 flex items-center justify-center text-center text-white text-4xl font-bold"
                                                 style={{zIndex: 1, textShadow: '1px 1px 4px rgba(0, 0, 0, 0.15), 1px -1px 4px rgba(0, 0, 0, 0.15), -1px 1px 4px rgba(0, 0, 0, 0.15), -1px -1px 4px rgba(0, 0, 0, 0.15)'}}>
-                                                SOLD OUT
+                                                SOLD<br/>OUT
                                             </div>
                                             <div className="absolute inset-0 bg-gray-800 opacity-50 rounded-2xl"></div>
                                         </div>
