@@ -9,6 +9,7 @@ import {
 import {logoutPost, modifyInfo, mypageInfo} from "../../apis/MemberApi";
 import {useNavigate} from "react-router-dom";
 import {useDaumPostcodePopup} from "react-daum-postcode";
+import useExceptionHandler from "../../hooks/useExeptionHandler";
 
 const MyPageInfoComponent = () => {
     const initState = {
@@ -29,12 +30,13 @@ const MyPageInfoComponent = () => {
         memberState: '',
     }
 
-    //  회원 탈퇴 모닮창
+    //  회원 탈퇴 모달창
     const [size, setSize] = React.useState(null);
     const handleOpen = (value) => setSize(value);
 
     const [infoParam, setInfoParam] = useState({...initState})
     const navigate = useNavigate();
+    const {exceptionHandle} = useExceptionHandler();
 
     // 다음 우편번호 팝업
     const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -129,35 +131,14 @@ const MyPageInfoComponent = () => {
     };
 
     // 컴포넌트 렌더링 시 사용자 정보 로딩 후 화면에 출력
-    useEffect(() => {
-        const fetchMyInfo = async () => {
-            try {
-                const myInfo = await mypageInfo()
-                if (myInfo == null) {
-                    alert("잘못된 사용자 정보입니다.")
-                    navigate("/")
-                } else {
-                    setInfoParam(myInfo)
-                    console.log(myInfo)
-                }
-            } catch(error) {
-                if (error.response) {
-                    if(error.response.status === 401){
-                        alert("세션이 만료되었습니다. 다시 로그인 해주세요")
-                        logoutPost()
-                        localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                        localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                        navigate("/login")
-                        window.location.reload()
-                    } else {
-                        console.log("error : ", error.response)
-                        alert("잘못된 사용자 정보입니다.")
-                        navigate("/")
-                    }
-                }
-            }
-        }
-        fetchMyInfo();
+    useEffect( () => {
+        mypageInfo().then(data => {
+            setInfoParam(data);
+            console.log(data);
+        }).catch(error => {
+            exceptionHandle(error);
+        })
+
     }, []);
 
     //수정 내용 modifyParam으로 설정
@@ -168,29 +149,16 @@ const MyPageInfoComponent = () => {
 
     // 회원정보 수정 메서드 (수정완료 버튼)
     const infoModify = async () => {
-        try {
-            const response = await modifyInfo(infoParam)
-            if (response.RESULT === "SUCCESS") {
+        await modifyInfo(infoParam).then(data => {
+            if (data.RESULT === "SUCCESS") {
                 alert("회원 정보가 수정되었습니다.");
                 window.location.reload(); // 페이지 새로고침
             } else {
                 alert("회원 정보 수정에 실패하였습니다. 다시 시도해주세요");
             }
-        } catch(error) {
-            if (error.response) {
-                if (error.response.status === 401){
-                    alert("세션이 만료되었습니다. 다시 로그인 해주세요")
-                    logoutPost()
-                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                    navigate("/login")
-                    window.location.reload();
-                } else {
-                    console.log("error: ", error.response)
-                    alert("회원 정보 수정에 실패하였습니다. 다시 시도해주세요");
-                }
-            }
-        }
+        }).catch(error => {
+            exceptionHandle(error);
+        })
     };
 
     // 수정내역 초기화 메서드 (수정취소 버튼)
@@ -201,39 +169,26 @@ const MyPageInfoComponent = () => {
 
     // 회원 탈퇴 메서드
     const ResignMember = async () => {
-        try {
-            // infoParam의 복사본을 만들고 memberState를 "03"으로 설정
-            const updatedParam = {
-                ...infoParam,
-                memberState: "03"
-            };
-            // 상태를 업데이트
-            await setInfoParam(updatedParam);
-            // updatedParam을 사용하여 modifyInfo 호출
-            await modifyInfo(updatedParam)
+        const updatedParam = {
+            ...infoParam,
+            memberState: "03"
+        };
+        // 상태를 업데이트
+        setInfoParam(updatedParam);
+        // updatedParam을 사용하여 modifyInfo 호출
+        await modifyInfo(updatedParam).then(async data => {
             console.log(updatedParam); // API 호출 결과를 로그에 출력
             handleOpen(null);
             // 로그아웃 처리
             await logoutPost()
-            localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
+            localStorage.setItem('loginState', '비회원'); // localStorage에서 로그인 상태 비회원으로 변경
+            localStorage.removeItem('accessToken')
             // 메인페이지로 이동
             navigate("/")
             window.location.reload();
-        } catch(error) {
-            if (error.response) {
-                if (error.response.status === 401) {
-                    alert("세션이 만료되었습니다. 다시 로그인 해주세요")
-                    logoutPost()
-                    localStorage.removeItem('loginState'); // localStorage에서 로그인 상태 제거
-                    localStorage.removeItem('accessToken'); // localStorage에서 액세스 토큰 제거
-                    navigate("/login")
-                    window.location.reload();
-                } else {
-                    console.log("error: ", error.response)
-                    alert("회원 탈퇴에 실패하였습니다. 다시 시도해주세요");
-                }
-            }
-        }
+        }).catch(error => {
+            exceptionHandle(error);
+        })
     }
 
     return (

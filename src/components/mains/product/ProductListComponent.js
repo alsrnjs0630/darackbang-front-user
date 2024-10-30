@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import useCustomMove from "../../hooks/useCustomMove";
+import useCustomMove from "../../../hooks/useCustomMove";
 import {getList} from "../../../apis/ProductApi";
 import PageComponent from "../../common/PageComponent";
 

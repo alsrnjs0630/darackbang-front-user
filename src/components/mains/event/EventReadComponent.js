@@ -23,7 +23,7 @@ const EventReadComponent = () => {
             const images = {
                 preview: `${API_SERVER_HOST}/api/events/view/${data.fileName || "default.png"}`,
                 name: data.fileName || "default.png",
-                size: 50000 // fileSize가 필요하다면 API에서 지원해야 함
+                size: 50000
             }
             setFiles(images);
         })

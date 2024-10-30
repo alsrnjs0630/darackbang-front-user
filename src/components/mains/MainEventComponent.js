@@ -1,24 +1,20 @@
-import {useLocation} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {Carousel} from "@material-tailwind/react";
 import {getFileNameList} from "../../apis/EventApi";
 import {API_SERVER_HOST} from "../../apis/host";
 
 const MainEventComponent = () => {
-    const location = useLocation();
     const [fileList, setFileList] = useState({
         fileName: ""
     })
 
     useEffect(() => {
-        window.scrollTo(0, 0);  // 페이지가 로드될 때 맨 위로 스크롤
-
         getFileNameList().then(data => {
             setFileList(data)
             console.log("data")
         })
 
-    }, [location.key]);         // key가 바뀔 때마다 실행
+    }, []);
 
     return (
         <div className={"w-[1000px] h-[400px] mb-[60px]"}>

@@ -21,7 +21,6 @@ export const loginPost = async (loginParam) => {
         console.log("로그인 실패! 에러 : ", error)
         throw error;
     }
-
 }
 
 // 로그아웃
@@ -67,7 +66,7 @@ export const joinPost = async (joinParam) => {
     }
 }
 
-// 비밀번호 찾기
+// 아이디 검색(회원 인증)
 export const search = async (searchParam) => {
     const form = new FormData()
     form.append('userEmail', searchParam.userEmail)
@@ -138,7 +137,6 @@ export const modifyInfo = async (modifyParam) => {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${ACCESS_TOKEN}`
         }
-
     }
 
     try {
