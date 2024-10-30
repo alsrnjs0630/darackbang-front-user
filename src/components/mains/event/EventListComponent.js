@@ -13,7 +13,7 @@ import {useEffect, useState} from "react";
 import {getList} from "../../../apis/EventApi";
 import {useSearchParams} from "react-router-dom";
 import useExeptionHandler from "../../../hooks/useExeptionHandler";
-import useCustomMove from "../../hooks/useCustomMove";
+import useCustomMove from "../../../hooks/useCustomMove";
 import PageComponent from "../../common/PageComponent";
 
 const TABLE_HEAD = ["제목", "진행상태", "시작일", "마감일"];
@@ -57,8 +57,6 @@ const EventListComponent = () => {
             title: searchValue,
             eventState: eventState// 새로운 eventState 상태 사용
         };
-
-        console.log("파람 정보: ", params)
 
         getList(params).then(data => {
             console.log("데이터:{}", data);

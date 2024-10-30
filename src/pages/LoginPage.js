@@ -161,7 +161,7 @@ const LoginPage = ({loginState, setLoginState}) => {
                     인</h2>
 
                 {/* 이메일 입력 필드 */}
-                <div className="mb-6 px-6 py-4"> {/* 패딩을 추가했습니다. */}
+                <div className="mb-6 px-6 py-4">
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">이메일</label>
                     <div className="mt-2">
                         <input id="email" name="userEmail" type="text" value={loginParam.userEmail} required
@@ -176,7 +176,7 @@ const LoginPage = ({loginState, setLoginState}) => {
                 </div>
 
                 {/* 비밀번호 입력 필드 */}
-                <div className="mb-6 px-6 py-4"> {/* 패딩을 추가했습니다. */}
+                <div className="mb-6 px-6 py-4">
                     <div className="flex items-center justify-between">
                         <label htmlFor="password"
                                className="block text-sm font-medium leading-6 text-gray-900">비밀번호</label>
@@ -253,11 +253,11 @@ const LoginPage = ({loginState, setLoginState}) => {
                                     <Typography className="-mb-2" variant="h6">
                                         새 비밀번호
                                     </Typography>
-                                    <Input label="password" name={"password"} value={resetPwParam.password} onChange={handleResetPwChange} size="lg"/>
+                                    <Input type={"password"} label="password" name={"password"} value={resetPwParam.password} onChange={handleResetPwChange} size="lg"/>
                                     <Typography className="-mb-2" variant="h6">
                                         비밀번호 확인
                                     </Typography>
-                                    <Input label="password" name={"passwordCheck"} value={resetPwParam.passwordCheck} onChange={handleResetPwChange} size="lg"/>
+                                    <Input type={"password"} label="password" name={"passwordCheck"} value={resetPwParam.passwordCheck} onChange={handleResetPwChange} size="lg"/>
                                 </CardBody>
                                 <CardFooter className="pt-0">
                                     <Button variant="gradient" onClick={handleClickResetPw} fullWidth>

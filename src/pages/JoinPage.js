@@ -24,7 +24,7 @@ const initState = {
     address: ''
 }
 
-export function SimpleRegistrationForm() {
+const JoinPage = () => {
     // 회원가입 요청 데이터
     const [joinParam, setJoinParam] = useState({...initState})
     // 이메일 중복확인 체크
@@ -75,15 +75,15 @@ export function SimpleRegistrationForm() {
         console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     };
 
-    // 경로 이동
-    const moveToPath = (path) => {
-        navigator({pathname: path}, {replace: true})
-    }
-
     // 우편번호 모달창 오픈 메소드
     const handleSearch = () => {
         console.log("오픈")
         open({onComplete: handleComplete});
+    }
+
+    // 경로 이동
+    const moveToPath = (path) => {
+        navigator({pathname: path}, {replace: true})
     }
 
     // 회원가입 양식 입력값 업데이트
@@ -216,40 +216,31 @@ export function SimpleRegistrationForm() {
     const RequiredCheckHandle = () => {
         if (emailCheckState === false) {
             alert("이메일 중복확인을 진행해주세요")
-            return false;
-        }
+            return false;}
         if (passwordCheck === false) {
             alert("비밀번호를 입력해주세요")
-            return false;
-        }
+            return false;}
         if (pwCheckState === false) {
             alert("비밀번호 확인을 입력해주세요")
-            return false;
-        }
+            return false;}
         if (!joinParam.name) {
             alert("이름을 입력해주세요")
-            return false;
-        }
+            return false;}
         if (!joinParam.birthDay) {
             alert("생년월일을 입력해주세요")
-            return false;
-        }
+            return false;}
         if (!validateBirthday(joinParam.birthDay)) {
             alert("예시와 같게 입력해주세요.")
-            return false;
-        }
+            return false;}
         if (!joinParam.mobileNo) {
             alert("휴대폰 번호를 입력해주세요")
-            return false;
-        }
+            return false;}
         if (!joinParam.postNo) {
             alert("주소를 입력해주세요")
-            return false;
-        }
+            return false;}
         if (!termsOfUseState) {
             alert("이용약관에 동의해주세요")
-            return false;
-        }
+            return false;}
         return true;
     }
 
@@ -325,7 +316,6 @@ export function SimpleRegistrationForm() {
         1.본 약관의 해석 및 적용에 있어 대한민국 법을 따릅니다.
         2.서비스 이용과 관련하여 분쟁이 발생할 경우, 서울중앙지방법원을 제1심 법원으로 합니다.
     `;
-
     return (
         <div className="mx-auto w-full h-screen max-w-3xl p-8 border-2 border-gray-400 rounded-2xl shadow-lg">
             <Typography variant="h5" color="blue-gray" className="text-center mb-6 font-bold">
@@ -531,7 +521,7 @@ export function SimpleRegistrationForm() {
             {/* 이용약관 동의 */}
             <div className="grid grid-cols-1 mt-4">
                 <Textarea
-                    style={{ height: '200px' }}
+                    style={{ height: '300px' }}
                     className=" !border-gray-300 focus:!border-gray-900" // 높이를 300px로 조정
                     value={termsText.replace(/\n/g, '\n')}
                     readOnly
@@ -554,12 +544,6 @@ export function SimpleRegistrationForm() {
             </div>
         </div>
     );
-}
-
-const JoinPage = () => {
-    return (
-        <SimpleRegistrationForm/>
-    )
 }
 
 export default JoinPage;
