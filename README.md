@@ -1,34 +1,8 @@
-# [React Material-Tailwind](https://blog.appseed.us/react-material-tailwind-guide-and-sample/) `Sample`
+# 빅데이터기반 인공지는 융합서비스 개발자
+## 다락방 프로젝트 
+### 프론트 유저 React
 
-**[Material Tailwind](https://www.material-tailwind.com/)** is a free and open-source UI library inspired by `Material Design` that provides a unique experience for developers working with **React and Tailwind CSS** - The library is actively supported by [Creative-Tim](https://www.creative-tim.com/?AFFILIATE=128200).
 
-- 👉 [React Material-Tailwind](https://sample-material-tailwind.appseed-srv1.com/) - `LIVE Demo`
-- ✅ [React Material-Tailwind](https://blog.appseed.us/react-material-tailwind-guide-and-sample/) - `Comprehensive guide` that explains how to code this sample
-- 🚀 [Free Support](https://appseed.us/support/) via `Email` & `Discord` provided by **AppSeed**
-
-<br />
-
-## How to use it 
-
-- Install `NodejS` - version 14.x or higher 
-  - Project tested with **v18.0.0** 
-- Install dependencies via `yarn`
-- Start the project: `yarn start` 
-
-<br />
-
-## Components
->>여기에 컴포넌트 리스트 추가 
-
-<br />
-
-## What is React.js
-
-React.js is a JavaScript library that allows you to build fast and efficient web applications using the minimum amount of code possible. In React.js, you can break the web layout into components - reusable bits of code that return HTML elements. 
-
-- 👉 [JavaScript concepts for React Beginners](https://blog.appseed.us/10-javascript-concepts-for-react-beginners/)
-
-<br />
 
 ## [Material Tailwind](https://www.material-tailwind.com/) 
 
